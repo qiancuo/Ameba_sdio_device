@@ -1,6 +1,6 @@
-#include "../drv_type_sdio.h"
-//#include "basic_types.h"
-//#include <linux/mmc/sdio_func.h>
+//#include "../drv_type_sdio.h"
+#include "basic_types.h"
+#include <linux/mmc/sdio_func.h>
 
 int sdioReadWrite_CMD53_byte(IN struct sdio_func *func, 
 		IN u8 *pData, 
