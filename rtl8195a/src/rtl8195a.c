@@ -14,6 +14,7 @@
 #include <linux/tcp.h>
 #include <linux/init.h>
 #include <linux/rtnetlink.h>
+#include <linux/stdio.h>
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,26)
 #include <linux/pci-aspm.h>
@@ -64,6 +65,7 @@ u8 RecvOnePKt(struct sdio_func *func)
 	len = sdio_read32(func, SDIO_RX0_REQ_LEN);
 	len &= 0x0fffffff;
 	printk("Rx len is %d\n", len);
+	pBuf = malloc(len);
 sdio_claim_host(func);
 	res = sdio_read_port(func, WLAN_RX0FF_DEVICE_ID, len, pBuf);
 sdio_release_host(func);
