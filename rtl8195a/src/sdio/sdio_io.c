@@ -318,7 +318,7 @@ u32 sdio_read_port(
 
 	HalSdioGetCmdAddr8723ASdio(func, addr, 0, &addr);
 
-	printk("Get Cmd Addr is %d\n", addr);
+	printk("Get Cmd Addr is 0x%x\n", addr);
 
 
 	cnt = _RND4(cnt);
@@ -327,7 +327,7 @@ u32 sdio_read_port(
 	
 //	cnt = sdio_align_size(cnt);
  	printk("cnt is %d\n", cnt);
-//	err = _sd_read(func, addr, cnt, mem);
+	err = _sd_read(func, addr, cnt, mem);
 	//err = sd_read(pintfhdl, addr, cnt, mem);
 	
 

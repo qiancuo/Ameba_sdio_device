@@ -71,7 +71,7 @@ sdio_claim_host(func);
 sdio_release_host(func);
 	for(i=0;i<len;i++)
 	{
-//		printk("Rx[%d] = %d", i, *(pBuf+i));
+		printk("Rx[%d] = 0x%x\n", i, *(pBuf+i));
 	}
 
 	return SUCCESS;
