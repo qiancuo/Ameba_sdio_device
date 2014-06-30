@@ -1,63 +1,16 @@
-/******************************************************************************
- *
- * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of version 2 of the GNU General Public License as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
- ******************************************************************************/
 #ifndef __BASIC_TYPES_H__
 #define __BASIC_TYPES_H__
-
-//#define BIT(x)			(1 << (x))
-/* BIT0~31 define */
-#define 	BIT0			0x1
-#define 	BIT1			0x2
-#define 	BIT2			0x4
-#define 	BIT3			0x8
-#define 	BIT4			0x10
-#define 	BIT5			0x20
-#define 	BIT6			0x40
-#define 	BIT7			0x80
-#define 	BIT8			0x100
-#define 	BIT9			0x200
-#define	BIT10			0x400
-#define 	BIT11			0x800
-#define 	BIT12			0x1000
-#define 	BIT13			0x2000
-#define 	BIT14			0x4000
-#define 	BIT15			0x8000
-#define 	BIT16			0x10000
-#define 	BIT17			0x20000
-#define 	BIT18			0x40000
-#define 	BIT19			0x80000
-#define 	BIT20			0x100000
-#define 	BIT21			0x200000
-#define 	BIT22			0x400000
-#define 	BIT23			0x800000
-#define 	BIT24			0x1000000
-#define 	BIT25			0x2000000
-#define 	BIT26			0x4000000
-#define 	BIT27			0x8000000
-#define 	BIT28			0x10000000
-#define 	BIT29			0x20000000
-#define 	BIT30			0x40000000
-#define 	BIT31			0x80000000
-
-
+#include <linux/types.h>
 #define SUCCESS	0
 #define FAIL	(-1)
+
+#ifndef FALSE
+#define FALSE 0
+#endif
+
+#ifndef TRUE
+#define TRUE  1
+#endif
 
 #ifndef TRUE
 	#define _TRUE	1
@@ -70,28 +23,17 @@
 #else
 	#define _FALSE	FALSE	
 #endif
-#ifndef FALSE
-#define FALSE 0
-#endif
 
-#ifndef TRUE
-#define TRUE  1
-#endif
-
-
-#include <linux/types.h>
 #define IN
 #define OUT
 #define VOID void
-#define NDIS_OID uint
-#define NDIS_STATUS uint
-
 typedef	signed int sint;
 
 #ifndef	PVOID
 typedef void * PVOID;
 //#define PVOID	(void *)
 #endif
+
 #define u8 unsigned char
 #define u16 unsigned short
 #define u32 unsigned int

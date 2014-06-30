@@ -30,7 +30,7 @@
  *  This product is covered by one or more of the following patents:
  *  US6,570,884, US6,115,776, and US6,327,625.
  ***********************************************************************************/
-
+#if 0
 #include "r8168_dash.h"
 #include "drv_type_sdio.h"
 
@@ -1455,4 +1455,6 @@ void Dash2EnableRx(struct rtl8168_private *tp);
 #define netdev_mc_empty(dev) (netdev_mc_count(dev) == 0)
 #define netdev_for_each_mc_addr(mclist, dev) \
     for (mclist = dev->mc_list; mclist; mclist = mclist->next)
+#endif
+
 #endif

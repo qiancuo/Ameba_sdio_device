@@ -48,7 +48,7 @@ This is free software, and you are welcome to redistribute it under certain cond
 
 #define RTL8195_VERSION "8195a"
 
-MODULE_AUTHOR("Realtek and the Linux r8195a crew <netdev@vger.kernel.org>");
+MODULE_AUTHOR("Realtek and the Linux r8195a crew");
 MODULE_DESCRIPTION("RealTek RTL-8195a iNIC");
 
 MODULE_LICENSE("GPL");
