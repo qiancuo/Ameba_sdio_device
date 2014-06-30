@@ -333,7 +333,7 @@ u32 sdio_read_port(
 	s32 err;
 	printk("sdio_read_port addr is %d\n", addr);
 
-	HalSdioGetCmdAddr8723ASdio(func, addr, 2, &addr);
+	HalSdioGetCmdAddr8723ASdio(func, addr, 84, &addr);
 
 	printk("Get Cmd Addr is 0x%x\n", addr);
 

@@ -44,13 +44,11 @@
 
 #define MODULENAME "iNIC_8195a"
 
-#define GPL_CLAIM "\
-=== iNIC_8195a === \
-This is free software, and you are welcome to redistribute it under certain conditions; see <http://www.gnu.org/licenses/>. \n"
+#define GPL_CLAIM "=== iNIC_8195a ===\n"
 
 #define RTL8195_VERSION "8195a"
 
-MODULE_AUTHOR("Realtek and the Linux r8195a crew");
+MODULE_AUTHOR("Realtek");
 MODULE_DESCRIPTION("RealTek RTL-8195a iNIC");
 
 MODULE_LICENSE("GPL");
@@ -227,9 +225,9 @@ static int __devinit rtl8195_init_one(struct sdio_func *func, const struct sdio_
     if(rc )
 	return rc;
 
-    printk(KERN_INFO "%s: This product is covered by one or more of the following patents: US6,570,884, US6,115,776, and US6,327,625.\n", MODULENAME);
+//    printk(KERN_INFO "%s: This product is covered by one or more of the following patents: US6,570,884, US6,115,776, and US6,327,625.\n", MODULENAME);
 
-    printk("%s", GPL_CLAIM);
+//    printk("%s", GPL_CLAIM);
 
     return rc;
 }
