@@ -19,12 +19,14 @@ __used
 __attribute__((section("__versions"))) = {
 	{ 0x4d5503c4, "module_layout" },
 	{ 0xdc775fbf, "sdio_readb" },
+	{ 0x12da5bb2, "__kmalloc" },
 	{ 0xcb46cbe9, "sdio_enable_func" },
 	{ 0x50eedeb8, "printk" },
 	{ 0xb4390f9a, "mcount" },
 	{ 0x6f2a5dbf, "sdio_unregister_driver" },
 	{ 0xf0fdf6cb, "__stack_chk_fail" },
 	{ 0xc5a07d83, "sdio_register_driver" },
+	{ 0xc218942d, "sdio_memcpy_fromio" },
 	{ 0x4aa31d0, "sdio_claim_host" },
 	{ 0x1d5820a2, "sdio_set_block_size" },
 	{ 0xb1dc4987, "sdio_disable_func" },
@@ -37,4 +39,4 @@ __attribute__((section(".modinfo"))) =
 "depends=";
 
 
-MODULE_INFO(srcversion, "11DCB41820D87A52A56D7FE");
+MODULE_INFO(srcversion, "DEC8D5B5D1FB78B512D7895");

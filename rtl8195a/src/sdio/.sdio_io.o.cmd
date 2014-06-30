@@ -491,14 +491,6 @@ deps_/home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/sdio/sdio_io.o :
   include/linux/pm_wakeup.h \
   include/linux/mod_devicetable.h \
   include/linux/mmc/pm.h \
-  /home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/sdio/../drv_type_sdio.h \
-    $(wildcard include/config/wowlan.h) \
-    $(wildcard include/config/ap/wowlan.h) \
-    $(wildcard include/config/platform/sprd.h) \
-  include/linux/mmc/sdio_ids.h \
-  /home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/sdio/../sdio/sdio_io.h \
-  /home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/sdio/../sdio/basic_types.h \
-  /home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/sdio/../sdio/basic_types.h \
   /home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/sdio/8195_sdio_reg.h \
 
 /home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/sdio/sdio_io.o: $(deps_/home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/sdio/sdio_io.o)

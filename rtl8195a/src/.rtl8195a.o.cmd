@@ -892,7 +892,7 @@ deps_/home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/rtl8195a.o := \
   /home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/sdio/basic_types.h \
   include/linux/mmc/sdio_func.h \
   include/linux/mmc/pm.h \
-  /home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/sdio/hal8195sdio.h \
+  /home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/sdio/8195_sdio_reg.h \
   /home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/drv_type_sdio.h \
     $(wildcard include/config/wowlan.h) \
     $(wildcard include/config/ap/wowlan.h) \
