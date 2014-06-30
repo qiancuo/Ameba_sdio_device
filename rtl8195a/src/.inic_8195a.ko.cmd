@@ -1,0 +1,1 @@
+cmd_/home/sd1/projects2/rlt8195a/src/inic_8195a.ko := ld -r -m elf_i386 -T /usr/src/linux-headers-3.11.0-24-generic/scripts/module-common.lds --build-id  -o /home/sd1/projects2/rlt8195a/src/inic_8195a.ko /home/sd1/projects2/rlt8195a/src/inic_8195a.o /home/sd1/projects2/rlt8195a/src/inic_8195a.mod.o

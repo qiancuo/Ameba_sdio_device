@@ -1,0 +1,1 @@
+int dispatchreadwrite(IN struct sdio_func * func, u8 *pData, u32 totalLength, BOOLEAN bIsWrite);
