@@ -1,5 +1,4 @@
 #include "sdio_io.h"
-//#include "../drv_type_sdio.h"
 #include "8195_sdio_reg.h"
  #include <linux/string.h>
  
@@ -8,9 +7,53 @@
 #define WLAN_TX_LOQ_DEVICE_ID 6
 #define WLAN_RX0FF_MSK 0x1fff
 
+
+//
+// Description:
+//	The following mapping is for SDIO host local register space.
+//
+// Creadted by Roger, 2011.01.31.
+//
+static void HalSdioGetCmdAddr8723ASdio(
+	IN	struct sdio_func	*func,
+	IN 	u8				DeviceID,
+	IN	u32				Addr,
+	OUT	u32*			pCmdAddr
+	)
+{
+	switch (DeviceID)
+	{
+		case SDIO_LOCAL_DEVICE_ID:
+			*pCmdAddr = ((SDIO_LOCAL_DEVICE_ID << 13) | (Addr & SDIO_LOCAL_MSK));
+			break;
+
+		case WLAN_IOREG_DEVICE_ID:
+			*pCmdAddr = ((WLAN_IOREG_DEVICE_ID << 13) | (Addr & WLAN_IOREG_MSK));
+			break;
+
+		case WLAN_TX_HIQ_DEVICE_ID:
+			*pCmdAddr = ((WLAN_TX_HIQ_DEVICE_ID << 13) | (Addr & WLAN_FIFO_MSK));
+			break;
+
+		case WLAN_TX_MIQ_DEVICE_ID:
+			*pCmdAddr = ((WLAN_TX_MIQ_DEVICE_ID << 13) | (Addr & WLAN_FIFO_MSK));
+			break;
+
+		case WLAN_TX_LOQ_DEVICE_ID:
+			*pCmdAddr = ((WLAN_TX_LOQ_DEVICE_ID << 13) | (Addr & WLAN_FIFO_MSK));
+			break;
+
+		case WLAN_RX0FF_DEVICE_ID:
+			*pCmdAddr = ((WLAN_RX0FF_DEVICE_ID << 13) | (Addr & WLAN_RX0FF_MSK));
+			break;
+
+		default:
+			break;
+	}
+}
 static u8 get_deviceid(u32 addr)
 {
-	u8 devideId;
+	u8 deviceId;
 	u16 pseudoId;
 
 
@@ -18,40 +61,41 @@ static u8 get_deviceid(u32 addr)
 	switch (pseudoId)
 	{
 		case 0x1025:
-			devideId = SDIO_LOCAL_DEVICE_ID;
+			deviceId = SDIO_LOCAL_DEVICE_ID;
 			break;
 
-		case 0x1026:
-			devideId = WLAN_IOREG_DEVICE_ID;
-			break;
+//		case 0x1026:
+//			devideId = WLAN_IOREG_DEVICE_ID;
+//			break;
 
 //		case 0x1027:
 //			devideId = SDIO_FIRMWARE_FIFO;
 //			break;
 
 		case 0x1031:
-			devideId = WLAN_TX_HIQ_DEVICE_ID;
+			deviceId = WLAN_TX_HIQ_DEVICE_ID;
 			break;
 
 		case 0x1032:
-			devideId = WLAN_TX_MIQ_DEVICE_ID;
+			deviceId = WLAN_TX_MIQ_DEVICE_ID;
 			break;
 
 		case 0x1033:
-			devideId = WLAN_TX_LOQ_DEVICE_ID;
+			deviceId = WLAN_TX_LOQ_DEVICE_ID;
 			break;
 
 		case 0x1034:
-			devideId = WLAN_RX0FF_DEVICE_ID;
+			deviceId = WLAN_RX0FF_DEVICE_ID;
 			break;
 
 		default:
 //			devideId = (u8)((addr >> 13) & 0xF);
-			devideId = WLAN_IOREG_DEVICE_ID;
+//			devideId = WLAN_IOREG_DEVICE_ID;
+			deviceId = SDIO_LOCAL_DEVICE_ID;
 			break;
 	}
 
-	return devideId;
+	return deviceId;
 }
 
 
@@ -115,21 +159,12 @@ s32 _sd_cmd52_read(struct sdio_func *func, u32 addr, u32 cnt, u8 *pdata)
 	struct sdio_func *gfunc;
 
 _func_enter_;
-//	padapter = pintfhdl->padapter;
-//	psdiodev = pintfhdl->pintf_dev;
-//	psdio = &psdiodev->intf_data;
 
-//	if(padapter->bSurpriseRemoved){
-//		//DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n",__FUNCTION__);
-//		return err;
-//	}
-	
 	gfunc = func;
 	printk("block size is %d\n", gfunc->cur_blksize);
 	for (i = 0; i < cnt; i++) {
 		pdata[i] = sdio_readb(gfunc, addr+i, &err);
 		if (err) {
-//			DBG_871X(KERN_ERR "%s: FAIL!(%d) addr=0x%05x\n", __func__, err, addr+i);
 			printk("sdio_readb failed!\n");
 			break;
 		}
@@ -147,23 +182,12 @@ _func_exit_;
  */
 s32 sd_cmd52_read(struct sdio_func *func, u32 addr, u32 cnt, u8 *pdata)
 {
-//	PADAPTER padapter;
-//	struct dvobj_priv *psdiodev;
-//	PSDIO_DATA psdio;
-	
+
 	int err=0, i;
 	struct sdio_func *pfunc;
 	bool claim_needed;	
 
 _func_enter_;
-//	padapter = pintfhdl->padapter;
-//	psdiodev = pintfhdl->pintf_dev;
-//	psdio = &psdiodev->intf_data;
-
-//	if(padapter->bSurpriseRemoved){
-//		//DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n",__FUNCTION__);
-//		return err;
-//	}	
 	
 	pfunc = func;
 //	claim_needed = rtw_sdio_claim_host_needed(func);
@@ -171,7 +195,7 @@ _func_enter_;
 //	if (claim_needed)
 		sdio_claim_host(pfunc);
 	err = _sd_cmd52_read(pfunc, addr, cnt, pdata);
-printk("err is : %d\n", err);
+	printk("err is : %d\n", err);
 //	if (claim_needed)
 		sdio_release_host(pfunc);
 
@@ -180,24 +204,10 @@ _func_exit_;
 	return err;
 }
 
-/*
-static u16 swab16(u16 x)
-{
-	u16 __x = x; 
-	return 
-	((u16)( 
-		(((u16)(__x) & (u16)0x00ffU) << 8) |
-		(((u16)(__x) & (u16)0xff00U) >> 8) ));
-
-}
-*/
-
-//#define le16_to_cpu(x) swab16(x)
 u16 sdio_read16(struct sdio_func *func, u32 addr)
 {
 	u32 ftaddr;
 	u16 val;
-u32 val32;
 
 _func_enter_;
 	printk("read from address 0x%x\n", addr);
@@ -215,24 +225,112 @@ _func_exit_;
 u32 sdio_read32(struct sdio_func *func, u32 addr)
 {
 	u32 ftaddr;
-	u16 val;
-u32 val32;
+	u32 val;
 
 _func_enter_;
 	printk("read from address 0x%x\n", addr);
 	ftaddr = _cvrt2ftaddr(addr, NULL, NULL);
 	printk("target address is 0x%x\n", ftaddr);
-//	sd_cmd52_read(func, ftaddr, 2, (u8*)&val);	
-	sd_cmd52_read(func, ftaddr, 4, (u8*)&val32);	
+	sd_cmd52_read(func, ftaddr, 4, (u8*)&val);	
+	printk("val32 is 0x%x\n", val);
+	val = le32_to_cpu(val);
+	printk("le32_to_cpu val32 is 0x%x\n", val);
+_func_exit_;
 
-//	val = le16_to_cpu(val);
-	val32 = le32_to_cpu(val32);
+	return val;
+}
+
+/*
+ * Use CMD53 to read data from SDIO device.
+ * This function MUST be called after sdio_claim_host() or
+ * in SDIO ISR(host had been claimed).
+ *
+ * Parameters:
+ *	psdio	pointer of SDIO_DATA
+ *	addr	address to read
+ *	cnt		amount to read
+ *	pdata	pointer to put data, this should be a "DMA:able scratch buffer"!
+ *
+ * Return:
+ *	0		Success
+ *	others	Fail
+ */
+s32 _sd_read(struct sdio_func *func, u32 addr, u32 cnt, void *pdata)
+{
+	
+	int err= -EPERM;
+	struct sdio_func *pfunc;
+
+_func_enter_;
+		
+	pfunc = func;
+
+	if (unlikely((cnt==1) || (cnt==2)))
+	{
+		int i;
+		u8 *pbuf = (u8*)pdata;
+
+		for (i = 0; i < cnt; i++)
+		{
+			*(pbuf+i) = sdio_readb(pfunc, addr+i, &err);
+
+			if (err) {
+				printk("%s: FAIL!(%d) addr=0x%05x\n", __func__, err, addr);
+				break;
+			}
+		}
+		return err;
+	}
+
+	err = sdio_memcpy_fromio(pfunc, pdata, addr, cnt);
+	if (err) {
+		printk("%s: FAIL(%d)! ADDR=%#x Size=%d\n", __func__, err, addr, cnt);
+	}
 
 _func_exit_;
 
-	return val32;
+	return err;
 }
+/*
+ * Description:
+ *	Read from RX FIFO
+ *	Round read size to block size,
+ *	and make sure data transfer will be done in one command.
+ *
+ * Parameters:
+ *	func		a pointer of sdio func
+ *	addr		port ID
+ *	cnt			size to read
+ *	rmem		address to put data
+ *
+ * Return:
+ *	_SUCCESS(1)		Success
+ *	_FAIL(0)		Fail
+ */
+static u32 sdio_read_port(
+	struct sdio_func *func,
+	u32 addr,
+	u32 cnt,
+	u8 *mem)
+{
+	s32 err;
+
+	HalSdioGetCmdAddr8723ASdio(func, addr, 0, &addr);
 
 
+	cnt = _RND4(cnt);
+	if (cnt > 512)
+		cnt = _RND(cnt, 512);
+	
+//	cnt = sdio_align_size(cnt);
+
+	err = _sd_read(func, addr, cnt, mem);
+	//err = sd_read(pintfhdl, addr, cnt, mem);
+	
+
+
+	if (err) return _FAIL;
+	return _SUCCESS;
+}
 
 

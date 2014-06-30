@@ -5,8 +5,10 @@
 #define _func_enter_ do{}while(0)
 #define _func_exit_ do{}while(0)
 
-#define SUCCESS	0
-#define FAIL	(-1)
+#define SUCCESS	1
+#define FAIL	0
+#define _SUCCESS SUCCESS
+#define _FAIL FAIL
 
 #ifndef FALSE
 #define FALSE 0
@@ -47,7 +49,23 @@ typedef void * PVOID;
 #define UCHAR u8
 #define USHORT u16
 #define UINT u32
-#define ULONG u32	
+#define ULONG u32
+#define s8 signed char
+#define s16 signed short
+#define s32 signed int
+
+#define _RND(sz, r) ((((sz)+((r)-1))/(r))*(r))
+#define RND4(x)	(((x >> 2) + (((x & 3) == 0) ?  0: 1)) << 2)
+__inline static u32 _RND4(u32 sz)
+{
+
+	u32	val;
+
+	val = ((sz >> 2) + ((sz & 3) ? 1: 0)) << 2;
+	
+	return val;
+
+}
 
 typedef void (*proc_t)(void*);
 
