@@ -31,7 +31,7 @@
 #include <asm/uaccess.h>
 #include "sdio/sdio_io.h"
 #include "sdio/8195_sdio_reg.h"
-#include "sdio/hal8195sdio.h"
+//#include "sdio/hal8195sdio.h"
 #include "drv_type_sdio.h"
 #include "dispatchreadwrite.h"
 #include "linux/fs.h"
@@ -71,6 +71,8 @@ sdio_release_host(func);
 	{
 		printk("Rx[%d] = %d", i, *(pBuf+i));
 	}
+
+	return SUCCESS;
 }
 
 int test_send(struct sdio_func *func)
