@@ -307,7 +307,7 @@ _func_exit_;
  *	_SUCCESS(1)		Success
  *	_FAIL(0)		Fail
  */
-static u32 sdio_read_port(
+u32 sdio_read_port(
 	struct sdio_func *func,
 	u32 addr,
 	u32 cnt,

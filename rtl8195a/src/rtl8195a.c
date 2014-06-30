@@ -30,6 +30,7 @@
 #include <asm/irq.h>
 #include <asm/uaccess.h>
 #include "sdio/sdio_io.h"
+#include "sdio/8195_sdio_reg.h"
 #include "sdio/hal8195sdio.h"
 #include "drv_type_sdio.h"
 #include "dispatchreadwrite.h"
@@ -62,7 +63,7 @@ u8 RecvOnePKt(struct sdio_func *func)
 	u8 *pBuf;
 	len = sdio_read32(func, SDIO_RX0_REQ_LEN);
 	len &= 0x0fffffff;
-	printk("Rx len is %d\n", val);
+	printk("Rx len is %d\n", len);
 sdio_claim_host(func);
 	res = sdio_read_port(func, WLAN_RX0FF_DEVICE_ID, len, pBuf);
 sdio_release_host(func);
