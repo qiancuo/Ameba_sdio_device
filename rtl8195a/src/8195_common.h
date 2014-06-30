@@ -1,5 +1,5 @@
 
-
+#if 0
 //-----------------------------------------------------
 //
 //	0x0000h ~ 0x00FFh	System Configuration
@@ -1396,6 +1396,6 @@ enum{
 #define RXERR_RPT_RST				BIT(27)
 #define _RXERR_RPT_SEL(type)		((type) << 28)
 
-
+#endif
 
 
