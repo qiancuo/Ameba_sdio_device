@@ -1,6 +1,10 @@
 #ifndef __BASIC_TYPES_H__
 #define __BASIC_TYPES_H__
 #include <linux/types.h>
+
+#define _func_enter_ do{}while(0)
+#define _func_exit_ do{}while(0)
+
 #define SUCCESS	0
 #define FAIL	(-1)
 
