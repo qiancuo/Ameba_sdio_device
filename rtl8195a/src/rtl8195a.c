@@ -65,7 +65,7 @@ u8 RecvOnePKt(struct sdio_func *func)
 	len &= 0x0fffffff;
 	printk("Rx len is %d\n", len);
 sdio_claim_host(func);
-//	res = sdio_read_port(func, WLAN_RX0FF_DEVICE_ID, len, pBuf);
+	res = sdio_read_port(func, WLAN_RX0FF_DEVICE_ID, len, pBuf);
 sdio_release_host(func);
 	for(i=0;i<len;i++)
 	{
