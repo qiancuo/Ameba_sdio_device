@@ -22,14 +22,19 @@
 #define WLAN_FIFO_MSK			      0x1FFF
 
 //IO Bus domain address mapping
-#define SDIO_LOCAL_OFFSET         0x10250000
-//#define WLAN_IOREG_OFFSET        0x10260000
-//#define FW_FIFO_OFFSET 	      0x10270000
-//#define WLAN_FIFO_OFFSET          0x10280000
-#define  TX_HIQ_OFFSET			0x10310000	
-#define  TX_MIQ_OFFSET			0x10320000
-#define  TX_LOQ_OFFSET			0x10330000
-#define  RX_RXOFF_OFFSET		0x10340000
+#define SDIO_LOCAL				0x10250000
+#define WLAN_TX_FIFO			0x10310000
+#define WLAN_RX_FIFO			0x10340000
+
+
+#define SDIO_LOCAL_OFFSET		0x10250000
+#define WLAN_IOREG_OFFSET		0x10260000
+#define FW_FIFO_OFFSET			0x10270000
+#define WLAN_FIFO_OFFSET		0x10280000
+#define TX_HIQ_OFFSET			0x10310000	
+#define TX_MIQ_OFFSET			0x10320000
+#define TX_LOQ_OFFSET			0x10330000
+#define RX_RXOFF_OFFSET		0x10340000
 
 
 //SDIO Local registers
@@ -39,7 +44,7 @@
 #define SDIO_32K_TRANS_IDLE_TIME		0x04 // 2bytes
 #define SDIO_HIMR						0x14 // 4bytes
 #define SDIO_HISR						0x18 // 4bytes
-#define SDIO_RX0_REQ					0x1c // 4bytes
+#define SDIO_RX0_REQ_LEN				0x1c // 4bytes
 #define SDIO_FREE_TXBD_NUM			0x20 // 2bytes
 #define SDIO_TX_SEQNUM 				0x24 // 1byte, not used
 #define HCPWM							0x38 // 1byte, host domain, sync from CCPWM

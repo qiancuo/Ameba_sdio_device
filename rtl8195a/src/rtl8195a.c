@@ -55,6 +55,18 @@ MODULE_LICENSE("GPL");
 
 MODULE_VERSION(RTL8195_VERSION);
 
+u8 RecvOnePKt(struct sdio_func *func)
+{
+	int res;
+	u32 len;
+	u8 *pBuf;
+	len = sdio_read32(func, SDIO_RX0_REQ_LEN);
+	len &= 0x0fffffff;
+	printk("Rx len is %d\n", val);
+sdio_claim_host(func);
+	res = sdio_read_port(func, WLAN_RX0FF_DEVICE_ID, len, pBuf);
+sdio_release_host(func);
+}
 
 int test_send(struct sdio_func *func)
 {
