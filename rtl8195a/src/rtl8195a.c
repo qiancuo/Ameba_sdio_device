@@ -198,7 +198,8 @@ static int sdio_init(struct sdio_func *func)
         goto release;
     }
 	sdio_release_host(func);
-	rc = test_send(func);
+//	rc = test_send(func);
+	RecvOnePKt(func);
     return rc;
 release:
     sdio_release_host(func);
