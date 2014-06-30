@@ -29,12 +29,7 @@
 #include <asm/io.h>
 #include <asm/irq.h>
 #include <asm/uaccess.h>
-//#include "r8195a.h"
-//#include "r8168_asf.h"
-//#include "rtl_eeprom.h"
-//#include "rtltool.h"
 #include "sdio/sdio_io.h"
-#include "8195_common.h"
 #include "sdio/hal8195sdio.h"
 #include "drv_type_sdio.h"
 #include "dispatchreadwrite.h"
@@ -46,10 +41,11 @@
 #endif
 
 #define MODULENAME "iNIC_8195a"
+
 #define GPL_CLAIM "\
-iNIC_8195a  Copyright (C) 2013  Realtek NIC software team <nicfae@realtek.com> \n \
-This program comes with ABSOLUTELY NO WARRANTY; for details, please see <http://www.gnu.org/licenses/>. \n \
+=== iNIC_8195a === \
 This is free software, and you are welcome to redistribute it under certain conditions; see <http://www.gnu.org/licenses/>. \n"
+
 #define RTL8195_VERSION "8195a"
 
 MODULE_AUTHOR("Realtek and the Linux r8195a crew <netdev@vger.kernel.org>");
@@ -184,23 +180,8 @@ static int sdio_init(struct sdio_func *func)
         printk("%s():sdio_set_block_size FAIL!\n",__FUNCTION__);
         goto release;
     }
-
-	rc = test_send(func);
-//		IoWrite8(func, SYS_ISO_CTRL+ SDIO_LOCAL_OFFSET, 0x0a);
-//		val= IoRead8(func, SYS_ISO_CTRL+SDIO_LOCAL_OFFSET);
-//	    printk("Chris=>%s(): val 0x%x\n", __FUNCTION__, val);
-//	
-//	//	val_1= IoRead16(func, );
-//	//    printk("Chris=>%s(): val 0x%x\n", __FUNCTION__, val_1);	
-//		IoWrite8(func, TX_HIQ_OFFSET, 0x00);
-//		val= IoRead8(func, TX_HIQ_OFFSET);
-//	    printk("Chris=>%s(): val 0x%x\n", __FUNCTION__, val);	
-
-//	InitPowerHAL8195SDIO(func);
-//	val = IoRead8(func, SYS_ISO_CTRL);
-
 	sdio_release_host(func);
-
+	rc = test_send(func);
     return rc;
 release:
     sdio_release_host(func);
