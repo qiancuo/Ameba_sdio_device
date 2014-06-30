@@ -1,5 +1,4 @@
 #include "sdio_io.h"
-#include "../8195_common.h"
 #include "../drv_type_sdio.h"
 #include "8195_sdio_reg.h"
  #include <linux/string.h>
