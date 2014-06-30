@@ -314,6 +314,7 @@ u32 sdio_read_port(
 	u8 *mem)
 {
 	s32 err;
+	printk("sdio_read_port addr is %d\n", addr);
 
 	HalSdioGetCmdAddr8723ASdio(func, addr, 0, &addr);
 
