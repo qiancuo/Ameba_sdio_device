@@ -10,7 +10,7 @@
 #define WLAN_TX_MIQ_DEVICE_ID 5
 #define WLAN_TX_LOQ_DEVICE_ID 6
 #define WLAN_RX0FF_MSK 0x1fff
-
+#if 0
 u8 IoRead8(struct sdio_func *func, u32 addr)
 {
 	u8 val;
@@ -82,6 +82,7 @@ void IoWrite32(struct sdio_func *func, u32 addr, u32 value)
 	temp = value;
 	sdio_writel(func, temp, addr, &err);
 }
+#endif
 #if 0
 int sdioReadWrite_CMD53_byte(IN struct sdio_func *func, 
 		IN u8 *pData, 
