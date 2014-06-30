@@ -69,6 +69,8 @@ u8 RecvOnePKt(struct sdio_func *func)
 sdio_claim_host(func);
 	res = sdio_read_port(func, WLAN_RX0FF_DEVICE_ID, len, pBuf);
 sdio_release_host(func);
+	if (res == _FAIL)
+		printk("sdio read port failed!\n");
 	for(i=0;i<len;i++)
 	{
 		printk("Rx[%d] = 0x%x\n", i, *(pBuf+i));

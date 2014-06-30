@@ -204,6 +204,23 @@ _func_exit_;
 	return err;
 }
 
+u8 sdio_read8(struct sdio_func *func, u32 addr)
+{
+	u32 ftaddr;
+	u8 val;
+
+_func_enter_;
+
+	printk("read from address 0x%x\n", addr);
+	ftaddr = _cvrt2ftaddr(addr, NULL, NULL);
+	printk("target address is 0x%x\n", ftaddr);
+	sd_cmd52_read(func, ftaddr, 1, (u8*)&val);	
+
+_func_exit_;
+
+	return val;
+}
+
 u16 sdio_read16(struct sdio_func *func, u32 addr)
 {
 	u32 ftaddr;
@@ -316,7 +333,7 @@ u32 sdio_read_port(
 	s32 err;
 	printk("sdio_read_port addr is %d\n", addr);
 
-	HalSdioGetCmdAddr8723ASdio(func, addr, 0, &addr);
+	HalSdioGetCmdAddr8723ASdio(func, addr, 2, &addr);
 
 	printk("Get Cmd Addr is 0x%x\n", addr);
 
