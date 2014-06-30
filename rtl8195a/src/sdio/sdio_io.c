@@ -1,7 +1,8 @@
 #include "sdio_io.h"
-#include "../drv_type_sdio.h"
+//#include "../drv_type_sdio.h"
 #include "8195_sdio_reg.h"
  #include <linux/string.h>
+ 
 #define WLAN_TX_HIQ_DEVICE_ID 4
 #define WLAN_TX_MIQ_DEVICE_ID 5
 #define WLAN_TX_LOQ_DEVICE_ID 6
