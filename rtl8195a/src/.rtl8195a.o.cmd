@@ -477,104 +477,6 @@ deps_/home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/rtl8195a.o := \
   include/trace/events/module.h \
   include/trace/define_trace.h \
   include/linux/version.h \
-  include/linux/pci.h \
-    $(wildcard include/config/pci/iov.h) \
-    $(wildcard include/config/pcieaspm.h) \
-    $(wildcard include/config/pci/msi.h) \
-    $(wildcard include/config/pci.h) \
-    $(wildcard include/config/pcieportbus.h) \
-    $(wildcard include/config/pcieaer.h) \
-    $(wildcard include/config/pcie/ecrc.h) \
-    $(wildcard include/config/ht/irq.h) \
-    $(wildcard include/config/pci/domains.h) \
-    $(wildcard include/config/pci/quirks.h) \
-    $(wildcard include/config/hotplug/pci.h) \
-  include/linux/pci_regs.h \
-  include/linux/mod_devicetable.h \
-  include/linux/device.h \
-    $(wildcard include/config/of.h) \
-    $(wildcard include/config/debug/devres.h) \
-    $(wildcard include/config/devtmpfs.h) \
-    $(wildcard include/config/sysfs/deprecated.h) \
-  include/linux/klist.h \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/device.h \
-    $(wildcard include/config/dmar.h) \
-    $(wildcard include/config/amd/iommu.h) \
-  include/linux/pm_wakeup.h \
-  include/linux/io.h \
-    $(wildcard include/config/has/ioport.h) \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/io.h \
-    $(wildcard include/config/xen.h) \
-  include/xen/xen.h \
-    $(wildcard include/config/xen/dom0.h) \
-  include/asm-generic/iomap.h \
-  include/linux/vmalloc.h \
-  include/linux/irqreturn.h \
-  include/linux/pci_ids.h \
-  include/linux/pci-dma.h \
-  include/linux/dmapool.h \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/scatterlist.h \
-  include/asm-generic/scatterlist.h \
-    $(wildcard include/config/debug/sg.h) \
-    $(wildcard include/config/need/sg/dma/length.h) \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/pci.h \
-  include/linux/mm.h \
-    $(wildcard include/config/sysctl.h) \
-    $(wildcard include/config/stack/growsup.h) \
-    $(wildcard include/config/ksm.h) \
-    $(wildcard include/config/debug/pagealloc.h) \
-    $(wildcard include/config/memory/failure.h) \
-    $(wildcard include/config/hugetlbfs.h) \
-  include/linux/debug_locks.h \
-    $(wildcard include/config/debug/locking/api/selftests.h) \
-  include/linux/range.h \
-  include/linux/bit_spinlock.h \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/pgtable.h \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/pgtable_32.h \
-    $(wildcard include/config/highpte.h) \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/pgtable_32_types.h \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/pgtable-2level.h \
-  include/asm-generic/pgtable.h \
-  include/linux/page-flags.h \
-    $(wildcard include/config/pageflags/extended.h) \
-    $(wildcard include/config/arch/uses/pg/uncached.h) \
-    $(wildcard include/config/swap.h) \
-    $(wildcard include/config/s390.h) \
-  include/linux/huge_mm.h \
-  include/linux/vmstat.h \
-    $(wildcard include/config/vm/event/counters.h) \
-  include/linux/slab.h \
-    $(wildcard include/config/slab/debug.h) \
-    $(wildcard include/config/failslab.h) \
-    $(wildcard include/config/slub.h) \
-    $(wildcard include/config/slob.h) \
-    $(wildcard include/config/debug/slab.h) \
-    $(wildcard include/config/slab.h) \
-  include/linux/slub_def.h \
-    $(wildcard include/config/slub/stats.h) \
-    $(wildcard include/config/slub/debug.h) \
-  include/linux/kmemleak.h \
-    $(wildcard include/config/debug/kmemleak.h) \
-  include/asm-generic/pci-dma-compat.h \
-  include/linux/dma-mapping.h \
-    $(wildcard include/config/has/dma.h) \
-    $(wildcard include/config/have/dma/attrs.h) \
-    $(wildcard include/config/need/dma/map/state.h) \
-  include/linux/dma-attrs.h \
-  include/linux/bug.h \
-  include/linux/scatterlist.h \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/dma-mapping.h \
-    $(wildcard include/config/isa.h) \
-  include/linux/kmemcheck.h \
-  include/linux/dma-debug.h \
-    $(wildcard include/config/dma/api/debug.h) \
-  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/swiotlb.h \
-    $(wildcard include/config/swiotlb.h) \
-  include/linux/swiotlb.h \
-  include/asm-generic/dma-coherent.h \
-    $(wildcard include/config/have/generic/dma/coherent.h) \
-  include/asm-generic/dma-mapping-common.h \
-  include/asm-generic/pci.h \
   include/linux/netdevice.h \
     $(wildcard include/config/dcb.h) \
     $(wildcard include/config/wlan.h) \
@@ -607,6 +509,7 @@ deps_/home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/rtl8195a.o := \
   include/linux/uio.h \
   include/linux/hdlc/ioctl.h \
   include/linux/if_ether.h \
+    $(wildcard include/config/sysctl.h) \
   include/linux/skbuff.h \
     $(wildcard include/config/nf/conntrack.h) \
     $(wildcard include/config/bridge/netfilter.h) \
@@ -619,6 +522,7 @@ deps_/home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/rtl8195a.o := \
     $(wildcard include/config/net/dma.h) \
     $(wildcard include/config/network/secmark.h) \
     $(wildcard include/config/network/phy/timestamping.h) \
+  include/linux/kmemcheck.h \
   include/linux/net.h \
   include/linux/random.h \
   include/linux/irqnr.h \
@@ -629,6 +533,18 @@ deps_/home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/rtl8195a.o := \
   include/linux/sysctl.h \
   include/linux/ratelimit.h \
   include/linux/textsearch.h \
+  include/linux/slab.h \
+    $(wildcard include/config/slab/debug.h) \
+    $(wildcard include/config/failslab.h) \
+    $(wildcard include/config/slub.h) \
+    $(wildcard include/config/slob.h) \
+    $(wildcard include/config/debug/slab.h) \
+    $(wildcard include/config/slab.h) \
+  include/linux/slub_def.h \
+    $(wildcard include/config/slub/stats.h) \
+    $(wildcard include/config/slub/debug.h) \
+  include/linux/kmemleak.h \
+    $(wildcard include/config/debug/kmemleak.h) \
   include/net/checksum.h \
   /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/uaccess.h \
     $(wildcard include/config/x86/wp/works/ok.h) \
@@ -642,6 +558,67 @@ deps_/home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/rtl8195a.o := \
     $(wildcard include/config/async/tx/enable/channel/switch.h) \
     $(wildcard include/config/dma/engine.h) \
     $(wildcard include/config/async/tx/dma.h) \
+  include/linux/device.h \
+    $(wildcard include/config/of.h) \
+    $(wildcard include/config/debug/devres.h) \
+    $(wildcard include/config/devtmpfs.h) \
+    $(wildcard include/config/sysfs/deprecated.h) \
+  include/linux/klist.h \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/device.h \
+    $(wildcard include/config/dmar.h) \
+    $(wildcard include/config/amd/iommu.h) \
+  include/linux/pm_wakeup.h \
+  include/linux/dma-mapping.h \
+    $(wildcard include/config/has/dma.h) \
+    $(wildcard include/config/have/dma/attrs.h) \
+    $(wildcard include/config/need/dma/map/state.h) \
+  include/linux/dma-attrs.h \
+  include/linux/bug.h \
+  include/linux/scatterlist.h \
+    $(wildcard include/config/debug/sg.h) \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/scatterlist.h \
+  include/asm-generic/scatterlist.h \
+    $(wildcard include/config/need/sg/dma/length.h) \
+  include/linux/mm.h \
+    $(wildcard include/config/stack/growsup.h) \
+    $(wildcard include/config/ksm.h) \
+    $(wildcard include/config/debug/pagealloc.h) \
+    $(wildcard include/config/memory/failure.h) \
+    $(wildcard include/config/hugetlbfs.h) \
+  include/linux/debug_locks.h \
+    $(wildcard include/config/debug/locking/api/selftests.h) \
+  include/linux/range.h \
+  include/linux/bit_spinlock.h \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/pgtable.h \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/pgtable_32.h \
+    $(wildcard include/config/highpte.h) \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/pgtable_32_types.h \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/pgtable-2level.h \
+  include/asm-generic/pgtable.h \
+  include/linux/page-flags.h \
+    $(wildcard include/config/pageflags/extended.h) \
+    $(wildcard include/config/arch/uses/pg/uncached.h) \
+    $(wildcard include/config/swap.h) \
+    $(wildcard include/config/s390.h) \
+  include/linux/huge_mm.h \
+  include/linux/vmstat.h \
+    $(wildcard include/config/vm/event/counters.h) \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/io.h \
+    $(wildcard include/config/xen.h) \
+  include/xen/xen.h \
+    $(wildcard include/config/xen/dom0.h) \
+  include/asm-generic/iomap.h \
+  include/linux/vmalloc.h \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/dma-mapping.h \
+    $(wildcard include/config/isa.h) \
+  include/linux/dma-debug.h \
+    $(wildcard include/config/dma/api/debug.h) \
+  /usr/src/linux-headers-2.6.38-8-generic/arch/x86/include/asm/swiotlb.h \
+    $(wildcard include/config/swiotlb.h) \
+  include/linux/swiotlb.h \
+  include/asm-generic/dma-coherent.h \
+    $(wildcard include/config/have/generic/dma/coherent.h) \
+  include/asm-generic/dma-mapping-common.h \
   include/linux/hrtimer.h \
     $(wildcard include/config/high/res/timers.h) \
   include/linux/timerqueue.h \
@@ -740,6 +717,7 @@ deps_/home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/rtl8195a.o := \
   include/linux/dcbnl.h \
   include/linux/interrupt.h \
     $(wildcard include/config/generic/irq/probe.h) \
+  include/linux/irqreturn.h \
   include/linux/hardirq.h \
     $(wildcard include/config/bkl.h) \
     $(wildcard include/config/virt/cpu/accounting.h) \
@@ -886,11 +864,11 @@ deps_/home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/rtl8195a.o := \
   include/net/inet_timewait_sock.h \
   include/net/tcp_states.h \
   include/net/timewait_sock.h \
-  include/linux/pci-aspm.h \
-    $(wildcard include/config/pcieaspm/debug.h) \
+  include/linux/kthread.h \
   /home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/sdio/sdio_io.h \
   /home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/sdio/basic_types.h \
   include/linux/mmc/sdio_func.h \
+  include/linux/mod_devicetable.h \
   include/linux/mmc/pm.h \
   /home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/sdio/8195_sdio_reg.h \
   /home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/drv_type_sdio.h \
@@ -899,6 +877,7 @@ deps_/home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/rtl8195a.o := \
     $(wildcard include/config/platform/sprd.h) \
   include/linux/mmc/sdio_ids.h \
   /home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/sdio/basic_types.h \
+  /home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/rtl8195a.h \
 
 /home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/rtl8195a.o: $(deps_/home/sd1/Projects/rtl8195a/Ameba_sdio_device/rtl8195a/src/rtl8195a.o)
 
