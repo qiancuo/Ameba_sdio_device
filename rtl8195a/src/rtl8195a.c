@@ -232,9 +232,8 @@ enum _CHIP_TYPE {
 	RTL8195A,
 	MAX_CHIP_TYPE
 };
-static const struct sdio_device_id sdio_ids_8195a[] =
+static const struct sdio_device_id sdio_ids[] =
 {
-//    { SDIO_DEVICE(0x024c, 0x8821),.driver_data = 4},
 	{ SDIO_DEVICE(0x024c, 0x8821),.driver_data = RTL8195A},
 };
 
@@ -242,7 +241,7 @@ struct sdio_driver rtl8195a = {
     .probe	= rtl8195a_init_one,
     .remove	= __devexit_p(rtl8195a_remove_one),
     .name	= MODULENAME,
-    .id_table	= sdio_ids_8195a,
+    .id_table	= sdio_ids,
 };
 
 

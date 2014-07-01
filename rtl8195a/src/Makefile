@@ -1,12 +1,3 @@
-################################################################################
-#  This product is covered by one or more of the following patents:
-#  US6,570,884, US6,115,776, and US6,327,625.
-################################################################################
-
-ENABLE_DASH_SUPPORT = n
-CONFIG_DOWN_SPEED_100 = n
-CONFIG_ASPM = y
-ENABLE_S5WOL = y
 
 ifneq ($(KERNELRELEASE),)
 	obj-m := inic_8195a.o
