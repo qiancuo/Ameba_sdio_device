@@ -75,10 +75,10 @@ sdio_release_host(func);
 	}
 	kfree(pBuf);
 
-	return SUCCESS;
+	return _SUCCESS;
 }
 
-int test_send(struct sdio_func *func)
+int SendOnePkt(struct sdio_func *func)
 {
 	int i;
 	u16 val16;
@@ -170,13 +170,13 @@ u32 val32;
 	}
 //	dispatchreadwrite(func, data, 314, 1);	
 //#define SYS_FUNC_EN 0x02
-#define FEN_MREGEN BIT(15)
-#define FEN_DCORE BIT(11)
-	val16 = sdio_read16(func, 0x10250020);
-	printk("val16 = 0x%x\n", val16);
-	if((val32 & (FEN_MREGEN | FEN_DCORE)) != (FEN_MREGEN | FEN_DCORE))
-	printk("SDIO bus isn't enable.");
-
+//#define FEN_MREGEN BIT(15)
+//#define FEN_DCORE BIT(11)
+//	val16 = sdio_read16(func, 0x10250020);
+//	printk("val16 = 0x%x\n", val16);
+//	if((val32 & (FEN_MREGEN | FEN_DCORE)) != (FEN_MREGEN | FEN_DCORE))
+//	printk("SDIO bus isn't enable.");
+	sdio_write_port(func, WLAN_TX_HIQ_DEVICE_ID, 314, data);
 	return 0;	
 }
 
@@ -206,6 +206,7 @@ static int sdio_init(struct sdio_func *func)
 	sdio_release_host(func);
 //	rc = test_send(func);
 	RecvOnePKt(func);
+	SendOnePkt(func);
     return rc;
 release:
     sdio_release_host(func);
