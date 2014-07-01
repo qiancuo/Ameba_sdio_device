@@ -14,6 +14,8 @@
 //#define   WLAN_FIFO_DEVICE_ID		3
 #define   UNDEFINED_DEVICE_ID			(-1)
 
+#define SDIO_MAX_TX_QUEUE				3 //HIQ, MIQ, LOQ
+#define SDIO_TX_FREE_PG_QUEUE			4 
 
 #define SDIO_LOCAL_MSK					0xFFF
 //#define WLAN_IOREG_MSK				0xFFFF
