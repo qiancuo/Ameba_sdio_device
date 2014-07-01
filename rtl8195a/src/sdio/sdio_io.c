@@ -160,7 +160,7 @@ s32 _sd_cmd52_read(struct sdio_func *func, u32 addr, u32 cnt, u8 *pdata)
 
 _func_enter_;
 
-	gfunc = func;
+	pfunc = func;
 	printk("block size is %d\n", pfunc->cur_blksize);
 	for (i = 0; i < cnt; i++) {
 		pdata[i] = sdio_readb(pfunc, addr+i, &err);
@@ -465,7 +465,7 @@ u32 sdio_write_port(
 
 	s32 err;
 	struct sdio_func *pfunc = func;
-	struct xmit_buf *xmitbuf = (struct xmit_buf *)mem;
+//	struct xmit_buf *xmitbuf = (struct xmit_buf *)mem;
 
 	cnt = _RND4(cnt);
 	HalSdioGetCmdAddr8723ASdio(pfunc, addr, cnt >> 2, &addr);
@@ -474,7 +474,7 @@ u32 sdio_write_port(
 		cnt = _RND(cnt, 512);
 //	cnt = sdio_align_size(cnt);
 
-	err = sd_write(pfunc, addr, cnt, xmitbuf->pdata);
+	err = sd_write(pfunc, addr, cnt, mem);
 
 //	rtw_sctx_done_err(&xmitbuf->sctx,
 //		err ? RTW_SCTX_DONE_WRITE_PORT_ERR : RTW_SCTX_DONE_SUCCESS);
