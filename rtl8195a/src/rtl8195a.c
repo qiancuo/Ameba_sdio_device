@@ -166,16 +166,9 @@ u32 val32;
 
 		for(i=0;i<314;i++)
 	{
-		printk("data[%d] = %d\n", i, data[i]);
+		printk("data[%d] = 0x%02x\n", i, data[i]);
 	}
-//	dispatchreadwrite(func, data, 314, 1);	
-//#define SYS_FUNC_EN 0x02
-//#define FEN_MREGEN BIT(15)
-//#define FEN_DCORE BIT(11)
-//	val16 = sdio_read16(func, 0x10250020);
-//	printk("val16 = 0x%x\n", val16);
-//	if((val32 & (FEN_MREGEN | FEN_DCORE)) != (FEN_MREGEN | FEN_DCORE))
-//	printk("SDIO bus isn't enable.");
+
 	sdio_write_port(func, WLAN_TX_HIQ_DEVICE_ID, 314, data);
 	return 0;	
 }
@@ -214,7 +207,7 @@ release:
 }
 
 
-static int __devinit rtl8195_init_one(struct sdio_func *func, const struct sdio_device_id *id)
+static int __devinit rtl8195a_init_one(struct sdio_func *func, const struct sdio_device_id *id)
 {
     static int board_idx = -1;
 
@@ -234,7 +227,7 @@ static int __devinit rtl8195_init_one(struct sdio_func *func, const struct sdio_
     return rc;
 }
 
-static void __devexit rtl8195_remove_one(struct sdio_func *func)
+static void __devexit rtl8195a_remove_one(struct sdio_func *func)
 
 {
 
@@ -255,7 +248,7 @@ static const struct sdio_device_id sdio_ids_8195a[] =
     { SDIO_DEVICE(0x024c, 0x8821),.driver_data = 4},
 };
 
-struct sdio_driver rtl8195 = {
+struct sdio_driver rtl8195a = {
     .probe	= rtl8195_init_one,
     .remove	= __devexit_p(rtl8195_remove_one),
     .name	= MODULENAME,
@@ -268,7 +261,7 @@ static int __init rtl8195_init_module(void)
 {
 
 	int ret;
-	ret = sdio_register_driver(&rtl8195);
+	ret = sdio_register_driver(&rtl8195a);
 	if(ret!=0)
 		printk("sdio register driver Failed!\n");
 	return ret;
@@ -278,9 +271,9 @@ static int __init rtl8195_init_module(void)
 static void __exit rtl8195_cleanup_module(void)
 {
 
-    sdio_unregister_driver(&rtl8195);
+    sdio_unregister_driver(&rtl8195a);
 
 }
 
-module_init(rtl8195_init_module);
-module_exit(rtl8195_cleanup_module);
+module_init(rtl8195a_init_module);
+module_exit(rtl8195a_cleanup_module);
