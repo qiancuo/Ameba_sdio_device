@@ -62,8 +62,7 @@ sdio_release_host(func);
 int SendOnePkt(struct sdio_func *func)
 {
 	int i;
-	u16 val16;
-u32 val32;
+
 	u8 data[314];
 		data[0] = 0x1a;
 	data[1] = 0x01;
@@ -227,10 +226,16 @@ static void __devexit rtl8195a_remove_one(struct sdio_func *func)
    sdio_release_host(func);
 
 }
+enum _CHIP_TYPE {
 
+	NULL_CHIP_TYPE,	
+	RTL8195A,
+	MAX_CHIP_TYPE
+};
 static const struct sdio_device_id sdio_ids_8195a[] =
 {
-    { SDIO_DEVICE(0x024c, 0x8821),.driver_data = 4},
+//    { SDIO_DEVICE(0x024c, 0x8821),.driver_data = 4},
+	{ SDIO_DEVICE(0x024c, 0x8821),.driver_data = RTL8195A},
 };
 
 struct sdio_driver rtl8195a = {
