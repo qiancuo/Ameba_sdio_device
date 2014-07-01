@@ -27,7 +27,7 @@
 
 #include <linux/sched.h>
 #include <linux/kthread.h>
-#include <err.h>
+#include <asm/err.h>
 
 #include "sdio/sdio_io.h"
 #include "sdio/8195_sdio_reg.h"
