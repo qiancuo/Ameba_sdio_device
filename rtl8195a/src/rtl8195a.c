@@ -71,8 +71,9 @@ sdio_release_host(func);
 		printk("sdio read port failed!\n");
 	for(i=0;i<len;i++)
 	{
-		printk("Rx[%d] = 0x%x\n", i, *(pBuf+i));
+		printk("Rx[%d] = 0x%2x\n", i, *(pBuf+i));
 	}
+	kfree(pBuf);
 
 	return SUCCESS;
 }
