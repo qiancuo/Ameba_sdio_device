@@ -249,15 +249,15 @@ static const struct sdio_device_id sdio_ids_8195a[] =
 };
 
 struct sdio_driver rtl8195a = {
-    .probe	= rtl8195_init_one,
-    .remove	= __devexit_p(rtl8195_remove_one),
+    .probe	= rtl8195a_init_one,
+    .remove	= __devexit_p(rtl8195a_remove_one),
     .name	= MODULENAME,
     .id_table	= sdio_ids_8195a,
 };
 
 
 
-static int __init rtl8195_init_module(void)
+static int __init rtl8195a_init_module(void)
 {
 
 	int ret;
@@ -268,7 +268,7 @@ static int __init rtl8195_init_module(void)
 
 }
 
-static void __exit rtl8195_cleanup_module(void)
+static void __exit rtl8195a_cleanup_module(void)
 {
 
     sdio_unregister_driver(&rtl8195a);
