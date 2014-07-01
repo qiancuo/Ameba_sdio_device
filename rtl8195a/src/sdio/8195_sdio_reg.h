@@ -3,42 +3,41 @@
 #include "basic_types.h"
 
 
-//For 88C SDIO
-#define  SDIO_LOCAL_DEVICE_ID           0
-#define   FW_FIFO_DEVICE_ID 		1
-#define   WLAN_IOREG_DEVICE_ID 		8
-
-#define   WLAN_HIQ_DEVICE_ID 			4
-#define   WLAN_MIQ_DEVICE_ID 		5
-#define   WLAN_LOQ_DEVICE_ID 		6
-#define   WLAN_RX0FF_DEVICE_ID 		7
-
-#define   WLAN_FIFO_DEVICE_ID		3
-#define   UNDEFINED_DEVICE_ID    	(-1)
+//For 8195A SDIO
+#define SDIO_LOCAL_DEVICE_ID			0
+//#define FW_FIFO_DEVICE_ID 		1
+//#define WLAN_IOREG_DEVICE_ID 		8
+#define WLAN_TX_HIQ_DEVICE_ID			4
+#define WLAN_TX_MIQ_DEVICE_ID			5
+#define WLAN_TX_LOQ_DEVICE_ID			6
+#define WLAN_RX0FF_DEVICE_ID			7
+//#define   WLAN_FIFO_DEVICE_ID		3
+#define   UNDEFINED_DEVICE_ID			(-1)
 
 
-#define SDIO_LOCAL_MSK				0xFFF
-#define WLAN_IOREG_MSK 	             0xFFFF
-#define WLAN_FIFO_MSK			      0x1FFF
+#define SDIO_LOCAL_MSK					0xFFF
+//#define WLAN_IOREG_MSK				0xFFFF
+#define WLAN_FIFO_MSK					0x1FFF
+#define WLAN_RX0FF_MSK 				0x1fff
 
 //IO Bus domain address mapping
-#define SDIO_LOCAL				0x10250000
-#define WLAN_TX_FIFO			0x10310000
-#define WLAN_RX_FIFO			0x10340000
+#define SDIO_LOCAL						0x10250000
+#define WLAN_TX_FIFO					0x10310000
+#define WLAN_RX_FIFO					0x10340000
 
 
-#define SDIO_LOCAL_OFFSET		0x10250000
-#define WLAN_IOREG_OFFSET		0x10260000
-#define FW_FIFO_OFFSET			0x10270000
-#define WLAN_FIFO_OFFSET		0x10280000
-#define TX_HIQ_OFFSET			0x10310000	
-#define TX_MIQ_OFFSET			0x10320000
-#define TX_LOQ_OFFSET			0x10330000
-#define RX_RXOFF_OFFSET		0x10340000
+#define SDIO_LOCAL_OFFSET				0x10250000
+//#define WLAN_IOREG_OFFSET				0x10260000
+//#define FW_FIFO_OFFSET					0x10270000
+//#define WLAN_FIFO_OFFSET				0x10280000
+#define TX_HIQ_OFFSET					0x10310000	
+#define TX_MIQ_OFFSET					0x10320000
+#define TX_LOQ_OFFSET					0x10330000
+
+#define RX_RXOFF_OFFSET				0x10340000
 
 
 //SDIO Local registers
-
 #define SDIO_TX_CTRL					0x00 // 1byte
 #define SDIO_STATIS_RECOVERY_TIMOUT	0x02 // 2bytes
 #define SDIO_32K_TRANS_IDLE_TIME		0x04 // 2bytes

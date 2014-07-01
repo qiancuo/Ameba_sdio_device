@@ -9,7 +9,7 @@
 //
 // Creadted by Roger, 2011.01.31.
 //
-static void HalSdioGetCmdAddr8723ASdio(
+static void HalSdioGetCmdAddr8195ASdio(
 	IN	struct sdio_func	*func,
 	IN 	u8				DeviceID,
 	IN	u32				Addr,
@@ -125,10 +125,10 @@ static u32 _cvrt2ftaddr(const u32 addr, u8 *pdeviceId, u16 *poffset)
 			offset = addr & WLAN_RX0FF_MSK;
 			break;
 
-		case WLAN_IOREG_DEVICE_ID:
+//		case WLAN_IOREG_DEVICE_ID:
 		default:
-			deviceId = WLAN_IOREG_DEVICE_ID;
-			offset = addr & WLAN_IOREG_MSK;
+			deviceId = SDIO_LOCAL_DEVICE_ID;
+			offset = addr & SDIO_LOCAL_MSK;
 			break;
 	}
 	ftaddr = (deviceId << 13) | offset;
@@ -328,7 +328,7 @@ u32 sdio_read_port(
 	s32 err;
 	printk("sdio_read_port addr is %d\n", addr);
 
-	HalSdioGetCmdAddr8723ASdio(func, addr, 0x01, &addr);
+	HalSdioGetCmdAddr8195ASdio(func, addr, 0x01, &addr);
 
 	printk("Get Cmd Addr is 0x%x\n", addr);
 
@@ -466,7 +466,7 @@ u32 sdio_write_port(
 	printk("sdio_write_port addr is %d\n", addr);
 	cnt = _RND4(cnt);
 	printk("cnt is %d\n", cnt);
-	HalSdioGetCmdAddr8723ASdio(pfunc, addr, cnt >> 2, &addr);
+	HalSdioGetCmdAddr8195ASdio(pfunc, addr, cnt >> 2, &addr);
 	printk("Get Cmd Addr is 0x%x\n", addr);
 	
 	if (cnt > pfunc->cur_blksize)
