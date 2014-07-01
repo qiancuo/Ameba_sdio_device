@@ -1,6 +1,5 @@
 #include <linux/module.h>
 #include <linux/version.h>
-#include <linux/pci.h>
 #include <linux/netdevice.h>
 #include <linux/etherdevice.h>
 #include <linux/delay.h>
@@ -14,11 +13,6 @@
 #include <linux/tcp.h>
 #include <linux/init.h>
 #include <linux/rtnetlink.h>
-//#include <stdio.h>
-
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,26)
-#include <linux/pci-aspm.h>
-#endif
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,0)
 #define dev_printk(A,B,fmt,args...) printk(A fmt,##args)
@@ -30,27 +24,16 @@
 #include <asm/io.h>
 #include <asm/irq.h>
 #include <asm/uaccess.h>
+
 #include "sdio/sdio_io.h"
 #include "sdio/8195_sdio_reg.h"
 #include "drv_type_sdio.h"
-#include "linux/fs.h"
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,8,0)
-#define __devinit
-#define __devexit
-#define __devexit_p(func)   func
-#endif
+#include "rtl8195a.h"
 
-#define MODULENAME "iNIC_8195a"
-
-#define GPL_CLAIM "=== iNIC_8195a ===\n"
-
-#define RTL8195_VERSION "8195a"
 
 MODULE_AUTHOR("Realtek");
 MODULE_DESCRIPTION("RealTek RTL-8195a iNIC");
-
 MODULE_LICENSE("GPL");
-
 MODULE_VERSION(RTL8195_VERSION);
 
 u8 RecvOnePKt(struct sdio_func *func)
@@ -184,14 +167,8 @@ u32 val32;
 static int sdio_init(struct sdio_func *func)
 {
     int rc = 0;
-	
- //   u8 val = 1;
-	u16 val16 = 1;
-//	u32 val_2 = 1;
-//	u32 val_3 = 1;
-//	u32 ret;
 
-    printk("Chris=>%s():\n", __FUNCTION__);
+    printk("%s():\n", __FUNCTION__);
     sdio_claim_host(func);
     rc = sdio_enable_func(func);
     if(rc ){

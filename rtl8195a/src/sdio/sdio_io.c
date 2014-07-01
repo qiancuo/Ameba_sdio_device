@@ -106,7 +106,7 @@ static u32 _cvrt2ftaddr(const u32 addr, u8 *pdeviceId, u16 *poffset)
 
 
 	deviceId = get_deviceid(addr);
-	printk("deviceId is %d\n", deviceId);
+	printk("%s(): deviceId is %d\n", __func__, deviceId);
 	offset = 0;
 
 	switch (deviceId)
@@ -156,11 +156,11 @@ s32 _sd_cmd52_read(struct sdio_func *func, u32 addr, u32 cnt, u8 *pdata)
 _func_enter_;
 
 	pfunc = func;
-	printk("block size is %d\n", pfunc->cur_blksize);
+	printk("%s(): block size is %d\n", __func__, pfunc->cur_blksize);
 	for (i = 0; i < cnt; i++) {
 		pdata[i] = sdio_readb(pfunc, addr+i, &err);
 		if (err) {
-			printk("sdio_readb failed!\n");
+			printk("%s(): sdio_readb failed!\n", __func__);
 			break;
 		}
 	}
@@ -190,7 +190,7 @@ _func_enter_;
 //	if (claim_needed)
 		sdio_claim_host(pfunc);
 	err = _sd_cmd52_read(pfunc, addr, cnt, pdata);
-	printk("err is : %d\n", err);
+	printk("%s(): err from _sd_cmd52_read is : %d\n", __func__, err);
 //	if (claim_needed)
 		sdio_release_host(pfunc);
 
@@ -206,9 +206,9 @@ u8 sdio_read8(struct sdio_func *func, u32 addr)
 
 _func_enter_;
 
-	printk("read from address 0x%x\n", addr);
+	printk("%s(): read from address 0x%x\n", __func__, addr);
 	ftaddr = _cvrt2ftaddr(addr, NULL, NULL);
-	printk("target address is 0x%x\n", ftaddr);
+	printk("%s(): target address is 0x%x\n", __func__, ftaddr);
 	sd_cmd52_read(func, ftaddr, 1, (u8*)&val);	
 
 _func_exit_;
@@ -222,9 +222,9 @@ u16 sdio_read16(struct sdio_func *func, u32 addr)
 	u16 val;
 
 _func_enter_;
-	printk("read from address 0x%x\n", addr);
+	printk("%s(): read from address 0x%x\n", __func__, addr);
 	ftaddr = _cvrt2ftaddr(addr, NULL, NULL);
-	printk("target address is 0x%x\n", ftaddr);
+	printk("%s(): target address is 0x%x\n", __func__, ftaddr);
 	sd_cmd52_read(func, ftaddr, 2, (u8*)&val);	
 
 	val = le16_to_cpu(val);
@@ -240,13 +240,13 @@ u32 sdio_read32(struct sdio_func *func, u32 addr)
 	u32 val;
 
 _func_enter_;
-	printk("read from address 0x%x\n", addr);
+	printk("%s(): read from address 0x%x\n", __func__, addr);
 	ftaddr = _cvrt2ftaddr(addr, NULL, NULL);
-	printk("target address is 0x%x\n", ftaddr);
+	printk("%s(): target address is 0x%x\n", __func__, ftaddr);
 	sd_cmd52_read(func, ftaddr, 4, (u8*)&val);	
-	printk("val32 is 0x%x\n", val);
+	printk("%s(): val32 is 0x%x\n", __func__, val);
 	val = le32_to_cpu(val);
-	printk("le32_to_cpu val32 is 0x%x\n", val);
+	printk("%s(): le32_to_cpu val32 is 0x%x\n", __func__, val);
 _func_exit_;
 
 	return val;
@@ -326,11 +326,11 @@ u32 sdio_read_port(
 	u8 *mem)
 {
 	s32 err;
-	printk("sdio_read_port addr is %d\n", addr);
+	printk("%s(): addr is %d\n", __func__, addr);
 
 	HalSdioGetCmdAddr8195ASdio(func, addr, 0x01, &addr);
 
-	printk("Get Cmd Addr is 0x%x\n", addr);
+	printk("%s(): Get Cmd Addr is 0x%x\n", __func__, addr);
 
 
 	cnt = _RND4(cnt);
@@ -338,12 +338,10 @@ u32 sdio_read_port(
 		cnt = _RND(cnt, func->cur_blksize);
 	
 //	cnt = sdio_align_size(cnt);
- 	printk("cnt is %d\n", cnt);
+ 	printk("%s(): cnt is %d\n", __func__, cnt);
 	err = _sd_read(func, addr, cnt, mem);
 	//err = sd_read(pintfhdl, addr, cnt, mem);
 	
-
-
 	if (err) return _FAIL;
 	return _SUCCESS;
 }
@@ -393,8 +391,8 @@ _func_enter_;
 	}
 
 	size = cnt;
-	printk("%s: write to addr 0x%x\n", __func__, addr);
-	printk("%s: write size %d\n", __func__, size);
+	printk("%s(): write to addr 0x%x\n", __func__, addr);
+	printk("%s(): write size %d\n", __func__, size);
 	err = sdio_memcpy_toio(pfunc, addr, pdata, size);
 	if (err) {
 		printk("%s: FAIL(%d)! ADDR=%#x Size=%d(%d)\n", __func__, err, addr, cnt, size);
@@ -463,11 +461,11 @@ u32 sdio_write_port(
 	s32 err;
 	struct sdio_func *pfunc = func;
 //	struct xmit_buf *xmitbuf = (struct xmit_buf *)mem;
-	printk("sdio_write_port addr is %d\n", addr);
+	printk("%s(): addr is %d\n", __func__, addr);
 	cnt = _RND4(cnt);
-	printk("cnt is %d\n", cnt);
+	printk("%s(): cnt is %d\n", __func__, cnt);
 	HalSdioGetCmdAddr8195ASdio(pfunc, addr, cnt >> 2, &addr);
-	printk("Get Cmd Addr is 0x%x\n", addr);
+	printk("%s(): Get Cmd Addr is 0x%x\n", __func__, addr);
 	
 	if (cnt > pfunc->cur_blksize)
 		cnt = _RND(cnt, pfunc->cur_blksize);
