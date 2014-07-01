@@ -32,9 +32,7 @@
 #include <asm/uaccess.h>
 #include "sdio/sdio_io.h"
 #include "sdio/8195_sdio_reg.h"
-//#include "sdio/hal8195sdio.h"
 #include "drv_type_sdio.h"
-#include "dispatchreadwrite.h"
 #include "linux/fs.h"
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(3,8,0)
 #define __devinit
