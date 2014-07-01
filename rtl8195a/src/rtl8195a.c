@@ -197,12 +197,12 @@ static int sdio_init(struct sdio_func *func)
         printk("%s():sdio_set_block_size FAIL!\n",__FUNCTION__);
         goto release;
     }
-
 	sdio_release_host(func);
-//	rc = test_send(func);
+
 	RecvOnePKt(func);
 	SendOnePkt(func);
-    return rc;
+
+	return rc;
 release:
     sdio_release_host(func);
     return rc;    
