@@ -25,6 +25,10 @@
 #include <asm/irq.h>
 #include <asm/uaccess.h>
 
+#include <linux/sched.h>
+#include <linux/kthread.h>
+#include <err.h>
+
 #include "sdio/sdio_io.h"
 #include "sdio/8195_sdio_reg.h"
 #include "drv_type_sdio.h"
@@ -64,7 +68,7 @@ int SendOnePkt(struct sdio_func *func)
 	int i;
 
 	u8 data[314];
-		data[0] = 0x1a;
+	data[0] = 0x1a;
 	data[1] = 0x01;
 	data[2] = 0x20;
 	data[3] = 0x8d;
