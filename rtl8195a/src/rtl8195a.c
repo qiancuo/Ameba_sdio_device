@@ -162,15 +162,23 @@ u32 val32;
 	{
 		data[i+67] = 0x3e;
 	}
-	printk("data length is %d\n", sizeof(data));
+	printk("tx packet length is %d\n", sizeof(data));
 
 		for(i=0;i<314;i++)
 	{
-		printk("data[%d] = 0x%02x\n", i, data[i]);
+		printk("tx[%d] = 0x%02x\n", i, data[i]);
 	}
 	for(i=0; i<10;i++)
 	{
 		sdio_write_port(func, WLAN_TX_HIQ_DEVICE_ID, 314, data);
+	}
+	for(i=0; i<10;i++)
+	{
+		sdio_write_port(func, WLAN_TX_MIQ_DEVICE_ID, 314, data);
+	}
+	for(i=0; i<10;i++)
+	{
+		sdio_write_port(func, WLAN_TX_LOQ_DEVICE_ID, 314, data);
 	}
 	return 0;	
 }

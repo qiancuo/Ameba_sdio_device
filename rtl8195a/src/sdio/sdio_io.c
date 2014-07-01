@@ -22,9 +22,9 @@ static void HalSdioGetCmdAddr8723ASdio(
 			*pCmdAddr = ((SDIO_LOCAL_DEVICE_ID << 13) | (Addr & SDIO_LOCAL_MSK));
 			break;
 
-		case WLAN_IOREG_DEVICE_ID:
-			*pCmdAddr = ((WLAN_IOREG_DEVICE_ID << 13) | (Addr & WLAN_IOREG_MSK));
-			break;
+//		case WLAN_IOREG_DEVICE_ID:
+//			*pCmdAddr = ((WLAN_IOREG_DEVICE_ID << 13) | (Addr & WLAN_IOREG_MSK));
+//			break;
 
 		case WLAN_TX_HIQ_DEVICE_ID:
 			*pCmdAddr = ((WLAN_TX_HIQ_DEVICE_ID << 13) | (Addr & WLAN_FIFO_MSK));
