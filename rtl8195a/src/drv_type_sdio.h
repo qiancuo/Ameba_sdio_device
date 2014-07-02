@@ -46,8 +46,8 @@
 #ifdef PLATFORM_OS_CE
 #include <sdcardddk.h>
 #endif
-#include "sdio/sdio_io.h"
-#include "sdio/basic_types.h"
+//#include "sdio/sdio_io.h"
+//#include "sdio/basic_types.h"
 
 typedef struct sdio_data
 {
