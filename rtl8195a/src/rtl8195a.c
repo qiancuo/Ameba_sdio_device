@@ -41,8 +41,7 @@ MODULE_DESCRIPTION("RealTek RTL-8195a iNIC");
 MODULE_LICENSE("GPL");
 MODULE_VERSION(RTL8195_VERSION);
 
-static int RecvOnePkt(struct sdio_func * func);
-static int SendOnePkt(struct sdio_func * func);
+
 #ifndef SLEEP_MILLI_SEC
 #define SLEEP_MILLI_SEC(nMilliSec) \
 	do{\
@@ -57,13 +56,18 @@ static struct task_struct *Xmit_Thread = NULL;
 static struct task_struct *Recv_Thread = NULL;
 PHAL_DATA_TYPE gHal_Data = NULL;
 
+static int RecvOnePkt(struct sdio_func * func);
+static int SendOnePkt(struct sdio_func * func);
+
 static int RecvOnePkt_Thread(void * pData)
 {
+	struct sdio_func *pfunc;
 	PHAL_DATA_TYPE pHal_Data;
 	pHal_Data = (PHAL_DATA_TYPE) pData;
+	pfunc = pHal_Data->func;	
 	while(!kthread_should_stop()){
 		SLEEP_MILLI_SEC(1000);
-		RecvOnePkt(pHal_Data);
+		RecvOnePkt(pfunc);
 	}
 	return 0;
 }
