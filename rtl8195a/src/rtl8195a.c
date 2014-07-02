@@ -52,7 +52,7 @@ MODULE_VERSION(RTL8195_VERSION);
 #endif
 static struct task_struct *Xmit_Thread = NULL;
 static struct task_struct *Recv_Thread = NULL;
-
+PHAL_DATA_TYPE pData = NULL;
 static int RecvOnePKt(void *func)
 {
 	int res, i;
@@ -232,11 +232,14 @@ static int __devinit rtl8195a_init_one(struct sdio_func *func, const struct sdio
 	board_idx++;
 	printk("%s():++\n",__FUNCTION__);
 
+	pData = kmalloc(sizeof(PHAL_DATA_TYPE), GFP_KERNEL);
+
 	// 1.init SDIO bus and read chip version	
 	rc = sdio_init(func);
 	if(rc)
 		return rc;
-
+	pData->func = func;
+	pData->SdioRxFIFOCnt =0;
 //	RecvOnePKt(func);
 //	SendOnePkt(func);
 	Xmit_Thread = kthread_run(SendOnePkt, (void *)func, "xmit_thread");

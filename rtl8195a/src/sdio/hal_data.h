@@ -1,5 +1,5 @@
 #include "../osdep_service_linux.h"
-
+#include <linux/mmc/sdio_func.h>
 typedef struct hal_com_data
 {
 //	HAL_VERSION			VersionID;
@@ -267,26 +267,27 @@ typedef struct hal_com_data
 //	u32			IntrMask[1];
 //	u32			IntrMaskToSet[1];
 //	LOG_INTERRUPT		InterruptLog;
-	u32			sdio_himr;
-	u32			sdio_hisr;
+	struct sdio_func *func;
+//	u32			sdio_himr;
+//	u32			sdio_hisr;
 
 	//
 	// SDIO Tx FIFO related.
 	//
 	// HIQ, MID, LOW, PUB free pages; padapter->xmitpriv.free_txpg
-	u8			SdioTxFIFOFreePage[SDIO_TX_FREE_PG_QUEUE];
-	_lock		SdioTxFIFOFreePageLock;
-	u8			SdioTxOQTMaxFreeSpace;
-	u8			SdioTxOQTFreeSpace;
+//	u8			SdioTxFIFOFreePage[SDIO_TX_FREE_PG_QUEUE];
+//	_lock		SdioTxFIFOFreePageLock;
+//	u8			SdioTxOQTMaxFreeSpace;
+//	u8			SdioTxOQTFreeSpace;
 	
 
 	//
 	// SDIO Rx FIFO related.
 	//
 	u8			SdioRxFIFOCnt;
-	u16			SdioRxFIFOSize;
+//	u16			SdioRxFIFOSize;
 
-	u32			sdio_tx_max_len[SDIO_MAX_TX_QUEUE];// H, N, L, used for sdio tx aggregation max length per queue
+//	u32			sdio_tx_max_len[SDIO_MAX_TX_QUEUE];// H, N, L, used for sdio tx aggregation max length per queue
 
 //	
 //	#ifdef CONFIG_USB_HCI

@@ -320,19 +320,20 @@ _func_exit_;
  *	_SUCCESS(1)		Success
  *	_FAIL(0)		Fail
  */
-static int SDIORxFIFOcnt=0;
+
 u32 sdio_read_port(
-	struct sdio_func *func,
+//	struct sdio_func *func,
+	PHAL_DATA_TYPE pData,
 	u32 addr,
 	u32 cnt,
 	u8 *mem)
 {
 	s32 err;
+	struct sdio_func *func;
+	func = pData->func;
 	printk("%s(): addr is %d\n", __func__, addr);
-	printk("%s(): SDIORxFIFO is %d\n", __func__, addr);
-	if(SDIORxFIFOcnt == 4)
-		SDIORxFIFOcnt =0;
-	HalSdioGetCmdAddr8195ASdio(func, addr, SDIORxFIFOcnt++, &addr);
+	printk("%s(): SDIORxFIFOCnt is %d\n", __func__, pData->SdioRxFIFOCnt);
+	HalSdioGetCmdAddr8195ASdio(func, addr, pData->SdioRxFIFOCnt++, &addr);
 
 	printk("%s(): Get Cmd Addr is 0x%x\n", __func__, addr);
 
