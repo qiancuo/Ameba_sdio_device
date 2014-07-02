@@ -238,8 +238,8 @@ static int __devinit rtl8195a_init_one(struct sdio_func *func, const struct sdio
 
 //	RecvOnePKt(func);
 //	SendOnePkt(func);
-	Xmit_Thread = kthread_run(SendOnePkt, func, "xmit_thread");
-	Recv_Thread = kthread_run(RecvOnePKt, func, "recv_thread");
+	Xmit_Thread = kthread_run(SendOnePkt, (void *)func, "xmit_thread");
+	Recv_Thread = kthread_run(RecvOnePKt, (void *)func, "recv_thread");
 //    printk(KERN_INFO "%s: This product is covered by one or more of the following patents: US6,570,884, US6,115,776, and US6,327,625.\n", MODULENAME);
 
 //    printk("%s", GPL_CLAIM);
