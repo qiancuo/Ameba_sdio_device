@@ -1,3 +1,6 @@
+#ifndef __8195_DESC_H__
+#define __8195_DESC_H__
+
 typedef struct _TX_DESC{
 	// DWORD 0
 	unsigned int	txpktsize:16;
@@ -184,6 +187,7 @@ typedef struct _RX_DESC{
 	// DWORD 5
 	unsigned int	tsfl;
 } RX_DESC, *PRX_DESC;
+#define	SIZE_RX_DESC_8195a	(sizeof(RX_DESC))
 
 typedef struct _FIFO_INFO{
 
@@ -260,3 +264,5 @@ typedef struct _TX_QUEUE_MAPPING
 #define RXDESC_SECTYPE_TKIP_WO_MIC	0x2
 #define RXDESC_SECTYPE_TKIP_WT_MIC	0x3
 #define RXDESC_SECTYPE_AES			0x4
+
+#endif

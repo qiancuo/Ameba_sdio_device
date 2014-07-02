@@ -1,4 +1,6 @@
-//#include "../osdep_service_linux.h"
+#ifndef __HAL_DATA_H__
+#define __HAL_DATA_H__
+
 #include <linux/mmc/sdio_func.h>
 typedef struct hal_com_data
 {
@@ -433,4 +435,6 @@ typedef struct hal_com_data
 } HAL_DATA_COMMON, *PHAL_DATA_COMMON;
 
 typedef struct hal_com_data HAL_DATA_TYPE, *PHAL_DATA_TYPE;
+
+#endif
 

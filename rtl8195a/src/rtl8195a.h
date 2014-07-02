@@ -1,3 +1,5 @@
+#ifndef __RTL8195A_H__
+#define __RTL8195A_H__
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(3,8,0)
 #define __devinit
@@ -8,3 +10,5 @@
 #define MODULENAME "iNIC_8195a"
 #define GPL_CLAIM "=== iNIC_8195a ===\n"
 #define RTL8195_VERSION "8195a"
+
+#endif
