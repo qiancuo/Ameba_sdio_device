@@ -29,7 +29,7 @@
 #include <linux/kthread.h>
 #include <linux/errno.h>
 
-#include "include/sdio_io.h"
+#include "include/sdio_ops.h"
 #include "include/8195_sdio_reg.h"
 #include "include/drv_type_sdio.h"
 #include "include/rtl8195a.h"
