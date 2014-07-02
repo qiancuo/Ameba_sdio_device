@@ -53,13 +53,13 @@ MODULE_VERSION(RTL8195_VERSION);
 static struct task_struct *Xmit_Thread = NULL;
 static struct task_struct *Recv_Thread = NULL;
 
-static int RecvOnePKt(struct sdio_func *func)
+static int RecvOnePKt(void *func)
 {
 	int res, i;
 	u32 len;
 	u8 *pBuf;
 	struct sdio_func *pfunc;
-	pfunc = func;
+	pfunc = (struct sdio_func *)func;
 	len = sdio_read32(pfunc, SDIO_RX0_REQ_LEN);
 	len &= 0x0fffffff;
 	printk("Rx len is %d\n", len);
@@ -88,10 +88,10 @@ static int RecvOnePKt(struct sdio_func *func)
 }
 
 #define TxPktSize 314 //for test
-static int SendOnePkt(struct sdio_func *func)
+static int SendOnePkt(void *func)
 {
 	int i;
-
+	struct sdio_func *pfunc;
 	u8 data[TxPktSize];
 	data[0] = 0x1a;
 	data[1] = 0x01;
@@ -178,6 +178,7 @@ static int SendOnePkt(struct sdio_func *func)
 	{
 		printk("tx[%d] = 0x%02x\n", i, data[i]);
 	}
+	pfunc = (struct sdio_func *)func;
 	while(!kthread_should_stop()){
 		SLEEP_MILLI_SEC(1000);
 		sdio_write_port(func, WLAN_TX_HIQ_DEVICE_ID, sizeof(data), data);
