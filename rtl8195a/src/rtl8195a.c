@@ -56,6 +56,7 @@ MODULE_VERSION(RTL8195_VERSION);
 static struct task_struct *Xmit_Thread = NULL;
 static struct task_struct *Recv_Thread = NULL;
 PHAL_DATA_TYPE gHal_Data = NULL;
+static _mutex Recv_Xmit_mutex;
 
 static int Print_Message(u8 *message);
 static int RecvOnePkt(struct sdio_func * func);
@@ -70,7 +71,9 @@ static int RecvOnePkt_Thread(void * pData)
 	while(!kthread_should_stop()){
 		SLEEP_MILLI_SEC(1000);
 //		RecvOnePkt(pfunc);
+		mutex_lock(&Recv_Xmit_mutex);
 		Print_Message((u8 *)Message_Recv);
+		mutex_unlock(&Recv_Xmit_mutex);
 	}
 	return 0;
 }
@@ -83,7 +86,9 @@ static int SendOnePkt_Thread(void * pData)
 	while(!kthread_should_stop()){
 		SLEEP_MILLI_SEC(1000);
 //		SendOnePkt(pfunc);
+		mutex_lock(&Recv_Xmit_mutex);		
 		Print_Message((u8 *)Message_Xmit);
+		mutex_unlock(&Recv_Xmit_mutex);
 	}
 	return 0;
 }
@@ -276,6 +281,7 @@ static int __devinit rtl8195a_init_one(struct sdio_func *func, const struct sdio
 		return rc;
 	gHal_Data->func = func;
 	gHal_Data->SdioRxFIFOCnt =0;
+	mutex_init(&Recv_Xmit_mutex);
 //	RecvOnePKt(func);
 //	SendOnePkt(func);
 	Xmit_Thread = kthread_run(SendOnePkt_Thread, (void *)gHal_Data, "xmit_thread");
@@ -303,6 +309,7 @@ static void __devexit rtl8195a_remove_one(struct sdio_func *func)
 		printk("stop Recv_Thread\n");
 		kthread_stop(Recv_Thread);
 	}
+	mutex_destroy(&Recv_Xmit_mutex);
 	kfree(gHal_Data);
 	sdio_claim_host(func);
 	rc = sdio_disable_func(func);
