@@ -83,7 +83,7 @@ static int SendOnePkt_Thread(void * pData)
 	while(!kthread_should_stop()){
 		SLEEP_MILLI_SEC(1000);
 //		SendOnePkt(pfunc);
-		Print_Message((u8 *)Message_Xmit)
+		Print_Message((u8 *)Message_Xmit);
 	}
 	return 0;
 }
