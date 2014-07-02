@@ -105,9 +105,13 @@ static int RecvOnePkt(struct sdio_func *func)
 	u8 *pBuf;
 	struct sdio_func *pfunc;
 	pfunc = (struct sdio_func *)func;
-	len = sdio_read32(pfunc, SDIO_RX0_REQ_LEN);
-	len &= 0x0fffffff;
-	printk("Rx len is %d\n", len);
+	do{
+		len = sdio_read32(pfunc, SDIO_RX0_REQ_LEN);
+		len &= 0x0fffffff;
+		printk("Rx len is %d\n", len);
+		if((++i)>1000)
+			break;
+	}while(len<=0);
 	if(len)
 	{
 		pBuf = kmalloc(len, GFP_KERNEL);
