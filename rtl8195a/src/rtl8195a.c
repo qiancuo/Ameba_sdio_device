@@ -29,12 +29,12 @@
 #include <linux/kthread.h>
 #include <linux/errno.h>
 
-#include "sdio/sdio_io.h"
-#include "sdio/8195_sdio_reg.h"
-#include "drv_type_sdio.h"
-#include "rtl8195a.h"
+#include "include/sdio_io.h"
+#include "include/8195_sdio_reg.h"
+#include "include/drv_type_sdio.h"
+#include "include/rtl8195a.h"
 
-#include "osdep_linux/osdep_service_linux.h"
+#include "include/osdep_service_linux.h"
 
 MODULE_AUTHOR("Realtek");
 MODULE_DESCRIPTION("RealTek RTL-8195a iNIC");
