@@ -41,7 +41,8 @@ MODULE_DESCRIPTION("RealTek RTL-8195a iNIC");
 MODULE_LICENSE("GPL");
 MODULE_VERSION(RTL8195_VERSION);
 
-
+#define Message_Recv		"Here is Recv action!"
+#define Message_Xmit			"Here is Xmit action!"
 #ifndef SLEEP_MILLI_SEC
 #define SLEEP_MILLI_SEC(nMilliSec) \
 	do{\
@@ -56,6 +57,7 @@ static struct task_struct *Xmit_Thread = NULL;
 static struct task_struct *Recv_Thread = NULL;
 PHAL_DATA_TYPE gHal_Data = NULL;
 
+static int Print_Message(u8 *message);
 static int RecvOnePkt(struct sdio_func * func);
 static int SendOnePkt(struct sdio_func * func);
 
@@ -67,7 +69,8 @@ static int RecvOnePkt_Thread(void * pData)
 	pfunc = pHal_Data->func;	
 	while(!kthread_should_stop()){
 		SLEEP_MILLI_SEC(1000);
-		RecvOnePkt(pfunc);
+//		RecvOnePkt(pfunc);
+		Print_Message((u8 *)Message_Recv);
 	}
 	return 0;
 }
@@ -79,8 +82,15 @@ static int SendOnePkt_Thread(void * pData)
 	pfunc = pHal_Data->func;
 	while(!kthread_should_stop()){
 		SLEEP_MILLI_SEC(1000);
-		SendOnePkt(pfunc);
+//		SendOnePkt(pfunc);
+		Print_Message((u8 *)Message_Xmit)
 	}
+	return 0;
+}
+
+static int Print_Message(u8 *message)
+{
+	printk("%s(): %s", __FUNCTION__, message);
 	return 0;
 }
 static int RecvOnePkt(struct sdio_func *func)
