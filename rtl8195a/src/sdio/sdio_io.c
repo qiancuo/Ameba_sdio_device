@@ -39,7 +39,8 @@ static void HalSdioGetCmdAddr8195ASdio(
 			break;
 
 		case WLAN_RX0FF_DEVICE_ID:
-			*pCmdAddr = ((WLAN_RX0FF_DEVICE_ID << 13) | (Addr & WLAN_RX0FF_MSK));
+//			*pCmdAddr = ((WLAN_RX0FF_DEVICE_ID << 13) | (Addr & WLAN_RX0FF_MSK));
+			*pCmdAddr = ((WLAN_RX0FF_DEVICE_ID << 13) | (Addr & 0x3));
 			break;
 
 		default:
@@ -319,7 +320,7 @@ _func_exit_;
  *	_SUCCESS(1)		Success
  *	_FAIL(0)		Fail
  */
-static int SDIORxFIFO =0;
+static int SDIORxFIFOcnt=0;
 u32 sdio_read_port(
 	struct sdio_func *func,
 	u32 addr,
@@ -329,7 +330,9 @@ u32 sdio_read_port(
 	s32 err;
 	printk("%s(): addr is %d\n", __func__, addr);
 	printk("%s(): SDIORxFIFO is %d\n", __func__, addr);
-	HalSdioGetCmdAddr8195ASdio(func, addr, SDIORxFIFO++, &addr);
+	if(SDIORxFIFOcnt = 4)
+		SDIORxFIFOcnt =0;
+	HalSdioGetCmdAddr8195ASdio(func, addr, SDIORxFIFOcnt++, &addr);
 
 	printk("%s(): Get Cmd Addr is 0x%x\n", __func__, addr);
 
