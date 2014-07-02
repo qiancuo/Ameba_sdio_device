@@ -330,7 +330,7 @@ u32 sdio_read_port(
 	s32 err;
 	printk("%s(): addr is %d\n", __func__, addr);
 	printk("%s(): SDIORxFIFO is %d\n", __func__, addr);
-	if(SDIORxFIFOcnt = 4)
+	if(SDIORxFIFOcnt == 4)
 		SDIORxFIFOcnt =0;
 	HalSdioGetCmdAddr8195ASdio(func, addr, SDIORxFIFOcnt++, &addr);
 
