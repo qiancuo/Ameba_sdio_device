@@ -1,4 +1,4 @@
-#include "../osdep_service_linux.h"
+//#include "../osdep_service_linux.h"
 #include <linux/mmc/sdio_func.h>
 typedef struct hal_com_data
 {
