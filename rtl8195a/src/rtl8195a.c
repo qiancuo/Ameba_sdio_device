@@ -33,7 +33,7 @@
 #include "sdio/8195_sdio_reg.h"
 #include "drv_type_sdio.h"
 #include "rtl8195a.h"
-
+#include "osdep_linux/osdep_service_linux.h"
 
 MODULE_AUTHOR("Realtek");
 MODULE_DESCRIPTION("RealTek RTL-8195a iNIC");
@@ -69,7 +69,7 @@ static int RecvOnePKt(void *func)
 		while(!kthread_should_stop()){
 			SLEEP_MILLI_SEC(1000);
 			sdio_claim_host(pfunc);
-				res = sdio_read_port(pfunc, WLAN_RX0FF_DEVICE_ID, len, pBuf);
+				res = sdio_read_port(pData, WLAN_RX0FF_DEVICE_ID, len, pBuf);
 			sdio_release_host(pfunc);
 				if (res == _FAIL)
 					printk("sdio read port failed!\n");
