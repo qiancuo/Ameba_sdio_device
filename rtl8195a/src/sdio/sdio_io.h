@@ -13,3 +13,4 @@ u32 sdio_read_port(PHAL_DATA_TYPE pData, u32 addr, u32 cnt, u8 * mem);
 u32 sdio_write_port(struct sdio_func *func, u32 addr, u32 cnt, u8 *mem);
 
 /**************************************************/
+#endif
