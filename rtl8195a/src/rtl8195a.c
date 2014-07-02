@@ -53,8 +53,29 @@ MODULE_VERSION(RTL8195_VERSION);
 #endif
 static struct task_struct *Xmit_Thread = NULL;
 static struct task_struct *Recv_Thread = NULL;
-PHAL_DATA_TYPE pData = NULL;
-static int RecvOnePKt(void *func)
+PHAL_DATA_TYPE gHal_Data = NULL;
+
+static int RecvOnePKt_Thread(void * pData)
+{
+	PHAL_DATA_TYPE pHal_Data;
+	pHal_Data = (PHAL_DATA_TYPE) pData;
+	while(!kthread_should_stop()){
+		SLEEP_MILLI_SEC(1000);
+		RecvOnePKt(pHal_Data);
+	}
+}
+static int SendOnePkt_Thread(void * pData)
+{
+	struct sdio_func *pfunc;
+	PHAL_DATA_TYPE pHal_Data;
+	pHal_Data = (PHAL_DATA_TYPE) pData;
+	pfunc = pHal_Data->func;
+	while(!kthread_should_stop()){
+		SLEEP_MILLI_SEC(1000);
+		SendOnePkt(pfunc);
+	}
+}
+static int RecvOnePKt(struct sdio_func *func)
 {
 	int res, i;
 	u32 len;
@@ -67,14 +88,11 @@ static int RecvOnePKt(void *func)
 	if(len)
 	{
 		pBuf = kmalloc(len, GFP_KERNEL);
-		while(!kthread_should_stop()){
-			SLEEP_MILLI_SEC(1000);
-			sdio_claim_host(pfunc);
-				res = sdio_read_port(pData, WLAN_RX0FF_DEVICE_ID, len, pBuf);
-			sdio_release_host(pfunc);
-				if (res == _FAIL)
-					printk("sdio read port failed!\n");
-		}
+	sdio_claim_host(pfunc);
+		res = sdio_read_port(gHal_Data, WLAN_RX0FF_DEVICE_ID, len, pBuf);
+	sdio_release_host(pfunc);
+		if (res == _FAIL)
+			printk("sdio read port failed!\n");
 		for(i=0;i<len;i++)
 		{
 			printk("Rx[%d] = 0x%02x\n", i, *(pBuf+i));
@@ -89,7 +107,7 @@ static int RecvOnePKt(void *func)
 }
 
 #define TxPktSize 314 //for test
-static int SendOnePkt(void *func)
+static int SendOnePkt(struct sdio_func *func)
 {
 	int i;
 	struct sdio_func *pfunc;
@@ -179,11 +197,10 @@ static int SendOnePkt(void *func)
 	{
 		printk("tx[%d] = 0x%02x\n", i, data[i]);
 	}
-	pfunc = (struct sdio_func *)func;
-	while(!kthread_should_stop()){
-		SLEEP_MILLI_SEC(1000);
-		sdio_write_port(func, WLAN_TX_HIQ_DEVICE_ID, sizeof(data), data);
-		}
+	pfunc = func;
+
+	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, sizeof(data), data);
+
 /*
 	for(i=0; i<10;i++)
 	{
@@ -233,18 +250,18 @@ static int __devinit rtl8195a_init_one(struct sdio_func *func, const struct sdio
 	board_idx++;
 	printk("%s():++\n",__FUNCTION__);
 
-	pData = kmalloc(sizeof(PHAL_DATA_TYPE), GFP_KERNEL);
+	gHal_Data = kmalloc(sizeof(PHAL_DATA_TYPE), GFP_KERNEL);
 
 	// 1.init SDIO bus and read chip version	
 	rc = sdio_init(func);
 	if(rc)
 		return rc;
-	pData->func = func;
-	pData->SdioRxFIFOCnt =0;
+	gHal_Data->func = func;
+	gHal_Data->SdioRxFIFOCnt =0;
 //	RecvOnePKt(func);
 //	SendOnePkt(func);
-	Xmit_Thread = kthread_run(SendOnePkt, (void *)func, "xmit_thread");
-	Recv_Thread = kthread_run(RecvOnePKt, (void *)func, "recv_thread");
+	Xmit_Thread = kthread_run(SendOnePkt_Thread, (void *)gHal_Data, "xmit_thread");
+	Recv_Thread = kthread_run(RecvOnePKt_Thread, (void *)gHal_Data, "recv_thread");
 //    printk(KERN_INFO "%s: This product is covered by one or more of the following patents: US6,570,884, US6,115,776, and US6,327,625.\n", MODULENAME);
 
 //    printk("%s", GPL_CLAIM);
@@ -268,7 +285,7 @@ static void __devexit rtl8195a_remove_one(struct sdio_func *func)
 		printk("stop Recv_Thread\n");
 		kthread_stop(Recv_Thread);
 	}
-
+	kfree(gHal_Data);
 	sdio_claim_host(func);
 	rc = sdio_disable_func(func);
 	if(rc){
