@@ -100,7 +100,7 @@ static int Print_Message(u8 *message)
 }
 static int RecvOnePkt(struct sdio_func *func)
 {
-	int res, i;
+	int res, i=0;
 	u32 len;
 	u8 *pBuf;
 	struct sdio_func *pfunc;
