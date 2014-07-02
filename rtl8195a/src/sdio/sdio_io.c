@@ -319,6 +319,7 @@ _func_exit_;
  *	_SUCCESS(1)		Success
  *	_FAIL(0)		Fail
  */
+static int SDIORxFIFO =0;
 u32 sdio_read_port(
 	struct sdio_func *func,
 	u32 addr,
@@ -327,8 +328,8 @@ u32 sdio_read_port(
 {
 	s32 err;
 	printk("%s(): addr is %d\n", __func__, addr);
-
-	HalSdioGetCmdAddr8195ASdio(func, addr, 0x01, &addr);
+	printk("%s(): SDIORxFIFO is %d\n", __func__, addr);
+	HalSdioGetCmdAddr8195ASdio(func, addr, SDIORxFIFO++, &addr);
 
 	printk("%s(): Get Cmd Addr is 0x%x\n", __func__, addr);
 

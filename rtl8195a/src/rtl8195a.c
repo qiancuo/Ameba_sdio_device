@@ -40,34 +40,59 @@ MODULE_DESCRIPTION("RealTek RTL-8195a iNIC");
 MODULE_LICENSE("GPL");
 MODULE_VERSION(RTL8195_VERSION);
 
-u8 RecvOnePKt(struct sdio_func *func)
+#ifndef SLEEP_MILLI_SEC
+#define SLEEP_MILLI_SEC(nMilliSec) \
+	do{\
+		long timeout = (nMilliSec) * HZ/1000;\
+		while(timeout > 0) \
+			{\
+			timeout = schedule_timeout(timeout);\
+			}\
+	}while(0);
+#endif
+static struct task_struct *Xmit_Thread = NULL;
+static struct task_struct *Recv_Thread = NULL;
+
+static int RecvOnePKt(struct sdio_func *func)
 {
 	int res, i;
 	u32 len;
 	u8 *pBuf;
-	len = sdio_read32(func, SDIO_RX0_REQ_LEN);
+	struct sdio_func *pfunc;
+	pfunc = func;
+	len = sdio_read32(pfunc, SDIO_RX0_REQ_LEN);
 	len &= 0x0fffffff;
 	printk("Rx len is %d\n", len);
-	pBuf = kmalloc(len, GFP_KERNEL);
-sdio_claim_host(func);
-	res = sdio_read_port(func, WLAN_RX0FF_DEVICE_ID, len, pBuf);
-sdio_release_host(func);
-	if (res == _FAIL)
-		printk("sdio read port failed!\n");
-	for(i=0;i<len;i++)
+	if(len)
 	{
-		printk("Rx[%d] = 0x%02x\n", i, *(pBuf+i));
+		pBuf = kmalloc(len, GFP_KERNEL);
+		while(!kthread_should_stop()){
+			SLEEP_MILLI_SEC(1000);
+			sdio_claim_host(pfunc);
+				res = sdio_read_port(pfunc, WLAN_RX0FF_DEVICE_ID, len, pBuf);
+			sdio_release_host(pfunc);
+				if (res == _FAIL)
+					printk("sdio read port failed!\n");
+				for(i=0;i<len;i++)
+				{
+					printk("Rx[%d] = 0x%02x\n", i, *(pBuf+i));
+				}
+			}
+		kfree(pBuf);
 	}
-	kfree(pBuf);
-
+	else
+	{
+		printk("No pkt received!\n");
+	}
 	return _SUCCESS;
 }
 
-int SendOnePkt(struct sdio_func *func)
+#define TxPktSize 314 //for test
+static int SendOnePkt(struct sdio_func *func)
 {
 	int i;
 
-	u8 data[314];
+	u8 data[TxPktSize];
 	data[0] = 0x1a;
 	data[1] = 0x01;
 	data[2] = 0x20;
@@ -99,7 +124,8 @@ int SendOnePkt(struct sdio_func *func)
 	data[28] = 0xa0;
 	data[29] = 0x7d;
 	data[30] = 0x00;
-	data[31] = 0x00;	
+	data[31] = 0x00;
+	
 	data[32] = 0x88;
 	data[33] = 0x01;
 	data[34] = 0x00;
@@ -142,16 +168,21 @@ int SendOnePkt(struct sdio_func *func)
 	data[64] = 0x99;
 	data[65] = 0x99;
 	data[66] = 0x3e;
-	for (i=0;i<247;i++)
+	for (i=0;i<TxPktSize-67;i++)
 	{
 		data[i+67] = 0x3e;
 	}
 	printk("tx packet length is %d\n", sizeof(data));
 
-		for(i=0;i<314;i++)
+		for(i=0;i<TxPktSize;i++)
 	{
 		printk("tx[%d] = 0x%02x\n", i, data[i]);
 	}
+	while(!kthread_should_stop()){
+		SLEEP_MILLI_SEC(1000);
+		sdio_write_port(func, WLAN_TX_HIQ_DEVICE_ID, sizeof(data), data);
+		}
+/*
 	for(i=0; i<10;i++)
 	{
 		sdio_write_port(func, WLAN_TX_HIQ_DEVICE_ID, 314, data);
@@ -164,30 +195,27 @@ int SendOnePkt(struct sdio_func *func)
 	{
 		sdio_write_port(func, WLAN_TX_LOQ_DEVICE_ID, 314, data);
 	}
+*/
 	return 0;	
 }
 
 static int sdio_init(struct sdio_func *func)
 {
-    int rc = 0;
+	int rc = 0;
 
-    printk("%s():\n", __FUNCTION__);
-    sdio_claim_host(func);
-    rc = sdio_enable_func(func);
-    if(rc ){
-        printk("%s():sdio_enable_func FAIL!\n",__FUNCTION__);
-        goto release;
-    }
-    rc = sdio_set_block_size(func, 512);
-    if(rc ){
-        printk("%s():sdio_set_block_size FAIL!\n",__FUNCTION__);
-        goto release;
-    }
+	printk("%s():\n", __FUNCTION__);
+	sdio_claim_host(func);
+	rc = sdio_enable_func(func);
+	if(rc ){
+		printk("%s():sdio_enable_func FAIL!\n",__FUNCTION__);
+		goto release;
+	}
+	rc = sdio_set_block_size(func, 512);
+	if(rc ){
+		printk("%s():sdio_set_block_size FAIL!\n",__FUNCTION__);
+		goto release;
+	}
 	sdio_release_host(func);
-
-	RecvOnePKt(func);
-	SendOnePkt(func);
-
 	return rc;
 release:
     sdio_release_host(func);
@@ -197,38 +225,51 @@ release:
 
 static int __devinit rtl8195a_init_one(struct sdio_func *func, const struct sdio_device_id *id)
 {
-    static int board_idx = -1;
+	static int board_idx = -1;
 
-    int rc = 0;
-    board_idx++;
-    printk("Chris=>%s():++\n",__FUNCTION__);
+	int rc = 0;
+	board_idx++;
+	printk("%s():++\n",__FUNCTION__);
 
-    // 1.init SDIO bus and read chip version	
-    rc = sdio_init(func);
-    if(rc )
-	return rc;
+	// 1.init SDIO bus and read chip version	
+	rc = sdio_init(func);
+	if(rc)
+		return rc;
 
+//	RecvOnePKt(func);
+//	SendOnePkt(func);
+	Xmit_Thread = kthread_run(SendOnePkt, func, "xmit_thread");
+	Recv_Thread = kthread_run(RecvOnePKt, func, "recv_thread");
 //    printk(KERN_INFO "%s: This product is covered by one or more of the following patents: US6,570,884, US6,115,776, and US6,327,625.\n", MODULENAME);
 
 //    printk("%s", GPL_CLAIM);
 
-    return rc;
+	return rc;
 }
 
 static void __devexit rtl8195a_remove_one(struct sdio_func *func)
 
 {
 
-    int rc = 0;
-    printk("Chris=>%s():++\n", __FUNCTION__);
+	int rc = 0;
+	printk("%s():++\n", __FUNCTION__);
+	if(Xmit_Thread)
+	{
+		printk("stop Xmit_Thread\n");
+		kthread_stop(Xmit_Thread);
+	}
+	if(Recv_Thread)
+	{
+		printk("stop Recv_Thread\n");
+		kthread_stop(Recv_Thread);
+	}
 
-    sdio_claim_host(func);
-    rc = sdio_disable_func(func);
-    if(rc){
-	printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
-    }
-   sdio_release_host(func);
-
+	sdio_claim_host(func);
+	rc = sdio_disable_func(func);
+	if(rc){
+		printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
+	}
+	sdio_release_host(func);
 }
 enum _CHIP_TYPE {
 
@@ -242,10 +283,10 @@ static const struct sdio_device_id sdio_ids[] =
 };
 
 struct sdio_driver rtl8195a = {
-    .probe	= rtl8195a_init_one,
-    .remove	= __devexit_p(rtl8195a_remove_one),
-    .name	= MODULENAME,
-    .id_table	= sdio_ids,
+	.probe	= rtl8195a_init_one,
+	.remove	= __devexit_p(rtl8195a_remove_one),
+	.name	= MODULENAME,
+	.id_table	= sdio_ids,
 };
 
 
@@ -264,7 +305,7 @@ static int __init rtl8195a_init_module(void)
 static void __exit rtl8195a_cleanup_module(void)
 {
 
-    sdio_unregister_driver(&rtl8195a);
+	sdio_unregister_driver(&rtl8195a);
 
 }
 
