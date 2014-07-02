@@ -70,9 +70,9 @@ static int RecvOnePkt_Thread(void * pData)
 	pfunc = pHal_Data->func;	
 	while(!kthread_should_stop()){
 		SLEEP_MILLI_SEC(1000);
-//		RecvOnePkt(pfunc);
 		mutex_lock(&Recv_Xmit_mutex);
-		Print_Message((u8 *)Message_Recv);
+		RecvOnePkt(pfunc);
+//		Print_Message((u8 *)Message_Recv);
 		mutex_unlock(&Recv_Xmit_mutex);
 	}
 	return 0;
@@ -85,9 +85,9 @@ static int SendOnePkt_Thread(void * pData)
 	pfunc = pHal_Data->func;
 	while(!kthread_should_stop()){
 		SLEEP_MILLI_SEC(1000);
-//		SendOnePkt(pfunc);
-		mutex_lock(&Recv_Xmit_mutex);		
-		Print_Message((u8 *)Message_Xmit);
+		mutex_lock(&Recv_Xmit_mutex);
+		SendOnePkt(pfunc);		
+//		Print_Message((u8 *)Message_Xmit);
 		mutex_unlock(&Recv_Xmit_mutex);
 	}
 	return 0;
