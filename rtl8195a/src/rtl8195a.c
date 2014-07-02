@@ -90,7 +90,7 @@ static int SendOnePkt_Thread(void * pData)
 
 static int Print_Message(u8 *message)
 {
-	printk("%s(): %s", __FUNCTION__, message);
+	printk("%s(): %s\n\n", __FUNCTION__, message);
 	return 0;
 }
 static int RecvOnePkt(struct sdio_func *func)
