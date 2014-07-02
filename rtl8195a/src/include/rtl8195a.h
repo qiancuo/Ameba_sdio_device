@@ -11,4 +11,10 @@
 #define GPL_CLAIM "=== iNIC_8195a ===\n"
 #define RTL8195_VERSION "8195a"
 
+enum _CHIP_TYPE {
+	NULL_CHIP_TYPE,	
+	RTL8195A,
+	MAX_CHIP_TYPE
+};
+
 #endif

@@ -322,12 +322,7 @@ static void __devexit rtl8195a_remove_one(struct sdio_func *func)
 	}
 	sdio_release_host(func);
 }
-enum _CHIP_TYPE {
 
-	NULL_CHIP_TYPE,	
-	RTL8195A,
-	MAX_CHIP_TYPE
-};
 static const struct sdio_device_id sdio_ids[] =
 {
 	{ SDIO_DEVICE(0x024c, 0x8821),.driver_data = RTL8195A},

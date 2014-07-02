@@ -1,4 +1,4 @@
-#include "../../../include/sdio_io.h"
+#include "../../../include/sdio_ops.h"
 #include "../../../include/8195_sdio_reg.h"
 //#include <linux/string.h>
 
