@@ -33,6 +33,7 @@
 #include "sdio/8195_sdio_reg.h"
 #include "drv_type_sdio.h"
 #include "rtl8195a.h"
+
 #include "osdep_linux/osdep_service_linux.h"
 
 MODULE_AUTHOR("Realtek");
