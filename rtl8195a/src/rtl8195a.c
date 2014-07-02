@@ -67,16 +67,16 @@ static int RecvOnePKt(void *func)
 	{
 		pBuf = kmalloc(len, GFP_KERNEL);
 		while(!kthread_should_stop()){
+			SLEEP_MILLI_SEC(1000);
 			sdio_claim_host(pfunc);
 				res = sdio_read_port(pfunc, WLAN_RX0FF_DEVICE_ID, len, pBuf);
 			sdio_release_host(pfunc);
 				if (res == _FAIL)
 					printk("sdio read port failed!\n");
-				for(i=0;i<len;i++)
-				{
-					printk("Rx[%d] = 0x%02x\n", i, *(pBuf+i));
-				}
-			SLEEP_MILLI_SEC(1000);
+		}
+		for(i=0;i<len;i++)
+		{
+			printk("Rx[%d] = 0x%02x\n", i, *(pBuf+i));
 		}
 		kfree(pBuf);
 	}
@@ -180,8 +180,8 @@ static int SendOnePkt(void *func)
 	}
 	pfunc = (struct sdio_func *)func;
 	while(!kthread_should_stop()){
-		sdio_write_port(func, WLAN_TX_HIQ_DEVICE_ID, sizeof(data), data);
 		SLEEP_MILLI_SEC(1000);
+		sdio_write_port(func, WLAN_TX_HIQ_DEVICE_ID, sizeof(data), data);
 		}
 /*
 	for(i=0; i<10;i++)
