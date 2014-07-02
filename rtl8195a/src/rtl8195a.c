@@ -41,6 +41,8 @@ MODULE_DESCRIPTION("RealTek RTL-8195a iNIC");
 MODULE_LICENSE("GPL");
 MODULE_VERSION(RTL8195_VERSION);
 
+static int RecvOnePkt(struct sdio_func * func);
+static int SendOnePkt(struct sdio_func * func);
 #ifndef SLEEP_MILLI_SEC
 #define SLEEP_MILLI_SEC(nMilliSec) \
 	do{\
@@ -55,14 +57,15 @@ static struct task_struct *Xmit_Thread = NULL;
 static struct task_struct *Recv_Thread = NULL;
 PHAL_DATA_TYPE gHal_Data = NULL;
 
-static int RecvOnePKt_Thread(void * pData)
+static int RecvOnePkt_Thread(void * pData)
 {
 	PHAL_DATA_TYPE pHal_Data;
 	pHal_Data = (PHAL_DATA_TYPE) pData;
 	while(!kthread_should_stop()){
 		SLEEP_MILLI_SEC(1000);
-		RecvOnePKt(pHal_Data);
+		RecvOnePkt(pHal_Data);
 	}
+	return 0;
 }
 static int SendOnePkt_Thread(void * pData)
 {
@@ -74,8 +77,9 @@ static int SendOnePkt_Thread(void * pData)
 		SLEEP_MILLI_SEC(1000);
 		SendOnePkt(pfunc);
 	}
+	return 0;
 }
-static int RecvOnePKt(struct sdio_func *func)
+static int RecvOnePkt(struct sdio_func *func)
 {
 	int res, i;
 	u32 len;
@@ -197,8 +201,8 @@ static int SendOnePkt(struct sdio_func *func)
 	{
 		printk("tx[%d] = 0x%02x\n", i, data[i]);
 	}
-	pfunc = func;
 
+	pfunc = func;
 	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, sizeof(data), data);
 
 /*
@@ -261,7 +265,7 @@ static int __devinit rtl8195a_init_one(struct sdio_func *func, const struct sdio
 //	RecvOnePKt(func);
 //	SendOnePkt(func);
 	Xmit_Thread = kthread_run(SendOnePkt_Thread, (void *)gHal_Data, "xmit_thread");
-	Recv_Thread = kthread_run(RecvOnePKt_Thread, (void *)gHal_Data, "recv_thread");
+	Recv_Thread = kthread_run(RecvOnePkt_Thread, (void *)gHal_Data, "recv_thread");
 //    printk(KERN_INFO "%s: This product is covered by one or more of the following patents: US6,570,884, US6,115,776, and US6,327,625.\n", MODULENAME);
 
 //    printk("%s", GPL_CLAIM);
