@@ -4,6 +4,8 @@ typedef struct _cmd_entry {
 	char *command;
 	void (*function)(int, char **);
 } cmd_entry;
+
+static int global_exit =1;
 static void cmd_help(int argc, char **argv);
 
 static void cmd_wifi_connect(int argc, char **argv)
@@ -101,6 +103,7 @@ static void cmd_exit(int argc, char **argv)
 {
 	printf("\n\rDo %s", __FUNCTION__);
 	printf("\n\rLeave INTERACTIVE MODE");
+	global_exit = 0;
 }
 
 static const cmd_entry cmd_table[] = {
@@ -133,21 +136,67 @@ static void cmd_help(int argc, char **argv)
 }
 
 #define MAX_ARGC 5
+static int parse_cmd(char *buf, char **argv)
+{
+	int argc = 0;
+
+	while((argc < MAX_ARGC) && (*buf != '\0')) {
+		argv[argc] = buf;
+		argc ++;
+		buf ++;
+
+		while((*buf != ' ') && (*buf != '\0'))
+			buf ++;
+
+		while(*buf == ' ') {
+			*buf = '\0';
+			buf ++;
+		}
+		// Don't replace space
+		if(argc == 1){
+			if(strcmp(argv[0], "iwpriv") == 0){
+				if(*buf != '\0'){
+					argv[1] = buf;
+					argc ++;
+				}
+				break;
+			}
+		}
+	}
+
+	return argc;
+}
+
+
 int main(void)
 {
 	char cmd[64] = {0};
 	char *argv[MAX_ARGC];
-	int i;
+	int i, argc;
 	printf("\n\rEnter the interative mode, please make your command as follow.\n\n\r");
 	for(i = 0; i < sizeof(cmd_table) / sizeof(cmd_table[0]); i ++)
 		printf("\n\r    %s", cmd_table[i].command);
 	printf("\n\n\r");
 
 	do{
-		printf("Enter your command here: ");
+		printf("Wlan: ");
 		gets(cmd);
-		printf("The command entered is %s\n\r", cmd);
-	}while(1);
+		printf("The command entered is : %s\n\r", cmd);
+		if((argc = parse_cmd(cmd, argv)) > 0) {
+			int found = 0;
+
+			for(i = 0; i < sizeof(cmd_table) / sizeof(cmd_table[0]); i ++) {
+				if(strcmp((const char *)argv[0], (const char *)(cmd_table[i].command)) == 0) {
+					cmd_table[i].function(argc, argv);
+					found = 1;
+					break;
+				}
+			}
+
+			if(!found)
+				printf("\n\runknown command '%s'", argv[0]);
+		}
+	}while(global_exit);
 	return 0;
 }
 
