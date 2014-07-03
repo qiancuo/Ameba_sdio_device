@@ -58,6 +58,7 @@ static void cmd_wifi_connect(int argc, char **argv)
 	WIFI_NETWORK wifi = {0};
 	int timeout = 20, mode;
 	unsigned char ssid[33];
+	short cmdtype;
 	printf("Do %s\n\r", __FUNCTION__);
 	if((argc != 2) && (argc != 3) && (argc != 4)) {
 		printf("Usage: wifi_connect SSID [WPA PASSWORD / (5 or 13) ASCII WEP KEY] [WEP KEY ID 0/1/2/3]\n\r");
@@ -103,7 +104,8 @@ static void cmd_wifi_connect(int argc, char **argv)
 		printf("cmdDesc.pktsize is %d\n\r", cmdDesc.pktsize);
 	
 		pData->cmd = cmdDesc;
-		printf("pData->cmd.cmdtype is: %s\n\r", (char *)(pData->cmd.cmdtype));
+		cmdtype = pData->cmd.cmdtype;
+		printf("pData->cmd.cmdtype is: 0x%x\n\r", cmdtype);
 //	//	memcpy(&(pData->cmd), &cmdDesc, sizeof(cmdDesc));
 //		memcpy(pData->cmd_data, cmd_buf, sizeof(cmd_buf));
 //		printf("pData->cmd_data: %s\n\r", pData->cmd_data);
