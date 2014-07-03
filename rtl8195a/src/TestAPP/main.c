@@ -11,7 +11,7 @@ unsigned int pktsize: 16; //=tx_desc.pktsize - cmd_desc.offset
 unsigned int offset: 8; //cmd header size
 unsigned int datatype: 8; // only first bit used, 0: data frame 1: management frame
 //DWORD 1
-unsigned int cmdtype: 16; //to call which API
+unsigned char cmdtype[2]; //to call which API
 unsigned int resv: 16;
 }CMD_DESC, *PCMD_DESC;
 
@@ -38,7 +38,7 @@ typedef struct _SDIO_CMDDATA{
 	unsigned short pktsize;
 }SDIO_CMDDATA, *PSDIO_CMDDATA;
 
-#define SDIO_CMD_wifi_connect 		'C0'
+#define SDIO_CMD_wifi_connect 		"C0"
 #define SDIO_CMD_wifi_disconnect 		'CD'
 #define SDIO_CMD_wifi_on 			'P1'
 #define SDIO_CMD_wifi_off 			'P0'
@@ -97,7 +97,8 @@ static void cmd_wifi_connect(int argc, char **argv)
 	printf("Joining BSS ...\n\r");
 	
 //todo: send relative data to Ameba by using the module inic_8195a.ko
-		cmdDesc.cmdtype = SDIO_CMD_wifi_connect;
+		strcpy(cmdDesc->cmdtype, SDIO_CMD_wifi_connect);	
+//		cmdDesc.cmdtype = SDIO_CMD_wifi_connect;
 		cmdDesc.datatype = MNGMT_FRAME;
 		cmdDesc.offset = sizeof(CMD_DESC);
 		cmdDesc.pktsize = sizeof(cmd_buf);
