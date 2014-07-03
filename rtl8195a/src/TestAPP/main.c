@@ -5,44 +5,132 @@ typedef struct _cmd_entry {
 	void (*function)(int, char **);
 } cmd_entry;
 
+typedef struct _CMD_DESC{
+//DWORD 0
+unsigned int pktsize: 16; //=tx_desc.pktsize - cmd_desc.offset
+unsigned int offset: 8; //cmd header size
+unsigned int datatype: 8; // only first bit used, 0: data frame 1: management frame
+//DWORD 1
+unsigned int cmdtype: 16; //to call which API
+unsigned int resv: 16;
+}CMD_DESC, *PCMD_DESC;
+
+typedef enum _WIFI_SECURITY_TYPE{
+	WIFI_SECURITY_OPEN = 0,
+	WIFI_SECURITY_WEP,
+	WIFI_SECURITY_WPA,
+	WIFI_SECURITY_WPA2,
+	WIFI_SECURITY_MAX_NUM
+}WIFI_SECURITY_TYPE;
+
+typedef struct _WIFI_NETWORK{
+	unsigned char 		*ssid;
+	WIFI_SECURITY_TYPE	security_type;
+	unsigned char 		*password;
+	int 				ssid_len;
+	int 				password_len;
+	int					key_id;
+}WIFI_NETWORK;
+
+typedef struct _SDIO_DATA{
+	u16 pktsize;
+	CMD_DESC cmd;
+	char cmd_data[64];
+}SDIO_DATA, *PSDIO_DATA;
+
+#define SDIO_CMD_wifi_connect 		'C0'
+#define SDIO_CMD_wifi_disconnect 		'CD'
+#define SDIO_CMD_wifi_on 			'P1'
+#define SDIO_CMD_wifi_off 			'P0'
+#define SDIO_CMD_wifi_ap 			'A0'
+#define SDIO_CMD_wifi_scan 			'F0'
+#define SDIO_CMD_wifi_get_rssi 		'CR'
+#define SDIO_CMD_wifi_ping 			'T0'
+#define MNGMT_FRAME				1
 static int global_exit =1;
+static char cmd_buf[64] = {0};
 static void cmd_help(int argc, char **argv);
 
 static void cmd_wifi_connect(int argc, char **argv)
 {
+	CMD_DESC cmd;
+	WIFI_NETWORK wifi = {0};
+	int timeout = 20, mode;
+	unsigned char ssid[33];
 	printf("Do %s\n\r", __FUNCTION__);
 	if((argc != 2) && (argc != 3) && (argc != 4)) {
 		printf("Usage: wifi_connect SSID [WPA PASSWORD / (5 or 13) ASCII WEP KEY] [WEP KEY ID 0/1/2/3]\n\r");
 		return;
 	}
-//todo: send relative data to Ameba
+	
+	if(argc == 2) {
+		wifi.security_type = WIFI_SECURITY_OPEN;
+	}
+	else if(argc == 3) {
+		wifi.security_type = WIFI_SECURITY_WPA2;
+		wifi.password = (unsigned char *) argv[2];
+		wifi.password_len = strlen(argv[2]);
+	}
+	else if(argc == 4) {
+		wifi.security_type = WIFI_SECURITY_WEP;
+		wifi.password = (unsigned char *) argv[2];
+		wifi.password_len = strlen(argv[2]);
+		wifi.key_id = atoi(argv[3]);
+
+		if((wifi.password_len != 5) && (wifi.password_len != 13)) {
+			printf("\n\rWrong WEP key length. Must be 5 or 13 ASCII characters.");
+			return;
+		}
+
+		if((wifi.key_id < 0) || (wifi.key_id > 3)) {
+			printf("\n\rWrong WEP key id. Must be one of 0,1,2, or 3.");
+			return;
+		}
+	}
+
+	strcpy((char *) ssid, argv[1]);
+	wifi.ssid = ssid;
+	wifi.ssid_len = strlen((const char *)ssid);
+
+	printf("\n\rJoining BSS ...");
+	
+//todo: send relative data to Ameba by using the module inic_8195a.ko
+	cmd.cmdtype = SDIO_CMD_wifi_connect;
+	cmd.datatype = MNGMT_FRAME;
+	cmd.offset = sizeof(CMD_DESC);
+//	cmd.pktsize = wifi.;
 }
 static void cmd_wifi_disconnect(int argc, char **argv)
 {
+	CMD_DESC cmd;
 	printf("Do %s\n\r", __FUNCTION__);;
 //todo: send relative data to Ameba
 }
 
 static void cmd_wifi_info(int argc, char **argv)
 {
+	CMD_DESC cmd;
 	printf("Do %s\n\r", __FUNCTION__);
 //todo: send relative data to Ameba
 }
 
 static void cmd_wifi_on(int argc, char **argv)
 {
+	CMD_DESC cmd;
 	printf("Do %s\n\r", __FUNCTION__);
 //todo: send relative data to Ameba
 }
 
 static void cmd_wifi_off(int argc, char **argv)
 {
+	CMD_DESC cmd;
 	printf("Do %s\n\r", __FUNCTION__);
 //todo: send relative data to Ameba
 }
 
 static void cmd_wifi_ap(int argc, char **argv)
 {
+	CMD_DESC cmd;
 	printf("Do %s\n\r", __FUNCTION__);
 //	WIFI_AP ap = {0};
 	int timeout = 20, mode;
@@ -55,6 +143,7 @@ static void cmd_wifi_ap(int argc, char **argv)
 }
 static void cmd_wifi_scan(int argc, char **argv)
 {
+	CMD_DESC cmd;
 	printf("Do %s\n\r", __FUNCTION__);
 	int scan_cnt = 0, add_cnt = 0;
 	if(argc == 2 && argv[1]){
@@ -67,6 +156,7 @@ static void cmd_wifi_scan(int argc, char **argv)
 
 static void cmd_wifi_get_rssi(int argc, char **argv)
 {
+	CMD_DESC cmd;
 	printf("Do %s\n\r", __FUNCTION__);
 	int rssi = 0;
 //	wifi_get_rssi(&rssi);
@@ -170,7 +260,6 @@ static int parse_cmd(char *buf, char **argv)
 
 int main(void)
 {
-	char cmd[64] = {0};
 	char *argv[MAX_ARGC];
 	int i, argc;
 	printf("\n\rEnter the interative mode, please make your command as follow.\n\n\r");
@@ -180,9 +269,10 @@ int main(void)
 
 	do{
 		printf("Wlan: ");
-		gets(cmd);
-		printf("The command entered is : %s\n\r", cmd);
-		if((argc = parse_cmd(cmd, argv)) > 0) {
+		gets(cmd_buf);
+		printf("The command entered is : %s\n\r", cmd_buf);
+		printf("cmd_buf size is : %d\n\r", sizeof(cmd_buf));
+		if((argc = parse_cmd(cmd_buf, argv)) > 0) {
 			int found = 0;
 
 			for(i = 0; i < sizeof(cmd_table) / sizeof(cmd_table[0]); i ++) {
