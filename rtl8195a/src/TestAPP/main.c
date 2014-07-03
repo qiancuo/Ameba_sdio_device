@@ -53,7 +53,7 @@ static void cmd_help(int argc, char **argv);
 
 static void cmd_wifi_connect(int argc, char **argv)
 {
-	CMD_DESC cmd;
+	CMD_DESC cmdDesc;
 	PSDIO_CMDDATA pData = NULL;
 	WIFI_NETWORK wifi = {0};
 	int timeout = 20, mode;
@@ -96,12 +96,12 @@ static void cmd_wifi_connect(int argc, char **argv)
 	printf("\n\rJoining BSS ...");
 	
 //todo: send relative data to Ameba by using the module inic_8195a.ko
-	cmd.cmdtype = SDIO_CMD_wifi_connect;
-	cmd.datatype = MNGMT_FRAME;
-	cmd.offset = sizeof(CMD_DESC);
-	cmd.pktsize = sizeof(cmd_buf);
+	cmdDesc.cmdtype = SDIO_CMD_wifi_connect;
+	cmdDesc.datatype = MNGMT_FRAME;
+	cmdDesc.offset = sizeof(CMD_DESC);
+	cmdDesc.pktsize = sizeof(cmd_buf);
 
-	pData.cmd = cmd;
+	memcpy(&(pData.cmd), &cmdDesc, sizeof(cmdDesc));
 	memcpy(pData->cmd_data, cmd_buf, sizeof(cmd_buf));
 	printf("pData->cmd_data: %s\n\r", pData->cmd_data);
 
