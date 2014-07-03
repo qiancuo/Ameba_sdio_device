@@ -132,7 +132,7 @@ static void cmd_help(int argc, char **argv)
 		printf("\n\r    %s", cmd_table[i].command);
 }
 
-#define MAX_ARGC 5;
+#define MAX_ARGC 5
 int main(void)
 {
 	char cmd[64] = {0};
