@@ -104,7 +104,7 @@ static void cmd_wifi_connect(int argc, char **argv)
 
 		sdioData.cmd = cmdDesc;
 //		memcpy(&(pData->cmd), &cmdDesc, sizeof(cmdDesc));
-//		printf("pData->cmd.cmdtype is: %s\n\r", Data->cmd.cmdtype);
+		printf("pData->cmd.cmdtype is: %s\n\r", sdioData.cmd.cmdtype);
 //		memcpy(pData->cmd_data, cmd_buf, sizeof(cmd_buf));
 //		printf("pData->cmd_data: %s\n\r", pData->cmd_data);
 
