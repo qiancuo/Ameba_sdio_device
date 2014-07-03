@@ -33,7 +33,7 @@ typedef struct _WIFI_NETWORK{
 }WIFI_NETWORK;
 
 typedef struct _SDIO_DATA{
-	u16 pktsize;
+	unsigned short pktsize;
 	CMD_DESC cmd;
 	char cmd_data[64];
 }SDIO_DATA, *PSDIO_DATA;
