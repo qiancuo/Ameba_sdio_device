@@ -144,8 +144,9 @@ int main(void)
 	printf("\n\n\r");
 
 	do{
-		scanf("Enter your command here: %s", cmd);
-		printf("The command entered is %s", cmd);
+		printf("Enter your command here: ");
+		scanf("%s", cmd);
+		printf("The command entered is %s\n\r", cmd);
 	}while(1);
 	return 0;
 }
