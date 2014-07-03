@@ -132,15 +132,21 @@ static void cmd_help(int argc, char **argv)
 		printf("\n\r    %s", cmd_table[i].command);
 }
 
-int main(int argc, char **argv)
+#define MAX_ARGC 5;
+int main(void)
 {
+	char cmd[64] = {0};
+	char *argv[MAX_ARGC];
 	int i;
 	printf("\n\rEnter the interative mode, please make your command as follow.\n\n\r");
 	for(i = 0; i < sizeof(cmd_table) / sizeof(cmd_table[0]); i ++)
 		printf("\n\r    %s", cmd_table[i].command);
 	printf("\n\n\r");
 
-	
+	do{
+		scanf("Enter your command here: %s", cmd);
+		printf("The command entered is %s", cmd);
+	}while(1);
 	return 0;
 }
 
