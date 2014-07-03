@@ -64,34 +64,34 @@ static void cmd_wifi_connect(int argc, char **argv)
 		return;
 	}
 	
-	if(argc == 2) {
-		wifi.security_type = WIFI_SECURITY_OPEN;
-	}
-	else if(argc == 3) {
-		wifi.security_type = WIFI_SECURITY_WPA2;
-		wifi.password = (unsigned char *) argv[2];
-		wifi.password_len = strlen(argv[2]);
-	}
-	else if(argc == 4) {
-		wifi.security_type = WIFI_SECURITY_WEP;
-		wifi.password = (unsigned char *) argv[2];
-		wifi.password_len = strlen(argv[2]);
-		wifi.key_id = atoi(argv[3]);
-
-		if((wifi.password_len != 5) && (wifi.password_len != 13)) {
-			printf("\n\rWrong WEP key length. Must be 5 or 13 ASCII characters.");
-			return;
-		}
-
-		if((wifi.key_id < 0) || (wifi.key_id > 3)) {
-			printf("\n\rWrong WEP key id. Must be one of 0,1,2, or 3.");
-			return;
-		}
-	}
-
-	strcpy((char *) ssid, argv[1]);
-	wifi.ssid = ssid;
-	wifi.ssid_len = strlen((const char *)ssid);
+//		if(argc == 2) {
+//			wifi.security_type = WIFI_SECURITY_OPEN;
+//		}
+//		else if(argc == 3) {
+//			wifi.security_type = WIFI_SECURITY_WPA2;
+//			wifi.password = (unsigned char *) argv[2];
+//			wifi.password_len = strlen(argv[2]);
+//		}
+//		else if(argc == 4) {
+//			wifi.security_type = WIFI_SECURITY_WEP;
+//			wifi.password = (unsigned char *) argv[2];
+//			wifi.password_len = strlen(argv[2]);
+//			wifi.key_id = atoi(argv[3]);
+//	
+//			if((wifi.password_len != 5) && (wifi.password_len != 13)) {
+//				printf("\n\rWrong WEP key length. Must be 5 or 13 ASCII characters.");
+//				return;
+//			}
+//	
+//			if((wifi.key_id < 0) || (wifi.key_id > 3)) {
+//				printf("\n\rWrong WEP key id. Must be one of 0,1,2, or 3.");
+//				return;
+//			}
+//		}
+//	
+//		strcpy((char *) ssid, argv[1]);
+//		wifi.ssid = ssid;
+//		wifi.ssid_len = strlen((const char *)ssid);
 
 	printf("\n\rJoining BSS ...");
 	
@@ -102,7 +102,7 @@ static void cmd_wifi_connect(int argc, char **argv)
 	cmdDesc.pktsize = sizeof(cmd_buf);
 
 	pData->cmd = cmdDesc;
-//	printf("pData->cmd.cmdtype is: %s\n\r", (char *)(pData->cmd.cmdtype));
+	printf("pData->cmd.cmdtype is: %s\n\r", (char *)(pData->cmd.cmdtype));
 //	memcpy(&(pData->cmd), &cmdDesc, sizeof(cmdDesc));
 	memcpy(pData->cmd_data, cmd_buf, sizeof(cmd_buf));
 	printf("pData->cmd_data: %s\n\r", pData->cmd_data);
