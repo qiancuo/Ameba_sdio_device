@@ -133,7 +133,8 @@ static const cmd_entry cmd_table[] = {
 int main(int argc, char **argv)
 {
 	printf("\n\rHere is the Test APP.");
-	cmd_help(argc, argv);
+	for(i = 0; i < sizeof(cmd_table) / sizeof(cmd_table[0]); i ++)
+		printf("\n\r    %s", cmd_table[i].command);
 	return 0;
 }
 
