@@ -101,9 +101,8 @@ static void cmd_wifi_connect(int argc, char **argv)
 		cmdDesc.datatype = MNGMT_FRAME;
 		cmdDesc.offset = sizeof(CMD_DESC);
 		cmdDesc.pktsize = sizeof(cmd_buf);
-	
-
-		memcpy(&(pData->cmd), &cmdDesc, sizeof(cmdDesc));
+		printf("Size of cmd_desc is: %d\n\r", sizeof(cmdDesc));	
+//		memcpy(&(pData->cmd), &cmdDesc, sizeof(cmdDesc));
 		printf("pData->cmd.cmdtype is: %s\n\r", pData->cmd.cmdtype);
 //		memcpy(pData->cmd_data, cmd_buf, sizeof(cmd_buf));
 //		printf("pData->cmd_data: %s\n\r", pData->cmd_data);
