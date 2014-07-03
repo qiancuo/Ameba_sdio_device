@@ -109,8 +109,9 @@ static void cmd_wifi_connect(int argc, char **argv)
 		printf("sdioData.cmd.offset is: %d\n\r", sdioData.cmd.offset);
 		printf("sdioData.cmd.pktsize is: %d\n\r", sdioData.cmd.pktsize);
 
-		memcpy(sdioData.cmd_data, cmd_buf, sizeof(cmd_buf));
-		printf("pData->cmd_data: %s\n\r", sdioData.cmd_data);
+		printf("The command entered is : %s\n\r", cmd_buf);		
+		strcpy(sdioData.cmd_data, cmd_buf);
+		printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
 
 //todo: send pData to Ameba driver
 }
