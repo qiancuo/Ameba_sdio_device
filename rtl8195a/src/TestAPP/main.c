@@ -4,6 +4,7 @@ typedef struct _cmd_entry {
 	char *command;
 	void (*function)(int, char **);
 } cmd_entry;
+static void cmd_help(int argc, char **argv);
 
 static void cmd_wifi_connect(int argc, char **argv)
 {
@@ -102,17 +103,6 @@ static void cmd_exit(int argc, char **argv)
 	printf("\n\rLeave INTERACTIVE MODE");
 }
 
-static void cmd_help(int argc, char **argv)
-{
-	int i;
-
-	printf("\n\rCOMMAND LIST:");
-	printf("\n\r==============================");
-
-	for(i = 0; i < sizeof(cmd_table) / sizeof(cmd_table[0]); i ++)
-		printf("\n\r    %s", cmd_table[i].command);
-}
-
 static const cmd_entry cmd_table[] = {
 	{"wifi_connect", cmd_wifi_connect},
 	{"wifi_disconnect", cmd_wifi_disconnect},
@@ -129,6 +119,18 @@ static const cmd_entry cmd_table[] = {
 	{"exit", cmd_exit},
 	{"help", cmd_help}
 };
+
+
+static void cmd_help(int argc, char **argv)
+{
+	int i;
+
+	printf("\n\rCOMMAND LIST:");
+	printf("\n\r==============================");
+
+	for(i = 0; i < sizeof(cmd_table) / sizeof(cmd_table[0]); i ++)
+		printf("\n\r    %s", cmd_table[i].command);
+}
 
 int main(int argc, char **argv)
 {
