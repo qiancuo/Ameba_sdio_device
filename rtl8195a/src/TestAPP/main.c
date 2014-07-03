@@ -97,9 +97,10 @@ static void cmd_wifi_connect(int argc, char **argv)
 	
 //todo: send relative data to Ameba by using the module inic_8195a.ko
 		cmdDesc.cmdtype = SDIO_CMD_wifi_connect;
-//		cmdDesc.datatype = MNGMT_FRAME;
-//		cmdDesc.offset = sizeof(CMD_DESC);
-//		cmdDesc.pktsize = sizeof(cmd_buf);
+		cmdDesc.datatype = MNGMT_FRAME;
+		cmdDesc.offset = sizeof(CMD_DESC);
+		cmdDesc.pktsize = sizeof(cmd_buf);
+		printf("cmdDesc.pktsize is %d\n\r", cmdDesc.pktsize);
 //	
 //		pData->cmd = cmdDesc;
 //		printf("pData->cmd.cmdtype is: %s\n\r", (char *)(pData->cmd.cmdtype));
