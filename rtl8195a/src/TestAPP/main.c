@@ -277,6 +277,7 @@ int main(void)
 {
 	char *argv[MAX_ARGC];
 	int i, argc;
+	char buf[64];
 	printf("\n\rEnter the interative mode, please make your command as follow.\n\n\r");
 	for(i = 0; i < sizeof(cmd_table) / sizeof(cmd_table[0]); i ++)
 		printf("\n\r    %s", cmd_table[i].command);
@@ -287,7 +288,8 @@ int main(void)
 		gets(cmd_buf);
 		printf("The command entered is : %s\n\r", cmd_buf);
 		printf("cmd_buf size is : %d\n\r", sizeof(cmd_buf));
-		if((argc = parse_cmd(cmd_buf, argv)) > 0) {
+		strcpy(buf, cmd_buf);		
+		if((argc = parse_cmd(buf, argv)) > 0) {
 			int found = 0;
 
 			for(i = 0; i < sizeof(cmd_table) / sizeof(cmd_table[0]); i ++) {
