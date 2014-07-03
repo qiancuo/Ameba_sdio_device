@@ -10,73 +10,73 @@ static void cmd_help(int argc, char **argv);
 
 static void cmd_wifi_connect(int argc, char **argv)
 {
-	printf("\n\rDo %s", __FUNCTION__);
+	printf("Do %s\n\r", __FUNCTION__);
 	if((argc != 2) && (argc != 3) && (argc != 4)) {
-		printf("\n\rUsage: wifi_connect SSID [WPA PASSWORD / (5 or 13) ASCII WEP KEY] [WEP KEY ID 0/1/2/3]");
+		printf("Usage: wifi_connect SSID [WPA PASSWORD / (5 or 13) ASCII WEP KEY] [WEP KEY ID 0/1/2/3]\n\r");
 		return;
 	}
 //todo: send relative data to Ameba
 }
 static void cmd_wifi_disconnect(int argc, char **argv)
 {
-	printf("\n\rDo %s", __FUNCTION__);
+	printf("Do %s\n\r", __FUNCTION__);;
 //todo: send relative data to Ameba
 }
 
 static void cmd_wifi_info(int argc, char **argv)
 {
-	printf("\n\rDo %s", __FUNCTION__);
+	printf("Do %s\n\r", __FUNCTION__);
 //todo: send relative data to Ameba
 }
 
 static void cmd_wifi_on(int argc, char **argv)
 {
-	printf("\n\rDo %s", __FUNCTION__);
+	printf("Do %s\n\r", __FUNCTION__);
 //todo: send relative data to Ameba
 }
 
 static void cmd_wifi_off(int argc, char **argv)
 {
-	printf("\n\rDo %s", __FUNCTION__);
+	printf("Do %s\n\r", __FUNCTION__);
 //todo: send relative data to Ameba
 }
 
 static void cmd_wifi_ap(int argc, char **argv)
 {
-	printf("\n\rDo %s", __FUNCTION__);
+	printf("Do %s\n\r", __FUNCTION__);
 //	WIFI_AP ap = {0};
 	int timeout = 20, mode;
 	unsigned char ssid[33];
 
 	if((argc != 3) && (argc != 4)) {
-		printf("\n\rUsage: wifi_ap SSID CHANNEL [PASSWORD]");
+		printf("Usage: wifi_ap SSID CHANNEL [PASSWORD]\n\r");
 		return;
 	}
 }
 static void cmd_wifi_scan(int argc, char **argv)
 {
-	printf("\n\rDo %s", __FUNCTION__);
+	printf("Do %s\n\r", __FUNCTION__);
 	int scan_cnt = 0, add_cnt = 0;
 	if(argc == 2 && argv[1]){
 		//todo: send relative data to Ameba
 	}
 	else{
-		printf("\n\rUsage: wifi_scan BUFFER_LENGTH");
+		printf("Usage: wifi_scan BUFFER_LENGTH\n\r");
 	}
 }
 
 static void cmd_wifi_get_rssi(int argc, char **argv)
 {
-	printf("\n\rDo %s", __FUNCTION__);
+	printf("Do %s\n\r", __FUNCTION__);
 	int rssi = 0;
 //	wifi_get_rssi(&rssi);
 //todo: send relative data to Ameba
-	printf("\n\rwifi_get_rssi: rssi = %d", rssi);
+	printf("wifi_get_rssi: rssi = %d\n\r", rssi);
 }
 
 static void cmd_ping(int argc, char **argv)
 {
-	printf("\n\rDo %s", __FUNCTION__);
+	printf("Do %s\n\r", __FUNCTION__);
 	if(argc == 2) {
 //		do_ping_call(argv[1], 0, 5);	//Not loop, count=5
 		//todo: send relative data to Ameba
@@ -95,14 +95,14 @@ static void cmd_ping(int argc, char **argv)
 			}
 	}
 	else {
-		printf("\n\rUsage: ping IP [COUNT/loop]");
+		printf("Usage: ping IP [COUNT/loop]\n\r");
 	}
 }
 
 static void cmd_exit(int argc, char **argv)
 {
-	printf("\n\rDo %s", __FUNCTION__);
-	printf("\n\rLeave INTERACTIVE MODE");
+	printf("Do %s\n\r", __FUNCTION__);
+	printf("Leave INTERACTIVE MODE\n\r");
 	global_exit = 0;
 }
 
@@ -128,11 +128,11 @@ static void cmd_help(int argc, char **argv)
 {
 	int i;
 
-	printf("\n\rCOMMAND LIST:");
-	printf("\n\r==============================");
+	printf("COMMAND LIST:\n\r");
+	printf("==============================\n\r");
 
 	for(i = 0; i < sizeof(cmd_table) / sizeof(cmd_table[0]); i ++)
-		printf("\n\r    %s", cmd_table[i].command);
+		printf("    %s\n\r", cmd_table[i].command);
 }
 
 #define MAX_ARGC 5
@@ -194,7 +194,7 @@ int main(void)
 			}
 
 			if(!found)
-				printf("\n\runknown command '%s'", argv[0]);
+				printf("unknown command '%s'\n\r", argv[0]);
 		}
 	}while(global_exit);
 	return 0;
