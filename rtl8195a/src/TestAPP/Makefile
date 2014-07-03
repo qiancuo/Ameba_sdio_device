@@ -45,7 +45,8 @@ OBJS        = $(CSRC:.c=.o)
 #                        RULES TO GENERATE TARGETS                            #
 #*****************************************************************************#
 # Define the Rules to build the core targets
-all: CORE_TARGETS COPY_RAM_OBJS	
+all: CORE_TARGETS 
+#COPY_RAM_OBJS	
 
 #*****************************************************************************#
 #              GENERATE OBJECT FILE 
