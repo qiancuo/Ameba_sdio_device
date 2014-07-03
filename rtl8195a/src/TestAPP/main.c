@@ -104,7 +104,7 @@ static void cmd_wifi_connect(int argc, char **argv)
 		printf("cmdDesc.pktsize is %d\n\r", cmdDesc.pktsize);
 	
 //		pData->cmd = cmdDesc;
-		cmdtype = "T0";
+		cmdtype = 'T0';
 		printf("pData->cmd.cmdtype is: 0x%x\n\r", cmdtype);
 //	//	memcpy(&(pData->cmd), &cmdDesc, sizeof(cmdDesc));
 //		memcpy(pData->cmd_data, cmd_buf, sizeof(cmd_buf));
