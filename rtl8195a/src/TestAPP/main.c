@@ -132,9 +132,10 @@ static const cmd_entry cmd_table[] = {
 
 int main(int argc, char **argv)
 {
-	printf("\n\rHere is the Test APP.");
+	int i;
+	printf("\n\rEnter the interative mode, please make your command as follow.\n\n\r");
 	for(i = 0; i < sizeof(cmd_table) / sizeof(cmd_table[0]); i ++)
-		printf("\n\r    %s", cmd_table[i].command);
+		printf("\n\r    %s\n\n\r", cmd_table[i].command);
 	return 0;
 }
 
