@@ -1,8 +1,9 @@
-objects = main.o
+makefile:
+	objects = main.o
 
-testapp : $(objects)
-	gcc -o testapp$(objects)
+	testapp : $(objects)
+		gcc -o testapp$(objects)
 
-main.o main.c
-clean: 
-	rm testapp $(objects)
+	main.o : main.c
+	clean : 
+		rm testapp $(objects)
