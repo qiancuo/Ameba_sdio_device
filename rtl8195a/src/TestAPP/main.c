@@ -38,7 +38,7 @@ typedef struct _SDIO_CMDDATA{
 	unsigned short pktsize;
 }SDIO_CMDDATA, *PSDIO_CMDDATA;
 
-#define SDIO_CMD_wifi_connect 		'C0'
+#define SDIO_CMD_wifi_connect 		C0
 #define SDIO_CMD_wifi_disconnect 		'CD'
 #define SDIO_CMD_wifi_on 			'P1'
 #define SDIO_CMD_wifi_off 			'P0'
@@ -97,16 +97,16 @@ static void cmd_wifi_connect(int argc, char **argv)
 	printf("Joining BSS ...\n\r");
 	
 //todo: send relative data to Ameba by using the module inic_8195a.ko
-		cmdDesc.cmdtype = (unsigned int) SDIO_CMD_wifi_connect;
+		cmdDesc.cmdtype = SDIO_CMD_wifi_connect;
 		cmdDesc.datatype = MNGMT_FRAME;
 		cmdDesc.offset = sizeof(CMD_DESC);
 		cmdDesc.pktsize = sizeof(cmd_buf);
 		printf("cmdDesc.pktsize is %d\n\r", cmdDesc.pktsize);
 	
-//		pData->cmd = cmdDesc;
+		pData->cmd = cmdDesc;
 		cmdtype = 'T0';
 		printf("pData->cmd.cmdtype is: 0x%x\n\r", cmdtype);
-		memcpy(&(pData->cmd), &cmdDesc, sizeof(cmdDesc));
+//		memcpy(&(pData->cmd), &cmdDesc, sizeof(cmdDesc));
 //		memcpy(pData->cmd_data, cmd_buf, sizeof(cmd_buf));
 //		printf("pData->cmd_data: %s\n\r", pData->cmd_data);
 
