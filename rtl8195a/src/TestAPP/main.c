@@ -32,11 +32,11 @@ typedef struct _WIFI_NETWORK{
 	int					key_id;
 }WIFI_NETWORK;
 
-typedef struct _SDIO_DATA{
-	unsigned short pktsize;
+typedef struct _SDIO_CMDDATA{
 	CMD_DESC cmd;
-	char cmd_data[64];
-}SDIO_DATA, *PSDIO_DATA;
+	char cmd_data[64];	
+	unsigned short pktsize;
+}SDIO_CMDDATA, *PSDIO_CMDDATA;
 
 #define SDIO_CMD_wifi_connect 		'C0'
 #define SDIO_CMD_wifi_disconnect 		'CD'
@@ -54,6 +54,7 @@ static void cmd_help(int argc, char **argv);
 static void cmd_wifi_connect(int argc, char **argv)
 {
 	CMD_DESC cmd;
+	PSDIO_CMDDATA pData = NULL;
 	WIFI_NETWORK wifi = {0};
 	int timeout = 20, mode;
 	unsigned char ssid[33];
@@ -98,7 +99,13 @@ static void cmd_wifi_connect(int argc, char **argv)
 	cmd.cmdtype = SDIO_CMD_wifi_connect;
 	cmd.datatype = MNGMT_FRAME;
 	cmd.offset = sizeof(CMD_DESC);
-//	cmd.pktsize = wifi.;
+	cmd.pktsize = sizeof(cmd_buf);
+
+	pData.cmd = cmd;
+	memcpy(pData->cmd_data, cmd_buf, sizeof(cmd_buf));
+	printf("pData->cmd_data: %s\n\r", pData->cmd_data);
+
+//todo: send pData to Ameba driver
 }
 static void cmd_wifi_disconnect(int argc, char **argv)
 {
