@@ -1,4 +1,3 @@
-makefile:
 	objects = main.o
 
 	testapp : $(objects)
