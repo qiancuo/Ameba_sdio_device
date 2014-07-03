@@ -1,8 +1,7 @@
-	objects = main.o
+testapp : main.o
+	gcc -o testapp main.o 
 
-	testapp : $(objects)
-		gcc -o testapp$(objects)
-
-	main.o : main.c
-	clean : 
-		rm testapp $(objects)
+main.o : main.c
+	gcc -c main.c
+clean : 
+	rm testapp main.o
