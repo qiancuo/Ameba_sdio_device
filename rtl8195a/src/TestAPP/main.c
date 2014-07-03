@@ -93,10 +93,10 @@ static void cmd_wifi_connect(int argc, char **argv)
 //		wifi.ssid = ssid;
 //		wifi.ssid_len = strlen((const char *)ssid);
 
-	printf("\n\rJoining BSS ...");
+	printf("Joining BSS ...\n\r");
 	
 //todo: send relative data to Ameba by using the module inic_8195a.ko
-//		cmdDesc.cmdtype = SDIO_CMD_wifi_connect;
+		cmdDesc.cmdtype = SDIO_CMD_wifi_connect;
 //		cmdDesc.datatype = MNGMT_FRAME;
 //		cmdDesc.offset = sizeof(CMD_DESC);
 //		cmdDesc.pktsize = sizeof(cmd_buf);
