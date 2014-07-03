@@ -139,6 +139,7 @@ static int SendOnePkt(struct sdio_func *func)
 	int i;
 	struct sdio_func *pfunc;
 	u8 data[TxPktSize];
+//Tx descriptor(32bytes)
 	data[0] = 0x1a;
 	data[1] = 0x01;
 	data[2] = 0x20;
@@ -171,52 +172,61 @@ static int SendOnePkt(struct sdio_func *func)
 	data[29] = 0x7d;
 	data[30] = 0x00;
 	data[31] = 0x00;
-	
-	data[32] = 0x88;
+//at cmd descriptor(8bytes)
+	data[32] = 0x1a;
 	data[33] = 0x01;
-	data[34] = 0x00;
-	data[35] = 0x00;
-
-	data[36] = 0xff;	
-	data[37] = 0xff;	
-	data[38] = 0xff;	
-	data[39] = 0xff;	
-	data[40] = 0xff;	
-	data[41] = 0xff;	
-
-	data[42] = 0x00;	
+	data[34] = 0x08;
+	data[35] = 0x01;
+	data[36] = 0x43;	
+	data[37] = 0x44;	
+	data[38] = 0x00;	
+	data[39] = 0x00;
+//wlan pkt		
+	data[40] = 0x88;
+	data[41] = 0x01;
+	data[42] = 0x00;
 	data[43] = 0x00;
-	data[44] = 0x00;
-	data[45] = 0x00;
-	data[46] = 0x00;
-	data[47] = 0x02;
 
-	data[48] = 0x00;	
-	data[49] = 0x00;
-	data[50] = 0x00;
+	data[44] = 0xff;	
+	data[45] = 0xff;	
+	data[46] = 0xff;	
+	data[47] = 0xff;	
+	data[48] = 0xff;	
+	data[49] = 0xff;	
+
+	data[50] = 0x00;	
 	data[51] = 0x00;
 	data[52] = 0x00;
-	data[53] = 0x01;
+	data[53] = 0x00;
+	data[54] = 0x00;
+	data[55] = 0x02;
 
-	data[54] = 0x10;
-	
-	data[55] = 0x00;
-	data[56] = 0x06;
+	data[56] = 0x00;	
 	data[57] = 0x00;
-	data[58] = 0x01;
+	data[58] = 0x00;
 	data[59] = 0x00;
 	data[60] = 0x00;
+	data[61] = 0x01;
+
+	data[62] = 0x10;
+	
+	data[63] = 0x00;
+	data[64] = 0x06;
+	data[65] = 0x00;
+	data[66] = 0x01;
+	data[67] = 0x00;
+	data[68] = 0x00;
 
 	
-	data[61] = 0x04;	
-	data[62] = 0x06;
-	data[63] = 0x99;
-	data[64] = 0x99;
-	data[65] = 0x99;
-	data[66] = 0x3e;
-	for (i=0;i<TxPktSize-67;i++)
+	data[69] = 0x04;	
+	data[70] = 0x06;
+	data[71] = 0x99;
+	data[72] = 0x99;
+	data[73] = 0x99;
+	data[74] = 0x3e;
+	for (i=0;i<TxPktSize-75;i++)
 	{
-		data[i+67] = 0x3e;
+		data[i+75] = 0x3e;
 	}
 	printk("tx packet length is %d\n", sizeof(data));
 

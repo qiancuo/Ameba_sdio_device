@@ -34,19 +34,19 @@ typedef struct _WIFI_NETWORK{
 
 typedef struct _SDIO_CMDDATA{
 	CMD_DESC cmd;
-	char cmd_data[64];	
-	unsigned short pktsize;
+	char cmd_data[64];
 }SDIO_CMDDATA, *PSDIO_CMDDATA;
 
 #define SDIO_CMD_wifi_connect 		"C0"
-#define SDIO_CMD_wifi_disconnect 		'CD'
-#define SDIO_CMD_wifi_on 			'P1'
-#define SDIO_CMD_wifi_off 			'P0'
-#define SDIO_CMD_wifi_ap 			'A0'
-#define SDIO_CMD_wifi_scan 			'F0'
-#define SDIO_CMD_wifi_get_rssi 		'CR'
-#define SDIO_CMD_wifi_ping 			'T0'
+#define SDIO_CMD_wifi_disconnect 		"CD"
+#define SDIO_CMD_wifi_on 			"P1"
+#define SDIO_CMD_wifi_off 			"P0"
+#define SDIO_CMD_wifi_ap 			"A0"
+#define SDIO_CMD_wifi_scan 			"F0"
+#define SDIO_CMD_wifi_get_rssi 		"CR"
+#define SDIO_CMD_wifi_ping 			"T0"
 #define MNGMT_FRAME				1
+#define DATA_FRAME					0
 static int global_exit =1;
 static char cmd_buf[64] = {0};
 static void cmd_help(int argc, char **argv);
@@ -113,7 +113,7 @@ static void cmd_wifi_connect(int argc, char **argv)
 		strcpy(sdioData.cmd_data, cmd_buf);
 		printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
 
-//todo: send pData to Ameba driver
+//todo: send sdioData to Ameba driver
 }
 static void cmd_wifi_disconnect(int argc, char **argv)
 {
@@ -285,10 +285,10 @@ int main(void)
 
 	do{
 		printf("Wlan: ");
-		gets(cmd_buf);
-		printf("The command entered is : %s\n\r", cmd_buf);
-		printf("cmd_buf size is : %d\n\r", sizeof(cmd_buf));
-		strcpy(buf, cmd_buf);		
+		gets(buf);
+		printf("The command entered is : %s\n\r", buf);
+		printf("buf size is : %d\n\r", sizeof(buf));
+		strcpy(cmd_buf, buf);		
 		if((argc = parse_cmd(buf, argv)) > 0) {
 			int found = 0;
 
