@@ -4,32 +4,7 @@ typedef struct _cmd_entry {
 	char *command;
 	void (*function)(int, char **);
 } cmd_entry;
-static const cmd_entry cmd_table[] = {
-	{"wifi_connect", cmd_wifi_connect},
-	{"wifi_disconnect", cmd_wifi_disconnect},
-	{"wifi_info", cmd_wifi_info},
-	{"wifi_on", cmd_wifi_on},
-	{"wifi_off", cmd_wifi_off},
-	{"wifi_ap", cmd_wifi_ap},
-	{"wifi_scan", cmd_wifi_scan},
-	{"wifi_get_rssi", cmd_wifi_get_rssi},
-//	{"iwpriv", cmd_wifi_iwpriv},
-//	{"promisc", cmd_promisc},
-//	{"ttcp", cmd_ttcp},
-	{"ping", cmd_ping},
-	{"exit", cmd_exit},
-	{"help", cmd_help}
-};
-static void cmd_help(int argc, char **argv)
-{
-	int i;
 
-	printf("\n\rCOMMAND LIST:");
-	printf("\n\r==============================");
-
-	for(i = 0; i < sizeof(cmd_table) / sizeof(cmd_table[0]); i ++)
-		printf("\n\r    %s", cmd_table[i].command);
-}
 static void cmd_wifi_connect(int argc, char **argv)
 {
 	printf("\n\rDo %s", __FUNCTION__);
@@ -98,6 +73,7 @@ static void cmd_wifi_get_rssi(int argc, char **argv)
 
 static void cmd_ping(int argc, char **argv)
 {
+	printf("\n\rDo %s", __FUNCTION__);
 	if(argc == 2) {
 //		do_ping_call(argv[1], 0, 5);	//Not loop, count=5
 		//todo: send relative data to Ameba
@@ -105,19 +81,59 @@ static void cmd_ping(int argc, char **argv)
 	}
 	else if(argc == 3) {
 		if(strcmp(argv[2], "loop") == 0)
+			{
 //			do_ping_call(argv[1], 1, 0);	//loop, no count
 			//todo: send relative data to Ameba
+			}
 		else
+			{
 //			do_ping_call(argv[1], 0, atoi(argv[2]));	//Not loop, with count
 			//todo: send relative data to Ameba
+			}
 	}
 	else {
 		printf("\n\rUsage: ping IP [COUNT/loop]");
 	}
 }
 
+static void cmd_exit(int argc, char **argv)
+{
+	printf("\n\rDo %s", __FUNCTION__);
+	printf("\n\rLeave INTERACTIVE MODE");
+}
+
+static void cmd_help(int argc, char **argv)
+{
+	int i;
+
+	printf("\n\rCOMMAND LIST:");
+	printf("\n\r==============================");
+
+	for(i = 0; i < sizeof(cmd_table) / sizeof(cmd_table[0]); i ++)
+		printf("\n\r    %s", cmd_table[i].command);
+}
+
+static const cmd_entry cmd_table[] = {
+	{"wifi_connect", cmd_wifi_connect},
+	{"wifi_disconnect", cmd_wifi_disconnect},
+	{"wifi_info", cmd_wifi_info},
+	{"wifi_on", cmd_wifi_on},
+	{"wifi_off", cmd_wifi_off},
+	{"wifi_ap", cmd_wifi_ap},
+	{"wifi_scan", cmd_wifi_scan},
+	{"wifi_get_rssi", cmd_wifi_get_rssi},
+//	{"iwpriv", cmd_wifi_iwpriv},
+//	{"promisc", cmd_promisc},
+//	{"ttcp", cmd_ttcp},
+	{"ping", cmd_ping},
+	{"exit", cmd_exit},
+	{"help", cmd_help}
+};
+
 int main(int argc, char **argv)
 {
+	printf("\n\rHere is the Test APP.");
+	cmd_help(argc, argv);
 	return 0;
 }
 
