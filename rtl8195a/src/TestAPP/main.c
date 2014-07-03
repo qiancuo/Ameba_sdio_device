@@ -54,7 +54,7 @@ static void cmd_help(int argc, char **argv);
 static void cmd_wifi_connect(int argc, char **argv)
 {
 	CMD_DESC cmdDesc;
-	PSDIO_CMDDATA pData = NULL;
+	SDIO_CMDDATA sdioData;
 	WIFI_NETWORK wifi = {0};
 	int timeout = 20, mode;
 	unsigned char ssid[33];
@@ -101,9 +101,10 @@ static void cmd_wifi_connect(int argc, char **argv)
 		cmdDesc.datatype = MNGMT_FRAME;
 		cmdDesc.offset = sizeof(CMD_DESC);
 		cmdDesc.pktsize = sizeof(cmd_buf);
-		printf("Size of cmd_desc is: %d\n\r", sizeof(cmdDesc));	
+
+		sdioData.cmd = cmdDesc;
 //		memcpy(&(pData->cmd), &cmdDesc, sizeof(cmdDesc));
-		printf("pData->cmd.cmdtype is: %s\n\r", pData->cmd.cmdtype);
+//		printf("pData->cmd.cmdtype is: %s\n\r", Data->cmd.cmdtype);
 //		memcpy(pData->cmd_data, cmd_buf, sizeof(cmd_buf));
 //		printf("pData->cmd_data: %s\n\r", pData->cmd_data);
 
