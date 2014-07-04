@@ -138,7 +138,8 @@ static int SendOnePkt(struct sdio_func *func)
 {
 	int i;
 	struct sdio_func *pfunc;
-	u8 data[TxPktSize];
+//	u8 data[TxPktSize];
+	u8 data[43];
 //Tx descriptor(32bytes)
 	data[0] = 0x1a;
 	data[1] = 0x01;
@@ -173,64 +174,68 @@ static int SendOnePkt(struct sdio_func *func)
 	data[30] = 0x00;
 	data[31] = 0x00;
 //at cmd descriptor(8bytes)
-	data[32] = 0x1a;
-	data[33] = 0x01;
-	data[34] = 0x08;
-	data[35] = 0x01;
-	data[36] = 0x43;	
-	data[37] = 0x44;	
-	data[38] = 0x00;	
-	data[39] = 0x00;
+	data[32] = 0x03; //pktsize0
+	data[33] = 0x00; //pktsize1
+	data[34] = 0x08; //offset
+	data[35] = 0x01; //frame type
+	data[36] = 0x43; //'C'
+	data[37] = 0x44; //'D', "CD" for disconnect
+	data[38] = 0x00; //resv
+	data[39] = 0x00; //resv
+//cmd string
+	data[40] = 0x72; //'r'
+	data[41] = 0x74; //'t'
+	data[42] = 0x6B;//'k'
 //wlan pkt		
-	data[40] = 0x88;
-	data[41] = 0x01;
-	data[42] = 0x00;
-	data[43] = 0x00;
-
-	data[44] = 0xff;	
-	data[45] = 0xff;	
-	data[46] = 0xff;	
-	data[47] = 0xff;	
-	data[48] = 0xff;	
-	data[49] = 0xff;	
-
-	data[50] = 0x00;	
-	data[51] = 0x00;
-	data[52] = 0x00;
-	data[53] = 0x00;
-	data[54] = 0x00;
-	data[55] = 0x02;
-
-	data[56] = 0x00;	
-	data[57] = 0x00;
-	data[58] = 0x00;
-	data[59] = 0x00;
-	data[60] = 0x00;
-	data[61] = 0x01;
-
-	data[62] = 0x10;
-	
-	data[63] = 0x00;
-	data[64] = 0x06;
-	data[65] = 0x00;
-	data[66] = 0x01;
-	data[67] = 0x00;
-	data[68] = 0x00;
-
-	
-	data[69] = 0x04;	
-	data[70] = 0x06;
-	data[71] = 0x99;
-	data[72] = 0x99;
-	data[73] = 0x99;
-	data[74] = 0x3e;
-	for (i=0;i<TxPktSize-75;i++)
-	{
-		data[i+75] = 0x3e;
-	}
+//		data[40] = 0x88;
+//		data[41] = 0x01;
+//		data[42] = 0x00;
+//		data[43] = 0x00;
+//		
+//		data[44] = 0xff;	
+//		data[45] = 0xff;	
+//		data[46] = 0xff;	
+//		data[47] = 0xff;	
+//		data[48] = 0xff;	
+//		data[49] = 0xff;	
+//		
+//		data[50] = 0x00;	
+//		data[51] = 0x00;
+//		data[52] = 0x00;
+//		data[53] = 0x00;
+//		data[54] = 0x00;
+//		data[55] = 0x02;
+//		
+//		data[56] = 0x00;	
+//		data[57] = 0x00;
+//		data[58] = 0x00;
+//		data[59] = 0x00;
+//		data[60] = 0x00;
+//		data[61] = 0x01;
+//		
+//		data[62] = 0x10;
+//		
+//		data[63] = 0x00;
+//		data[64] = 0x06;
+//		data[65] = 0x00;
+//		data[66] = 0x01;
+//		data[67] = 0x00;
+//		data[68] = 0x00;
+//		
+//		
+//		data[69] = 0x04;	
+//		data[70] = 0x06;
+//		data[71] = 0x99;
+//		data[72] = 0x99;
+//		data[73] = 0x99;
+//		data[74] = 0x3e;
+//		for (i=0;i<TxPktSize-75;i++)
+//		{
+//			data[i+75] = 0x3e;
+//		}
 	printk("tx packet length is %d\n", sizeof(data));
 
-		for(i=0;i<TxPktSize;i++)
+		for(i=0;i<sizeof(data);i++)
 	{
 		printk("tx[%d] = 0x%02x\n", i, data[i]);
 	}
