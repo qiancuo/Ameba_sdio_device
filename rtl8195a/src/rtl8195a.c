@@ -179,7 +179,8 @@ static int SendOnePkt(struct sdio_func *func)
 	data[34] = 0x08; //offset
 	data[35] = 0x01; //frame type
 	data[36] = 0x43; //'C'
-	data[37] = 0x44; //'D', "CD" for disconnect
+//	data[37] = 0x44; //'D', "CD" for disconnect
+	data[37] = 0x30; //'0', "C0" for connect
 	data[38] = 0x00; //resv
 	data[39] = 0x00; //resv
 //cmd string
