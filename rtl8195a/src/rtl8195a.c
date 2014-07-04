@@ -69,7 +69,7 @@ static int RecvOnePkt_Thread(void * pData)
 	pHal_Data = (PHAL_DATA_TYPE) pData;
 	pfunc = pHal_Data->func;	
 	while(!kthread_should_stop()){
-		SLEEP_MILLI_SEC(1000);
+		SLEEP_MILLI_SEC(100);
 		mutex_lock(&Recv_Xmit_mutex);
 		RecvOnePkt(pfunc);
 //		Print_Message((u8 *)Message_Recv);
@@ -299,7 +299,7 @@ static int __devinit rtl8195a_init_one(struct sdio_func *func, const struct sdio
 //	RecvOnePKt(func);
 	SendOnePkt(func);
 //	Xmit_Thread = kthread_run(SendOnePkt_Thread, (void *)gHal_Data, "xmit_thread");
-//	Recv_Thread = kthread_run(RecvOnePkt_Thread, (void *)gHal_Data, "recv_thread");
+	Recv_Thread = kthread_run(RecvOnePkt_Thread, (void *)gHal_Data, "recv_thread");
 //    printk(KERN_INFO "%s: This product is covered by one or more of the following patents: US6,570,884, US6,115,776, and US6,327,625.\n", MODULENAME);
 
 //    printk("%s", GPL_CLAIM);
