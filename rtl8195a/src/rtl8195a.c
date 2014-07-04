@@ -141,8 +141,8 @@ static int SendOnePkt(struct sdio_func *func)
 //	u8 data[TxPktSize];
 	u8 data[43];
 //Tx descriptor(32bytes)
-	data[0] = 0x1a;
-	data[1] = 0x01;
+	data[0] = 0x2b;
+	data[1] = 0x00;
 	data[2] = 0x20;
 	data[3] = 0x8d;
 	data[4] = 0x00;
