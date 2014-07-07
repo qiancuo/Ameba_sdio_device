@@ -77,7 +77,7 @@ static void cmd_wifi_connect(int argc, char **argv)
 	strcpy(cmdDesc.cmdtype, SDIO_CMD_wifi_connect);	
 	cmdDesc.datatype = MNGMT_FRAME;
 	cmdDesc.offset = sizeof(CMD_DESC);
-	cmdDesc.pktsize = sizeof(cmd_buf)-strlen(argv[0]-1);
+	cmdDesc.pktsize = sizeof(cmd_buf)-strlen(argv[0])-1);
 
 	sdioData.cmd = cmdDesc;
 //		printf("sdioData.cmd.cmdtype is: %s\n\r", sdioData.cmd.cmdtype);
@@ -92,7 +92,7 @@ static void cmd_wifi_connect(int argc, char **argv)
 	printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
 //todo: send sdioData to Ameba driver
 	for(i=0; i<sizeof(SDIO_CMDDATA); i++)
-		printf("%s(): sdioData[%d] = 0x02x\n\r", __FUNCTION__, i, (char *)(&sdioData+i));
+		printf("%s(): sdioData[%d] = 0x%02x\n\r", __FUNCTION__, i, (char *)(&sdioData+i));
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 }
 static void cmd_wifi_disconnect(int argc, char **argv)
