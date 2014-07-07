@@ -87,7 +87,7 @@ static ssize_t myFunc_Close(struct inode *inode, struct file *file)
 	return 0;
 }
 
-static int ma_fonction_ioctl(struct inode *inode, struct file *file, unsigned int cmd, unsigned long arg)
+static int myFunc_ioctl(struct inode *inode, struct file *file, unsigned int cmd, unsigned long arg)
 {
 	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
 	return 0;
@@ -376,7 +376,7 @@ static struct file_operations fops =
 	write : myFunc_Write,
 	open : myFunc_Open,
 	release : myFunc_Close,
-	ioctl : 
+	ioctl : myFunc_ioctl
 };
 
 static const struct sdio_device_id sdio_ids[] =
