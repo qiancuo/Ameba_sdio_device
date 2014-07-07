@@ -179,8 +179,10 @@ static int SendOnePkt(struct sdio_func *func)
 	u8 data[TxPktSize];
 //	u8 data[43];
 //Tx descriptor(32bytes)
-	data[0] = 0x1a;
-	data[1] = 0x01;
+//	data[0] = 0x1a;
+//	data[1] = 0x01;
+	data[0] = 0x48;//pkt len 0
+	data[1] = 0x00;//pkt len 1
 	data[2] = 0x20;
 	data[3] = 0x8d;
 	data[4] = 0x00;
@@ -272,21 +274,24 @@ static int SendOnePkt(struct sdio_func *func)
 	{
 		data[i+75] = 0x3e;
 	}
-//		printk("tx packet length is %d\n", sizeof(data));
-//	
-//		for(i=0;i<sizeof(data);i++)
-//		{
-//			printk("tx[%d] = 0x%02x\n", i, data[i]);
-//		}
+	printk("tx packet length is %d\n", sizeof(data));
 
-	pfunc = func;
-//	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, sizeof(data), data);
 	printk("g_SDIO_cmdData length is %d\n", sizeof(g_SDIO_cmdData));
 	for(i=0;i<sizeof(g_SDIO_cmdData);i++)
 	{
 		printk("tx[%d] = 0x%02x\n", i, g_SDIO_cmdData[i]);
 	}
-	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, sizeof(g_SDIO_cmdData), (char *)g_SDIO_cmdData);
+	memcpy(data+32, g_SDIO_cmdData, sizeof(g_SDIO_cmdData));
+
+	for(i=0;i<sizeof(data);i++)
+	{
+		printk("tx[%d] = 0x%02x\n", i, data[i]);
+	}
+
+	pfunc = func;
+	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (sizeof(g_SDIO_cmdData)+sizeof(TX_DESC)), data);
+
+
 
 /*
 	for(i=0; i<10;i++)
