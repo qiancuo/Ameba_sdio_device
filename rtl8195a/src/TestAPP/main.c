@@ -91,7 +91,7 @@ static void cmd_wifi_connect(int argc, char **argv)
 	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0]+1)), cmdDesc.pktsize);
 	printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
 //todo: send sdioData to Ameba driver
-	if(i=0; i<sizeof(SDIO_CMDDATA); i++)
+	for(i=0; i<sizeof(SDIO_CMDDATA); i++)
 		printf("%s(): sdioData[%d] = 0x02x\n\r", __FUNCTION__, i, (char *)(&sdioData+i));
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 }
