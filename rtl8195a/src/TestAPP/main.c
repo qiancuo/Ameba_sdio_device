@@ -91,7 +91,7 @@ static void cmd_wifi_connect(int argc, char **argv)
 	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
 	printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
 //todo: send sdioData to Ameba driver
-//	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
+	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 }
 static void cmd_wifi_disconnect(int argc, char **argv)
 {
@@ -107,7 +107,7 @@ static void cmd_wifi_disconnect(int argc, char **argv)
 
 	sdioData.cmd = cmdDesc;
 	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
-//	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
+	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 }
 
 static void cmd_wifi_info(int argc, char **argv)
@@ -266,12 +266,12 @@ int main(void)
 	char *argv[MAX_ARGC];
 	int i, argc;
 	char buf[64];
-//		fd = open(INIC_8195A, O_RDWR);  
-//		if(fd < 0)  
-//		{  
-//		        printf("open file %s failed!\n", INIC_8195A);  
-//		        return -1;  
-//		}
+	fd = open(INIC_8195A, O_RDWR);  
+	if(fd < 0)  
+	{  
+	        printf("open file %s failed!\n", INIC_8195A);  
+	        return -1;  
+	}
 	printf("\n\rEnter the interative mode, please make your command as follow.\n\n\r");
 	for(i = 0; i < sizeof(cmd_table) / sizeof(cmd_table[0]); i ++)
 		printf("\n\r    %s", cmd_table[i].command);
@@ -298,7 +298,7 @@ int main(void)
 				printf("unknown command '%s'\n\r", argv[0]);
 		}
 	}while(global_exit);
-//	close(fd);	
+	close(fd);	
 	return 0;
 }
 
