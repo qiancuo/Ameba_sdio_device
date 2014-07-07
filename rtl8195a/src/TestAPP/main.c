@@ -172,7 +172,7 @@ static void cmd_wifi_get_rssi(int argc, char **argv)
 	int rssi = 0;
 //	wifi_get_rssi(&rssi);
 //todo: send relative data to Ameba
-	strcpy(cmdDesc.cmdtype, SDIO_CMD_wifi_disconnect);	
+	strcpy(cmdDesc.cmdtype, SDIO_CMD_wifi_get_rssi);	
 	cmdDesc.datatype = MNGMT_FRAME;
 	cmdDesc.offset = sizeof(CMD_DESC);
 	cmdDesc.pktsize = strlen(cmd_buf)-strlen(argv[0]);
