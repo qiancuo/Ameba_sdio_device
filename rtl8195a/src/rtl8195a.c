@@ -42,11 +42,6 @@ MODULE_DESCRIPTION("RealTek RTL-8195a iNIC");
 MODULE_LICENSE("GPL");
 MODULE_VERSION(RTL8195_VERSION);
 
-typedef struct _SDIO_CMDDATA{
-	CMD_DESC cmd;
-	char cmd_data[64];
-}SDIO_CMDDATA, *PSDIO_CMDDATA;
-
 #define Message_Recv		"Here is Recv action!"
 #define Message_Xmit			"Here is Xmit action!"
 #ifndef SLEEP_MILLI_SEC
@@ -64,7 +59,7 @@ static struct task_struct *Recv_Thread = NULL;
 PHAL_DATA_TYPE gHal_Data = NULL;
 static _mutex Recv_Xmit_mutex;
 static int major;
-static SDIO_CMDDATA g_SDIO_cmdData;
+static char g_SDIO_cmdData[72] = {0};
 static int Print_Message(u8 *message);
 static int RecvOnePkt(struct sdio_func * func);
 static int SendOnePkt(struct sdio_func * func);
@@ -77,9 +72,8 @@ static ssize_t myFunc_Read(struct file *file, char *buf, size_t count, loff_t *p
 
 static ssize_t myFunc_Write(struct file *file, const char *buf, size_t count, loff_t *ppos)
 {
-	SDIO_CMDDATA sdioData;
 	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
-	if(copy_from_user(&g_SDIO_cmdData,buf,sizeof(SDIO_CMDDATA)))
+	if(copy_from_user(&g_SDIO_cmdData,buf,sizeof(g_SDIO_cmdData)))
 	 {
 		 printk(KERN_DEBUG "copy from user failed!\n"); 
 		 return -EFAULT;
@@ -287,12 +281,12 @@ static int SendOnePkt(struct sdio_func *func)
 
 	pfunc = func;
 //	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, sizeof(data), data);
-	printk("tx packet length is %d\n", sizeof(g_SDIO_cmdData));
+	printk("g_SDIO_cmdData length is %d\n", sizeof(g_SDIO_cmdData));
 	for(i=0;i<sizeof(g_SDIO_cmdData);i++)
 	{
 		printk("tx[%d] = 0x%02x\n", i, g_SDIO_cmdData[i]);
 	}
-	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, sizeof(g_SDIO_cmdData), (char *)&g_SDIO_cmdData);
+	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, sizeof(g_SDIO_cmdData), (char *)g_SDIO_cmdData);
 
 /*
 	for(i=0; i<10;i++)
