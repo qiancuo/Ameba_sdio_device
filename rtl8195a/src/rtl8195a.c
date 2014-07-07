@@ -280,7 +280,7 @@ static int SendOnePkt(struct sdio_func *func)
 	printk("g_SDIO_cmdData length is %d\n", sizeof(g_SDIO_cmdData));
 	for(i=0;i<sizeof(g_SDIO_cmdData);i++)
 	{
-		printk("tx[%d] = 0x%02x\n", i, g_SDIO_cmdData[i]);
+		printk("g_SDIO_cmdData[%d] = 0x%02x\n", i, g_SDIO_cmdData[i]);
 	}
 	memcpy(data+32, g_SDIO_cmdData, sizeof(g_SDIO_cmdData));
 

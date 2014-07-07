@@ -63,7 +63,7 @@ static void cmd_wifi_connect(int argc, char **argv)
 	CMD_DESC cmdDesc;
 	SDIO_CMDDATA sdioData;
 	WIFI_NETWORK wifi = {0};
-	int timeout = 20, mode;
+	int timeout = 20, mode, i;
 	unsigned char ssid[33];
 	short cmdtype;
 	printf("Do %s\n\r", __FUNCTION__);
@@ -91,6 +91,8 @@ static void cmd_wifi_connect(int argc, char **argv)
 	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0]+1)), cmdDesc.pktsize);
 	printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
 //todo: send sdioData to Ameba driver
+	if(i=0; i<sizeof(SDIO_CMDDATA); i++)
+		printf("%s(): sdioData[%d] = 0x02x\n\r", __FUNCTION__, i, (char *)(&sdioData+i));
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 }
 static void cmd_wifi_disconnect(int argc, char **argv)
