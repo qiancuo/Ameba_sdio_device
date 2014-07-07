@@ -88,11 +88,11 @@ static void cmd_wifi_connect(int argc, char **argv)
 //		printf("The command entered is : %s\n\r", cmd_buf);		
 //		strcpy(sdioData.cmd_data, cmd_buf);
 //		printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);	
-	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0]+1)), cmdDesc.pktsize);
+	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
 	printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
 //todo: send sdioData to Ameba driver
 	for(i=0; i<sizeof(SDIO_CMDDATA); i++)
-		printf("%s(): sdioData[%d] = 0x%02x\n\r", __FUNCTION__, i, (char *)(&sdioData+i));
+		printf("%s(): sdioData[%d] = 0x%02x\n\r", __FUNCTION__, i, sdioData+i);
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 }
 static void cmd_wifi_disconnect(int argc, char **argv)
