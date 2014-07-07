@@ -70,7 +70,7 @@ static ssize_t myFunc_Read(struct file *file, char *buf, size_t count, loff_t *p
 	return 0;
 }
 
-static ssize_t myFunc_Write(struct file *file, char *buf, size_t count, loff_t *ppos)
+static ssize_t myFunc_Write(struct file *file, const char *buf, size_t count, loff_t *ppos)
 {
 	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
 	SendOnePkt(gHal_Data->func);

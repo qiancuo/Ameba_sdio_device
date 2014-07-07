@@ -1,4 +1,8 @@
-#include <stdio.h>
+#include <stdio.h> 
+#include <fcntl.h> 
+#include <unistd.h> 
+#include <string.h>
+#include <sys/ioctl.h>
 
 typedef struct _cmd_entry {
 	char *command;
@@ -282,10 +286,10 @@ int main(void)
 	char *argv[MAX_ARGC];
 	int i, argc;
 	char buf[64];
-	fd = open(SPI, O_RDWR);  
+	fd = open(INIC_8195A, O_RDWR);  
 	if(fd < 0)  
 	{  
-	        printf("open file %s failed!\n", SPI);  
+	        printf("open file %s failed!\n", INIC_8195A);  
 	        return -1;  
 	}
 	printf("\n\rEnter the interative mode, please make your command as follow.\n\n\r");
