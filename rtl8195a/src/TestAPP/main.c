@@ -77,7 +77,7 @@ static void cmd_wifi_connect(int argc, char **argv)
 	strcpy(cmdDesc.cmdtype, SDIO_CMD_wifi_connect);	
 	cmdDesc.datatype = MNGMT_FRAME;
 	cmdDesc.offset = sizeof(CMD_DESC);
-	cmdDesc.pktsize = sizeof(cmd_buf)-strlen(argv[0])-1);
+	cmdDesc.pktsize = sizeof(cmd_buf)-strlen(argv[0])-1;
 
 	sdioData.cmd = cmdDesc;
 //		printf("sdioData.cmd.cmdtype is: %s\n\r", sdioData.cmd.cmdtype);
