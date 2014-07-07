@@ -72,42 +72,13 @@ static void cmd_wifi_connect(int argc, char **argv)
 		return;
 	}
 	
-//		if(argc == 2) {
-//			wifi.security_type = WIFI_SECURITY_OPEN;
-//		}
-//		else if(argc == 3) {
-//			wifi.security_type = WIFI_SECURITY_WPA2;
-//			wifi.password = (unsigned char *) argv[2];
-//			wifi.password_len = strlen(argv[2]);
-//		}
-//		else if(argc == 4) {
-//			wifi.security_type = WIFI_SECURITY_WEP;
-//			wifi.password = (unsigned char *) argv[2];
-//			wifi.password_len = strlen(argv[2]);
-//			wifi.key_id = atoi(argv[3]);
-//	
-//			if((wifi.password_len != 5) && (wifi.password_len != 13)) {
-//				printf("\n\rWrong WEP key length. Must be 5 or 13 ASCII characters.");
-//				return;
-//			}
-//	
-//			if((wifi.key_id < 0) || (wifi.key_id > 3)) {
-//				printf("\n\rWrong WEP key id. Must be one of 0,1,2, or 3.");
-//				return;
-//			}
-//		}
-//	
-//		strcpy((char *) ssid, argv[1]);
-//		wifi.ssid = ssid;
-//		wifi.ssid_len = strlen((const char *)ssid);
-
 	printf("Joining BSS ...\n\r");
 	
 //todo: send relative data to Ameba by using the module inic_8195a.ko
 		strcpy(cmdDesc.cmdtype, SDIO_CMD_wifi_connect);	
 		cmdDesc.datatype = MNGMT_FRAME;
 		cmdDesc.offset = sizeof(CMD_DESC);
-		cmdDesc.pktsize = sizeof(cmd_buf);
+		cmdDesc.pktsize = sizeof(cmd_buf)-strlen(argv[0]);
 
 		sdioData.cmd = cmdDesc;
 
@@ -119,9 +90,10 @@ static void cmd_wifi_connect(int argc, char **argv)
 		printf("The command entered is : %s\n\r", cmd_buf);		
 		strcpy(sdioData.cmd_data, cmd_buf);
 		printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
-
+		memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])), cmdDesc.pktsize);
+		printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
 //todo: send sdioData to Ameba driver
-		write(fd,sdioData.cmd_data,64*sizeof(char));
+//		write(fd,sdioData.cmd_data,64*sizeof(char));
 }
 static void cmd_wifi_disconnect(int argc, char **argv)
 {
@@ -286,12 +258,12 @@ int main(void)
 	char *argv[MAX_ARGC];
 	int i, argc;
 	char buf[64];
-	fd = open(INIC_8195A, O_RDWR);  
-	if(fd < 0)  
-	{  
-	        printf("open file %s failed!\n", INIC_8195A);  
-	        return -1;  
-	}
+//		fd = open(INIC_8195A, O_RDWR);  
+//		if(fd < 0)  
+//		{  
+//		        printf("open file %s failed!\n", INIC_8195A);  
+//		        return -1;  
+//		}
 	printf("\n\rEnter the interative mode, please make your command as follow.\n\n\r");
 	for(i = 0; i < sizeof(cmd_table) / sizeof(cmd_table[0]); i ++)
 		printf("\n\r    %s", cmd_table[i].command);
@@ -318,7 +290,7 @@ int main(void)
 				printf("unknown command '%s'\n\r", argv[0]);
 		}
 	}while(global_exit);
-	close(fd);	
+//	close(fd);	
 	return 0;
 }
 
