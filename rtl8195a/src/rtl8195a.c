@@ -13,6 +13,7 @@
 #include <linux/tcp.h>
 #include <linux/init.h>
 #include <linux/rtnetlink.h>
+#include <linux/fs.h>
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,0)
 #define dev_printk(A,B,fmt,args...) printk(A fmt,##args)
@@ -61,6 +62,36 @@ static _mutex Recv_Xmit_mutex;
 static int Print_Message(u8 *message);
 static int RecvOnePkt(struct sdio_func * func);
 static int SendOnePkt(struct sdio_func * func);
+
+static ssize_t myFunc_Read(struct file *file, char *buf, size_t count, loff_t *ppos)
+{
+	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
+	return 0;
+}
+
+static ssize_t myFunc_Write(struct file *file, char *buf, size_t count, loff_t *ppos)
+{
+	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
+	return 0;
+}
+
+static ssize_t myFunc_Open(struct inode *inode, struct file *file)
+{
+	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
+	return 0;
+}
+
+static ssize_t myFunc_Close(struct inode *inode, struct file *file)
+{ 	
+	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
+	return 0;
+}
+
+static int ma_fonction_ioctl(struct inode *inode, struct file *file, unsigned int cmd, unsigned long arg)
+{
+	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
+	return 0;
+}
 
 static int RecvOnePkt_Thread(void * pData)
 {
@@ -338,6 +369,15 @@ static void __devexit rtl8195a_remove_one(struct sdio_func *func)
 	}
 	sdio_release_host(func);
 }
+
+static struct file_operations fops = 
+{
+	read : myFunc_Read,
+	write : myFunc_Write,
+	open : myFunc_Open,
+	release : myFunc_Close,
+	ioctl : 
+};
 
 static const struct sdio_device_id sdio_ids[] =
 {
