@@ -72,28 +72,26 @@ static void cmd_wifi_connect(int argc, char **argv)
 		return;
 	}
 	
-	printf("Joining BSS ...\n\r");
-	
+	printf("Joining BSS ...\n\r");	
 //todo: send relative data to Ameba by using the module inic_8195a.ko
-		strcpy(cmdDesc.cmdtype, SDIO_CMD_wifi_connect);	
-		cmdDesc.datatype = MNGMT_FRAME;
-		cmdDesc.offset = sizeof(CMD_DESC);
-		cmdDesc.pktsize = sizeof(cmd_buf)-strlen(argv[0]);
+	strcpy(cmdDesc.cmdtype, SDIO_CMD_wifi_connect);	
+	cmdDesc.datatype = MNGMT_FRAME;
+	cmdDesc.offset = sizeof(CMD_DESC);
+	cmdDesc.pktsize = sizeof(cmd_buf)-strlen(argv[0]-1);
 
-		sdioData.cmd = cmdDesc;
-
-		printf("sdioData.cmd.cmdtype is: %s\n\r", sdioData.cmd.cmdtype);
-		printf("sdioData.cmd.datatype is: %d\n\r", sdioData.cmd.datatype);
-		printf("sdioData.cmd.offset is: %d\n\r", sdioData.cmd.offset);
-		printf("sdioData.cmd.pktsize is: %d\n\r", sdioData.cmd.pktsize);
-
-		printf("The command entered is : %s\n\r", cmd_buf);		
-		strcpy(sdioData.cmd_data, cmd_buf);
-		printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
-		memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])), cmdDesc.pktsize);
-		printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
+	sdioData.cmd = cmdDesc;
+//		printf("sdioData.cmd.cmdtype is: %s\n\r", sdioData.cmd.cmdtype);
+//		printf("sdioData.cmd.datatype is: %d\n\r", sdioData.cmd.datatype);
+//		printf("sdioData.cmd.offset is: %d\n\r", sdioData.cmd.offset);
+//		printf("sdioData.cmd.pktsize is: %d\n\r", sdioData.cmd.pktsize);
+//	
+//		printf("The command entered is : %s\n\r", cmd_buf);		
+//		strcpy(sdioData.cmd_data, cmd_buf);
+//		printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);	
+	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0]+1)), cmdDesc.pktsize);
+	printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
 //todo: send sdioData to Ameba driver
-//		write(fd,sdioData.cmd_data,64*sizeof(char));
+//	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 }
 static void cmd_wifi_disconnect(int argc, char **argv)
 {
