@@ -42,7 +42,15 @@ MODULE_AUTHOR("Realtek");
 MODULE_DESCRIPTION("RealTek RTL-8195a iNIC");
 MODULE_LICENSE("GPL");
 MODULE_VERSION(RTL8195_VERSION);
-
+typedef struct _CMD_DESC{
+//DWORD 0
+unsigned int pktsize: 16; //=tx_desc.pktsize - cmd_desc.offset
+unsigned int offset: 8; //cmd header size
+unsigned int datatype: 8; // only first bit used, 0: data frame 1: management frame
+//DWORD 1
+unsigned char cmdtype[2]; //to call which API
+unsigned int resv: 16;
+}CMD_DESC, *PCMD_DESC;
 #define Message_Recv		"Here is Recv action!"
 #define Message_Xmit			"Here is Xmit action!"
 #ifndef SLEEP_MILLI_SEC
@@ -74,6 +82,7 @@ static ssize_t myFunc_Read(struct file *file, char *buf, size_t count, loff_t *p
 static ssize_t myFunc_Write(struct file *file, const char *buf, size_t count, loff_t *ppos)
 {
 	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
+	memset(g_SDIO_cmdData, 0, sizeof(g_SDIO_cmdData)); 
 	if(copy_from_user(&g_SDIO_cmdData,buf,sizeof(g_SDIO_cmdData)))
 	 {
 		 printk(KERN_DEBUG "copy from user failed!\n"); 
