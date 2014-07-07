@@ -49,6 +49,7 @@ typedef struct _SDIO_CMDDATA{
 #define SDIO_CMD_wifi_scan 			"F0"
 #define SDIO_CMD_wifi_get_rssi 		"CR"
 #define SDIO_CMD_wifi_ping 			"T0"
+#define SDIO_CMD_wifi_info 			"I?"
 #define MNGMT_FRAME				1
 #define DATA_FRAME					0
 
@@ -143,6 +144,7 @@ static void cmd_wifi_ap(int argc, char **argv)
 		printf("Usage: wifi_ap SSID CHANNEL [PASSWORD]\n\r");
 		return;
 	}
+
 }
 static void cmd_wifi_scan(int argc, char **argv)
 {
@@ -164,6 +166,14 @@ static void cmd_wifi_get_rssi(int argc, char **argv)
 	int rssi = 0;
 //	wifi_get_rssi(&rssi);
 //todo: send relative data to Ameba
+	strcpy(cmdDesc.cmdtype, SDIO_CMD_wifi_disconnect);	
+	cmdDesc.datatype = MNGMT_FRAME;
+	cmdDesc.offset = sizeof(CMD_DESC);
+	cmdDesc.pktsize = strlen(cmd_buf)-strlen(argv[0]);
+
+	sdioData.cmd = cmdDesc;
+	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
+	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	printf("wifi_get_rssi: rssi = %d\n\r", rssi);
 }
 
