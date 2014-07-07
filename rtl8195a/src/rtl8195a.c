@@ -58,6 +58,7 @@ static struct task_struct *Xmit_Thread = NULL;
 static struct task_struct *Recv_Thread = NULL;
 PHAL_DATA_TYPE gHal_Data = NULL;
 static _mutex Recv_Xmit_mutex;
+static int major;
 
 static int Print_Message(u8 *message);
 static int RecvOnePkt(struct sdio_func * func);
@@ -72,6 +73,7 @@ static ssize_t myFunc_Read(struct file *file, char *buf, size_t count, loff_t *p
 static ssize_t myFunc_Write(struct file *file, char *buf, size_t count, loff_t *ppos)
 {
 	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
+	SendOnePkt(gHal_Data->func);
 	return 0;
 }
 
@@ -398,6 +400,14 @@ static int __init rtl8195a_init_module(void)
 {
 
 	int ret;
+	ret = register_chrdev(0,"inic_8195a",&fops);
+	if (ret < 0)
+	{
+		printk(KERN_WARNING "%s(): function error!\n", __FUNCTION__);
+		return ret;
+	}
+	major = ret;
+	printk(KERN_DEBUG "MAJOR : %d\n",ret);
 	ret = sdio_register_driver(&rtl8195a);
 	if(ret!=0)
 		printk("sdio register driver Failed!\n");
@@ -408,6 +418,7 @@ static int __init rtl8195a_init_module(void)
 static void __exit rtl8195a_cleanup_module(void)
 {
 
+	unregister_chrdev(major, "inic_8195a");
 	sdio_unregister_driver(&rtl8195a);
 
 }

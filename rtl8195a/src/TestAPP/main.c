@@ -47,7 +47,10 @@ typedef struct _SDIO_CMDDATA{
 #define SDIO_CMD_wifi_ping 			"T0"
 #define MNGMT_FRAME				1
 #define DATA_FRAME					0
+
+#define INIC_8195A "/dev/inic_8195a"
 static int global_exit =1;
+static int fd;
 static char cmd_buf[64] = {0};
 static void cmd_help(int argc, char **argv);
 
@@ -114,11 +117,12 @@ static void cmd_wifi_connect(int argc, char **argv)
 		printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
 
 //todo: send sdioData to Ameba driver
+		write(fd,sdioData.cmd_data,64*sizeof(char));
 }
 static void cmd_wifi_disconnect(int argc, char **argv)
 {
 	CMD_DESC cmd;
-	printf("Do %s\n\r", __FUNCTION__);;
+	printf("Do %s\n\r", __FUNCTION__);
 //todo: send relative data to Ameba
 }
 
@@ -278,6 +282,12 @@ int main(void)
 	char *argv[MAX_ARGC];
 	int i, argc;
 	char buf[64];
+	fd = open(SPI, O_RDWR);  
+	if(fd < 0)  
+	{  
+	        printf("open file %s failed!\n", SPI);  
+	        return -1;  
+	}
 	printf("\n\rEnter the interative mode, please make your command as follow.\n\n\r");
 	for(i = 0; i < sizeof(cmd_table) / sizeof(cmd_table[0]); i ++)
 		printf("\n\r    %s", cmd_table[i].command);
@@ -304,6 +314,7 @@ int main(void)
 				printf("unknown command '%s'\n\r", argv[0]);
 		}
 	}while(global_exit);
+	close(fd);	
 	return 0;
 }
 
