@@ -60,7 +60,7 @@ static struct task_struct *Recv_Thread = NULL;
 PHAL_DATA_TYPE gHal_Data = NULL;
 static _mutex Recv_Xmit_mutex;
 static int major;
-static char g_SDIO_cmdData[72] = {0};
+static char g_SDIO_cmdData[72] = {0};//sizeof(CMD_DESC)+sizeof(CMD_DATA)
 static int Print_Message(u8 *message);
 static int RecvOnePkt(struct sdio_func * func);
 static int SendOnePkt(struct sdio_func * func);
