@@ -113,28 +113,32 @@ static void cmd_wifi_disconnect(int argc, char **argv)
 
 static void cmd_wifi_info(int argc, char **argv)
 {
-	CMD_DESC cmd;
+	CMD_DESC cmdDesc;
+	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
 //todo: send relative data to Ameba
 }
 
 static void cmd_wifi_on(int argc, char **argv)
 {
-	CMD_DESC cmd;
+	CMD_DESC cmdDesc;
+	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
 //todo: send relative data to Ameba
 }
 
 static void cmd_wifi_off(int argc, char **argv)
 {
-	CMD_DESC cmd;
+	CMD_DESC cmdDesc;
+	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
 //todo: send relative data to Ameba
 }
 
 static void cmd_wifi_ap(int argc, char **argv)
 {
-	CMD_DESC cmd;
+	CMD_DESC cmdDesc;
+	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
 //	WIFI_AP ap = {0};
 	int timeout = 20, mode;
@@ -148,7 +152,8 @@ static void cmd_wifi_ap(int argc, char **argv)
 }
 static void cmd_wifi_scan(int argc, char **argv)
 {
-	CMD_DESC cmd;
+	CMD_DESC cmdDesc;
+	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
 	int scan_cnt = 0, add_cnt = 0;
 	if(argc == 2 && argv[1]){
@@ -161,7 +166,8 @@ static void cmd_wifi_scan(int argc, char **argv)
 
 static void cmd_wifi_get_rssi(int argc, char **argv)
 {
-	CMD_DESC cmd;
+	CMD_DESC cmdDesc;
+	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
 	int rssi = 0;
 //	wifi_get_rssi(&rssi);
@@ -179,6 +185,8 @@ static void cmd_wifi_get_rssi(int argc, char **argv)
 
 static void cmd_ping(int argc, char **argv)
 {
+	CMD_DESC cmdDesc;
+	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
 	if(argc == 2) {
 //		do_ping_call(argv[1], 0, 5);	//Not loop, count=5
