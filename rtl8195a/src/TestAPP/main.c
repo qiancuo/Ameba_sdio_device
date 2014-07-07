@@ -95,9 +95,19 @@ static void cmd_wifi_connect(int argc, char **argv)
 }
 static void cmd_wifi_disconnect(int argc, char **argv)
 {
-	CMD_DESC cmd;
+	CMD_DESC cmdDesc;
+	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
+	printf("Deassociating AP ...\n\r");
 //todo: send relative data to Ameba
+	strcpy(cmdDesc.cmdtype, SDIO_CMD_wifi_disconnect);	
+	cmdDesc.datatype = MNGMT_FRAME;
+	cmdDesc.offset = sizeof(CMD_DESC);
+	cmdDesc.pktsize = strlen(cmd_buf)-strlen(argv[0]);
+
+	sdioData.cmd = cmdDesc;
+	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
+	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 }
 
 static void cmd_wifi_info(int argc, char **argv)
