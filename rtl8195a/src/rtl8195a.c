@@ -68,7 +68,7 @@ static struct task_struct *Recv_Thread = NULL;
 PHAL_DATA_TYPE gHal_Data = NULL;
 static _mutex Recv_Xmit_mutex;
 static int major;
-static char g_SDIO_cmdData[2048] = {0};//sizeof(CMD_DESC)+sizeof(CMD_DATA)
+static char *g_SDIO_cmdData = NULL;//2048
 static int Print_Message(u8 *message);
 static int RecvOnePkt(struct sdio_func * func);
 static int SendOnePkt(struct sdio_func * func);
@@ -143,7 +143,7 @@ static ssize_t myFunc_Write(struct file *file, const char *buf, size_t count, lo
 	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
 //	memset(g_SDIO_cmdData, 0, sizeof(g_SDIO_cmdData)); 
 	CMD_DESC wlan_cmd;
-	if(copy_from_user(&g_SDIO_cmdData,buf,sizeof(g_SDIO_cmdData)))
+	if(copy_from_user(g_SDIO_cmdData,buf,sizeof(g_SDIO_cmdData)))
 	 {
 		 printk(KERN_DEBUG "copy from user failed!\n"); 
 		 return -EFAULT;
@@ -404,7 +404,7 @@ static int __devinit rtl8195a_init_one(struct sdio_func *func, const struct sdio
 	printk("%s():++\n",__FUNCTION__);
 
 	gHal_Data = kmalloc(sizeof(PHAL_DATA_TYPE), GFP_KERNEL);
-
+	g_SDIO_cmdData = kmalloc(2048, GFP_KERNEL);
 	// 1.init SDIO bus and read chip version	
 	rc = sdio_init(func);
 	if(rc)
@@ -441,6 +441,7 @@ static void __devexit rtl8195a_remove_one(struct sdio_func *func)
 	}
 	mutex_destroy(&Recv_Xmit_mutex);
 	kfree(gHal_Data);
+	kfree(g_SDIO_cmdData);
 	sdio_claim_host(func);
 	rc = sdio_disable_func(func);
 	if(rc){
