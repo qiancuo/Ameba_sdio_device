@@ -59,6 +59,12 @@ static int fd;
 static char cmd_buf[2040] = {0};
 static void cmd_help(int argc, char **argv);
 
+static CMD_DESC CmdDescGen()
+{
+	CMD_DESC cmdDesc;
+
+}
+
 static void cmd_wifi_connect(int argc, char **argv)
 {
 	CMD_DESC cmdDesc;
@@ -250,7 +256,58 @@ static void cmd_exit(int argc, char **argv)
 	printf("Leave INTERACTIVE MODE\n\r");
 	global_exit = 0;
 }
+#define wlanpktsize 282
+static void cmd_wifi_send_data(void)
+{
+	CMD_DESC cmdDesc;
+	SDIO_CMDDATA sdioData;
+	int i, payload_len;
+	unsigned char wlan_header[24];
+	payload_len = wlanpktsize-sizeof(wlan_header);
+	unsigned char payload[payload_len];	
 
+	wlan_header[0]=0x88;
+	wlan_header[1]=0x01;
+	wlan_header[2]=0x00;
+	wlan_header[3]=0x00;
+//destination address
+	wlan_header[4]=0xff;
+	wlan_header[5]=0xff;
+	wlan_header[6]=0xff;
+	wlan_header[7]=0xff;
+	wlan_header[8]=0xff;
+	wlan_header[9]=0xff;
+//source address
+	wlan_header[10]=0x00;
+	wlan_header[11]=0x00;
+	wlan_header[12]=0x00;
+	wlan_header[13]=0x00;
+	wlan_header[14]=0x00;
+	wlan_header[15]=0x02;
+//BSSID	
+	wlan_header[16]=0x00;
+	wlan_header[17]=0x00;
+	wlan_header[18]=0x00;
+	wlan_header[19]=0x00;
+	wlan_header[20]=0x00;
+	wlan_header[21]=0x01;
+//SEQ control	
+	wlan_header[22]=0x00;
+	wlan_header[23]=0x00;
+	for(i=0; i<payload_len; i++)
+		payload[i] = 0x3e;
+
+	cmdDesc.datatype = DATA_FRAME;
+	cmdDesc.offset = sizeof(CMD_DESC);
+	cmdDesc.pktsize = wlanpktsize;
+
+	sdioData.cmd = cmdDesc;
+
+	memcpy(sdioData.cmd_data, (char *)wlan_header, sizeof(wlan_header));
+	memcpy(sdioData.cmd_data+sizeof(wlan_header), payload, payload_len);
+	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
+	
+}
 static const cmd_entry cmd_table[] = {
 	{"wifi_connect", cmd_wifi_connect},
 	{"wifi_disconnect", cmd_wifi_disconnect},
@@ -265,7 +322,8 @@ static const cmd_entry cmd_table[] = {
 //	{"ttcp", cmd_ttcp},
 	{"ping", cmd_ping},
 	{"exit", cmd_exit},
-	{"help", cmd_help}
+	{"help", cmd_help},
+	{"wifi_send_data", cmd_wifi_send_data}
 };
 
 
