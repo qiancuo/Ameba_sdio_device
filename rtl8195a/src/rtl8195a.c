@@ -68,7 +68,7 @@ static struct task_struct *Recv_Thread = NULL;
 PHAL_DATA_TYPE gHal_Data = NULL;
 static _mutex Recv_Xmit_mutex;
 static int major;
-static char *g_SDIO_cmdData = NULL;//2048
+static char g_SDIO_cmdData[2048] = {0};//2048
 static int Print_Message(u8 *message);
 static int RecvOnePkt(struct sdio_func * func);
 static int SendOnePkt(struct sdio_func * func);
@@ -79,7 +79,12 @@ static int SendWlanCmdPkt(struct sdio_func *func)
 	int i;
 	struct sdio_func *pfunc;
 	u8 data[WlanCmdSize];
-
+	PCMD_DESC pWlan_cmd;
+	memcpy(pWlan_cmd, &g_SDIO_cmdData, sizeof(CMD_DESC));
+	for(i=0;i<sizeof(CMD_DESC);i++)
+	{
+		printk("pWlan_cmd[%d] = 0x%02x\n", i, pWlan_cmd[i]);
+	}	
 //Tx descriptor(32bytes)
 	data[0] = 0x48;//pkt len 0
 	data[1] = 0x00;//pkt len 1
@@ -406,7 +411,7 @@ static int __devinit rtl8195a_init_one(struct sdio_func *func, const struct sdio
 	printk("%s():++\n",__FUNCTION__);
 
 	gHal_Data = kmalloc(sizeof(PHAL_DATA_TYPE), GFP_KERNEL);
-	g_SDIO_cmdData = kmalloc(2048, GFP_KERNEL);
+//	g_SDIO_cmdData = kmalloc(2048, GFP_KERNEL);
 	// 1.init SDIO bus and read chip version	
 	rc = sdio_init(func);
 	if(rc)
@@ -443,7 +448,7 @@ static void __devexit rtl8195a_remove_one(struct sdio_func *func)
 	}
 	mutex_destroy(&Recv_Xmit_mutex);
 	kfree(gHal_Data);
-	kfree(g_SDIO_cmdData);
+//	kfree(g_SDIO_cmdData);
 	sdio_claim_host(func);
 	rc = sdio_disable_func(func);
 	if(rc){
