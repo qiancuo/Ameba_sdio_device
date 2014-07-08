@@ -81,8 +81,8 @@ static int SendWlanCmdPkt(struct sdio_func *func)
 	u8 data[WlanCmdSize];
 	PCMD_DESC pWlan_cmd;
 	memcpy(pWlan_cmd, &g_SDIO_cmdData, sizeof(CMD_DESC));
-	printk("pWlan_cmd.pktsize = %d\n\r", pWlan_cmd.pktsize);
-	printk("pWlan_cmd.offset = %d\n\r", pWlan_cmd.offset);
+	printk("pWlan_cmd.pktsize = %d\n\r", pWlan_cmd->pktsize);
+	printk("pWlan_cmd.offset = %d\n\r", pWlan_cmd->offset);
 //Tx descriptor(32bytes)
 	data[0] = 0x48;//pkt len 0
 	data[1] = 0x00;//pkt len 1
