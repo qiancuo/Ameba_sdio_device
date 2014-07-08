@@ -76,12 +76,13 @@ static int SendOnePkt(struct sdio_func * func);
 #define WlanCmdSize 104
 static int SendWlanCmdPkt(PCMD_DESC pWlan_cmd)
 {
-	int i;
+	int i, len, totlen;
 	struct sdio_func *pfunc;
 	u8 data[WlanCmdSize];
 	
 	printk("pWlan_cmd.pktsize = %d\n\r", pWlan_cmd->pktsize);
 	printk("pWlan_cmd.offset = %d\n\r", pWlan_cmd->offset);
+	len = pWlan_cmd->pktsize+pWlan_cmd->offset;
 //Tx descriptor(32bytes)
 	data[0] = 0x48;//pkt len 0
 	data[1] = 0x00;//pkt len 1
@@ -118,15 +119,15 @@ static int SendWlanCmdPkt(PCMD_DESC pWlan_cmd)
 	
 //	cmd string content: AT cmd descriptor(8bytes) and cmd data //72bytes
 	printk("g_SDIO_cmdData length is %d\n", sizeof(g_SDIO_cmdData));
-	for(i=0;i<sizeof(g_SDIO_cmdData);i++)
+	for(i=0;i<len;i++)
 	{
 		printk("g_SDIO_cmdData[%d] = 0x%02x\n", i, g_SDIO_cmdData[i]);
 	}
-	memcpy(data+32, g_SDIO_cmdData, strlen(g_SDIO_cmdData));
-
-	for(i=0;i<strlen(data);i++)
+	memcpy(data+32, g_SDIO_cmdData, len);
+	totlen = len + sizeof(TX_DESC);
+	for(i=0;i<totlen;i++)
 	{
-		printk("tx[%d] = 0x%02x\n", i, data[i]);
+		printk("data[%d] = 0x%02x\n", i, data[i]);
 	}
 
 //	pfunc = func;
@@ -157,13 +158,21 @@ static ssize_t myFunc_Write(struct file *file, const char *buf, size_t count, lo
 	{
 		SendWlanCmdPkt(pwlan_cmd);
 	}
+	else if(pwlan_cmd->datatype == 0)
+	{
 	SendOnePkt(gHal_Data->func);
+	}
 	return 0;
 }
 
 static ssize_t myFunc_Open(struct inode *inode, struct file *file)
 {
 	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
+	if(gHal_Data == NULL)
+	{
+		 printk(KERN_DEBUG "SDIO Init havn't finished!\n"); 
+		 return -EFAULT;
+	}
 	return 0;
 }
 
