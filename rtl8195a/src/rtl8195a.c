@@ -81,10 +81,8 @@ static int SendWlanCmdPkt(struct sdio_func *func)
 	u8 data[WlanCmdSize];
 	PCMD_DESC pWlan_cmd;
 	memcpy(pWlan_cmd, &g_SDIO_cmdData, sizeof(CMD_DESC));
-	for(i=0;i<sizeof(CMD_DESC);i++)
-	{
-		printk("pWlan_cmd[%d] = 0x%02x\n", i, pWlan_cmd[i]);
-	}	
+	printk("pWlan_cmd.pktsize = %d\n\r", pWlan_cmd.pktsize);
+	printk("pWlan_cmd.offset = %d\n\r", pWlan_cmd.offset);
 //Tx descriptor(32bytes)
 	data[0] = 0x48;//pkt len 0
 	data[1] = 0x00;//pkt len 1
@@ -133,7 +131,7 @@ static int SendWlanCmdPkt(struct sdio_func *func)
 	}
 
 	pfunc = func;
-	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (sizeof(g_SDIO_cmdData)+sizeof(TX_DESC)), data);
+//	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (sizeof(g_SDIO_cmdData)+sizeof(TX_DESC)), data);
 
 	return 0;	
 }
@@ -155,12 +153,12 @@ static ssize_t myFunc_Write(struct file *file, const char *buf, size_t count, lo
 		 return -EFAULT;
 	  }
 	
-		pwlan_cmd = (PCMD_DESC)g_SDIO_cmdData;
-//		if(pwlan_cmd->datatype == 1)
-//		{
-//			SendWlanCmdPkt(gHal_Data->func);
-//		}
-//		SendOnePkt(gHal_Data->func);
+	pwlan_cmd = (PCMD_DESC)g_SDIO_cmdData;
+	if(pwlan_cmd->datatype == 1)
+	{
+		SendWlanCmdPkt(gHal_Data->func);
+	}
+	SendOnePkt(gHal_Data->func);
 	return 0;
 }
 
