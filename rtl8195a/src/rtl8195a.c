@@ -74,13 +74,12 @@ static int RecvOnePkt(struct sdio_func * func);
 static int SendOnePkt(struct sdio_func * func);
 
 #define WlanCmdSize 104
-static int SendWlanCmdPkt(struct sdio_func *func)
+static int SendWlanCmdPkt(PCMD_DESC pWlan_cmd)
 {
 	int i;
 	struct sdio_func *pfunc;
 	u8 data[WlanCmdSize];
-	PCMD_DESC pWlan_cmd;
-	memcpy(pWlan_cmd, &g_SDIO_cmdData, sizeof(CMD_DESC));
+	
 	printk("pWlan_cmd.pktsize = %d\n\r", pWlan_cmd->pktsize);
 	printk("pWlan_cmd.offset = %d\n\r", pWlan_cmd->offset);
 //Tx descriptor(32bytes)
@@ -156,7 +155,7 @@ static ssize_t myFunc_Write(struct file *file, const char *buf, size_t count, lo
 	pwlan_cmd = (PCMD_DESC)g_SDIO_cmdData;
 	if(pwlan_cmd->datatype == 1)
 	{
-		SendWlanCmdPkt(gHal_Data->func);
+		SendWlanCmdPkt(pwlan_cmd);
 	}
 	SendOnePkt(gHal_Data->func);
 	return 0;
