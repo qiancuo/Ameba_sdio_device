@@ -150,12 +150,12 @@ static ssize_t myFunc_Write(struct file *file, const char *buf, size_t count, lo
 		 return -EFAULT;
 	  }
 	printk("g_SDIO_cmdData length is %d\n", sizeof(g_SDIO_cmdData));
-	pwlan_cmd = (CMD_DESC)g_SDIO_cmdData;
-	if(pwlan_cmd->datatype == 0)
+	pwlan_cmd = (PCMD_DESC)g_SDIO_cmdData;
+	if(pwlan_cmd->datatype == 1)
 	{
-		SendOnePkt(gHal_Data->func);
+		SendWlanCmdPkt(gHal_Data->func);
 	}
-	SendWlanCmdPkt(gHal_Data->func);
+	SendOnePkt(gHal_Data->func);
 	return 0;
 }
 
