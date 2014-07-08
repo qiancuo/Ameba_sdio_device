@@ -130,7 +130,7 @@ static TX_DESC TxDescGen(u16 pktsize, u16 seqNum)
 
 //DWORD 3
 	txdesc.nextheadpage = 0;
-	txdesc.tailpaget = 0;
+	txdesc.tailpage = 0;
 	txdesc.seq = seqNum;
 	txdesc.pkt_id = 0;
 
