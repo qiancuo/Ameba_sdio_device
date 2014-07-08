@@ -257,7 +257,7 @@ static void cmd_exit(int argc, char **argv)
 	global_exit = 0;
 }
 #define wlanpktsize 282
-static void cmd_wifi_send_data(void)
+static void cmd_wifi_send_data(int argc, char **argv)
 {
 	CMD_DESC cmdDesc;
 	SDIO_CMDDATA sdioData;
