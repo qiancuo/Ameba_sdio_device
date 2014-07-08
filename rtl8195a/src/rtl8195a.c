@@ -202,51 +202,11 @@ static int SendWlanCmdPkt(PCMD_DESC pWlan_cmd)
 	u8 data[WlanCmdSize];
 	TX_DESC txdesc;
 	
-	printk("pWlan_cmd.pktsize = %d\n\r", pWlan_cmd->pktsize);
-	printk("pWlan_cmd.offset = %d\n\r", pWlan_cmd->offset);
+	printk("pWlan_cmd->pktsize = %d\n\r", pWlan_cmd->pktsize);
+	printk("pWlan_cmd->offset = %d\n\r", pWlan_cmd->offset);
+	printk("pWlan_cmd->datatype = %d\n\r", pWlan_cmd->datatype);
 	len = pWlan_cmd->pktsize+pWlan_cmd->offset;
 	txdesc = TxDescGen(len, 1);
-//Tx descriptor(32bytes)
-//		data[0] = 0x48;//pkt len 0
-//		data[1] = 0x00;//pkt len 1
-//		data[2] = 0x20;
-//		data[3] = 0x8d;
-//		data[4] = 0x00;
-//		data[5] = 0x06;
-//		data[6] = 0x20;
-//		data[7] = 0x00;
-//		data[8] = 0x00;
-//		data[9] = 0x00;
-//		data[10] = 0x70;
-//		data[11] = 0x00;
-//		data[12] = 0x00;
-//		data[13] = 0x00;	
-//		data[14] = 0x01;
-//		data[15] = 0x00;
-//		data[16] = 0x43;
-//		data[17] = 0x07;
-//		data[18] = 0x00;
-//		data[19] = 0x00;
-//		data[20] = 0x00;
-//		data[21] = 0x00;
-//		data[22] = 0x00;	
-//		data[23] = 0x00;
-//		data[24] = 0x00;
-//		data[25] = 0x78;
-//		data[26] = 0x88;
-//		data[27] = 0x88;
-//		data[28] = 0xa0;
-//		data[29] = 0x7d;
-//		data[30] = 0x00;
-//		data[31] = 0x00;
-	
-//	cmd string content: AT cmd descriptor(8bytes) and cmd data //72bytes
-//		printk("g_SDIO_cmdData length is %d\n", sizeof(g_SDIO_cmdData));
-//		for(i=0;i<len;i++)
-//		{
-//			printk("g_SDIO_cmdData[%d] = 0x%02x\n", i, g_SDIO_cmdData[i]);
-//		}
-//	printk("txdesc.offset = %d\n", txdesc.offset);
 	memcpy(data, &txdesc, txdesc.offset);
 	memcpy((data+sizeof(TX_DESC)), g_SDIO_cmdData, len);
 	totlen = len + sizeof(TX_DESC);
@@ -254,8 +214,6 @@ static int SendWlanCmdPkt(PCMD_DESC pWlan_cmd)
 	{
 		printk("data[%d] = 0x%02x\n", i, data[i]);
 	}
-
-//	pfunc = func;
 	sdio_write_port(gHal_Data->func, WLAN_TX_HIQ_DEVICE_ID, totlen, data);
 
 	return 0;	
@@ -278,15 +236,15 @@ static ssize_t myFunc_Write(struct file *file, const char *buf, size_t count, lo
 		 return -EFAULT;
 	  }
 	
-	pwlan_cmd = (PCMD_DESC)g_SDIO_cmdData;
-	if(pwlan_cmd->datatype == 1)
-	{
-		SendWlanCmdPkt(pwlan_cmd);
-	}
-	else if(pwlan_cmd->datatype == 0)
-	{
-	SendOnePkt(gHal_Data->func);
-	}
+		pwlan_cmd = (PCMD_DESC)g_SDIO_cmdData;
+//		if(pwlan_cmd->datatype == 1)
+//		{
+			SendWlanCmdPkt(pwlan_cmd);
+//		}
+//		else if(pwlan_cmd->datatype == 0)
+//		{
+//			SendOnePkt(gHal_Data->func);
+//		}
 	return 0;
 }
 
