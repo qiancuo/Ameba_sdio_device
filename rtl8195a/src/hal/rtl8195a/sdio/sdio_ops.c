@@ -40,7 +40,7 @@ static void HalSdioGetCmdAddr8195ASdio(
 
 		case WLAN_RX0FF_DEVICE_ID:
 //			*pCmdAddr = ((WLAN_RX0FF_DEVICE_ID << 13) | (Addr & WLAN_RX0FF_MSK));
-			*pCmdAddr = ((WLAN_RX0FF_DEVICE_ID << 13) | (Addr & 0x3));
+			*pCmdAddr = ((WLAN_RX0FF_DEVICE_ID << 13) | (Addr & WLAN_RX0FF_MSK));
 			break;
 
 		default:
@@ -60,14 +60,6 @@ static u8 get_deviceid(u32 addr)
 			deviceId = SDIO_LOCAL_DEVICE_ID;
 			break;
 
-//		case 0x1026:
-//			devideId = WLAN_IOREG_DEVICE_ID;
-//			break;
-
-//		case 0x1027:
-//			devideId = SDIO_FIRMWARE_FIFO;
-//			break;
-
 		case 0x1031:
 			deviceId = WLAN_TX_HIQ_DEVICE_ID;
 			break;
@@ -85,8 +77,6 @@ static u8 get_deviceid(u32 addr)
 			break;
 
 		default:
-//			devideId = (u8)((addr >> 13) & 0xF);
-//			devideId = WLAN_IOREG_DEVICE_ID;
 			deviceId = SDIO_LOCAL_DEVICE_ID;
 			break;
 	}

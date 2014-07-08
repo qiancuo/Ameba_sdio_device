@@ -68,11 +68,70 @@ static struct task_struct *Recv_Thread = NULL;
 PHAL_DATA_TYPE gHal_Data = NULL;
 static _mutex Recv_Xmit_mutex;
 static int major;
-static char g_SDIO_cmdData[72] = {0};//sizeof(CMD_DESC)+sizeof(CMD_DATA)
+static char g_SDIO_cmdData[2048] = {0};//sizeof(CMD_DESC)+sizeof(CMD_DATA)
 static int Print_Message(u8 *message);
 static int RecvOnePkt(struct sdio_func * func);
 static int SendOnePkt(struct sdio_func * func);
 
+#define WlanCmdSize 104
+static int SendWlanCmdPkt(struct sdio_func *func)
+{
+	int i;
+	struct sdio_func *pfunc;
+	u8 data[WlanCmdSize];
+
+//Tx descriptor(32bytes)
+	data[0] = 0x48;//pkt len 0
+	data[1] = 0x00;//pkt len 1
+	data[2] = 0x20;
+	data[3] = 0x8d;
+	data[4] = 0x00;
+	data[5] = 0x06;
+	data[6] = 0x20;
+	data[7] = 0x00;
+	data[8] = 0x00;
+	data[9] = 0x00;
+	data[10] = 0x70;
+	data[11] = 0x00;
+	data[12] = 0x00;
+	data[13] = 0x00;	
+	data[14] = 0x01;
+	data[15] = 0x00;
+	data[16] = 0x43;
+	data[17] = 0x07;
+	data[18] = 0x00;
+	data[19] = 0x00;
+	data[20] = 0x00;
+	data[21] = 0x00;
+	data[22] = 0x00;	
+	data[23] = 0x00;
+	data[24] = 0x00;
+	data[25] = 0x78;
+	data[26] = 0x88;
+	data[27] = 0x88;
+	data[28] = 0xa0;
+	data[29] = 0x7d;
+	data[30] = 0x00;
+	data[31] = 0x00;
+	
+//	cmd string content: AT cmd descriptor(8bytes) and cmd data //72bytes
+	printk("g_SDIO_cmdData length is %d\n", sizeof(g_SDIO_cmdData));
+	for(i=0;i<sizeof(g_SDIO_cmdData);i++)
+	{
+		printk("g_SDIO_cmdData[%d] = 0x%02x\n", i, g_SDIO_cmdData[i]);
+	}
+	memcpy(data+32, g_SDIO_cmdData, strlen(g_SDIO_cmdData));
+
+	for(i=0;i<strlen(data);i++)
+	{
+		printk("tx[%d] = 0x%02x\n", i, data[i]);
+	}
+
+	pfunc = func;
+	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (sizeof(g_SDIO_cmdData)+sizeof(TX_DESC)), data);
+
+	return 0;	
+}
 static ssize_t myFunc_Read(struct file *file, char *buf, size_t count, loff_t *ppos)
 {
 	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
@@ -82,13 +141,19 @@ static ssize_t myFunc_Read(struct file *file, char *buf, size_t count, loff_t *p
 static ssize_t myFunc_Write(struct file *file, const char *buf, size_t count, loff_t *ppos)
 {
 	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
-	memset(g_SDIO_cmdData, 0, sizeof(g_SDIO_cmdData)); 
+//	memset(g_SDIO_cmdData, 0, sizeof(g_SDIO_cmdData)); 
+	CMD_DESC wlan_cmd;
 	if(copy_from_user(&g_SDIO_cmdData,buf,sizeof(g_SDIO_cmdData)))
 	 {
 		 printk(KERN_DEBUG "copy from user failed!\n"); 
 		 return -EFAULT;
 	  }
-	SendOnePkt(gHal_Data->func);
+	wlan_cmd = (CMD_DESC)g_SDIO_cmdData;
+	if(wlan_cmd.datatype == 0)
+	{
+		SendOnePkt(gHal_Data->func);
+	}
+	SendWlanCmdPkt(gHal_Data->func);
 	return 0;
 }
 
@@ -181,18 +246,16 @@ static int RecvOnePkt(struct sdio_func *func)
 	return _SUCCESS;
 }
 
-#define TxPktSize 314 //for test
+#define TxPktSize (2048+32) //for test
 static int SendOnePkt(struct sdio_func *func)
 {
 	int i;
 	struct sdio_func *pfunc;
 	u8 data[TxPktSize];
-//	u8 data[43];
+
 //Tx descriptor(32bytes)
-//	data[0] = 0x1a;
-//	data[1] = 0x01;
-	data[0] = 0x48;//pkt len 0
-	data[1] = 0x00;//pkt len 1
+	data[0] = 0x22;
+	data[1] = 0x01;//290
 	data[2] = 0x20;
 	data[3] = 0x8d;
 	data[4] = 0x00;
@@ -224,86 +287,73 @@ static int SendOnePkt(struct sdio_func *func)
 	data[30] = 0x00;
 	data[31] = 0x00;
 //at cmd descriptor(8bytes)
-	data[32] = 0x03; //pktsize0
-	data[33] = 0x00; //pktsize1
-	data[34] = 0x08; //offset
-	data[35] = 0x01; //frame type
-	data[36] = 0x43; //'C'
-//	data[37] = 0x44; //'D', "CD" for disconnect
-	data[37] = 0x30; //'0', "C0" for connect
-	data[38] = 0x00; //resv
-	data[39] = 0x00; //resv
-//cmd string
-//		data[40] = 0x72; //'r'
-//		data[41] = 0x74; //'t'
-//		data[42] = 0x6B;//'k'
-//wlan pkt		
-	data[40] = 0x88;
-	data[41] = 0x01;
-	data[42] = 0x00;
-	data[43] = 0x00;
-	
-	data[44] = 0xff;	
-	data[45] = 0xff;	
-	data[46] = 0xff;	
-	data[47] = 0xff;	
-	data[48] = 0xff;	
-	data[49] = 0xff;	
-	
-	data[50] = 0x00;	
-	data[51] = 0x00;
-	data[52] = 0x00;
-	data[53] = 0x00;
-	data[54] = 0x00;
-	data[55] = 0x02;
-	
-	data[56] = 0x00;	
-	data[57] = 0x00;
-	data[58] = 0x00;
-	data[59] = 0x00;
-	data[60] = 0x00;
-	data[61] = 0x01;
-	
-	data[62] = 0x10;
-	
-	data[63] = 0x00;
-	data[64] = 0x06;
-	data[65] = 0x00;
-	data[66] = 0x01;
-	data[67] = 0x00;
-	data[68] = 0x00;
-	
-	
-	data[69] = 0x04;	
-	data[70] = 0x06;
-	data[71] = 0x99;
-	data[72] = 0x99;
-	data[73] = 0x99;
-	data[74] = 0x3e;
-	for (i=0;i<TxPktSize-75;i++)
-	{
-		data[i+75] = 0x3e;
-	}
-	printk("tx packet length is %d\n", sizeof(data));
-
-//		printk("g_SDIO_cmdData length is %d\n", sizeof(g_SDIO_cmdData));
-//		for(i=0;i<sizeof(g_SDIO_cmdData);i++)
+//		data[32] = 0x1a; //pktsize0
+//		data[33] = 0x01; //pktsize1
+//		data[34] = 0x08; //offset
+//		data[35] = 0x00; //frame type
+//		data[36] = 0x00; 
+//		data[37] = 0x00; 
+//		data[38] = 0x00; //resv
+//		data[39] = 0x00; //resv
+//	
+//	//wlan pkt		
+//		data[40] = 0x88;
+//		data[41] = 0x01;
+//		data[42] = 0x00;
+//		data[43] = 0x00;
+//		
+//		data[44] = 0xff;	
+//		data[45] = 0xff;	
+//		data[46] = 0xff;	
+//		data[47] = 0xff;	
+//		data[48] = 0xff;	
+//		data[49] = 0xff;	
+//		
+//		data[50] = 0x00;	
+//		data[51] = 0x00;
+//		data[52] = 0x00;
+//		data[53] = 0x00;
+//		data[54] = 0x00;
+//		data[55] = 0x02;
+//		
+//		data[56] = 0x00;	
+//		data[57] = 0x00;
+//		data[58] = 0x00;
+//		data[59] = 0x00;
+//		data[60] = 0x00;
+//		data[61] = 0x01;
+//		
+//		data[62] = 0x10;
+//		
+//		data[63] = 0x00;
+//		data[64] = 0x06;
+//		data[65] = 0x00;
+//		data[66] = 0x01;
+//		data[67] = 0x00;
+//		data[68] = 0x00;
+//		
+//		
+//		data[69] = 0x04;	
+//		data[70] = 0x06;
+//		data[71] = 0x99;
+//		data[72] = 0x99;
+//		data[73] = 0x99;
+//		data[74] = 0x3e;
+//		for (i=0;i<TxPktSize-75;i++)
 //		{
-//			printk("g_SDIO_cmdData[%d] = 0x%02x\n", i, g_SDIO_cmdData[i]);
+//			data[i+75] = 0x3e;
 //		}
-//		memcpy(data+32, g_SDIO_cmdData, sizeof(g_SDIO_cmdData));
+	memcpy(data+32, g_SDIO_cmdData, strlen(g_SDIO_cmdData));
+	printk("tx packet length is %d\n", strlen(data));
 
-	for(i=0;i<sizeof(data);i++)
+	for(i=0;i<strlen(data);i++)
 	{
 		printk("tx[%d] = 0x%02x\n", i, data[i]);
 	}
 
 	pfunc = func;
-	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, TxPktSize, data);
-//	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (sizeof(g_SDIO_cmdData)+sizeof(TX_DESC)), data);
-
-
-
+//	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, TxPktSize, data);
+	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, strlen(data), data);
 /*
 	for(i=0; i<10;i++)
 	{

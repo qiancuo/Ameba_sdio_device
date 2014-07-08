@@ -7,8 +7,7 @@
 #define SDIO_LOCAL_DEVICE_ID			0
 //#define FW_FIFO_DEVICE_ID 		1
 //#define WLAN_IOREG_DEVICE_ID 		8
-//#define WLAN_TX_HIQ_DEVICE_ID			4
-#define WLAN_TX_HIQ_DEVICE_ID			0
+#define WLAN_TX_HIQ_DEVICE_ID			4
 #define WLAN_TX_MIQ_DEVICE_ID			5
 #define WLAN_TX_LOQ_DEVICE_ID			6
 #define WLAN_RX0FF_DEVICE_ID			7
@@ -21,8 +20,8 @@
 #define SDIO_LOCAL_MSK					0xFFF
 //#define WLAN_IOREG_MSK				0xFFFF
 #define WLAN_FIFO_MSK					0x1FFF
-#define WLAN_RX0FF_MSK 				0x1fff
-
+//#define WLAN_RX0FF_MSK 				0x1fff
+#define WLAN_RX0FF_MSK 				0x3
 //IO Bus domain address mapping
 #define SDIO_LOCAL						0x10250000
 #define WLAN_TX_FIFO					0x10310000

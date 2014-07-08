@@ -38,7 +38,7 @@ typedef struct _WIFI_NETWORK{
 
 typedef struct _SDIO_CMDDATA{
 	CMD_DESC cmd;
-	char cmd_data[64];
+	char cmd_data[2040];
 }SDIO_CMDDATA, *PSDIO_CMDDATA;
 
 #define SDIO_CMD_wifi_connect 		"C0"
@@ -56,7 +56,7 @@ typedef struct _SDIO_CMDDATA{
 #define INIC_8195A "/dev/inic_8195a"
 static int global_exit =1;
 static int fd;
-static char cmd_buf[64] = {0};
+static char cmd_buf[2040] = {0};
 static void cmd_help(int argc, char **argv);
 
 static void cmd_wifi_connect(int argc, char **argv)
@@ -117,6 +117,13 @@ static void cmd_wifi_info(int argc, char **argv)
 	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
 //todo: send relative data to Ameba
+	strcpy(cmdDesc.cmdtype, SDIO_CMD_wifi_info);	
+	cmdDesc.datatype = MNGMT_FRAME;
+	cmdDesc.offset = sizeof(CMD_DESC);
+	cmdDesc.pktsize = strlen(cmd_buf)-strlen(argv[0]);
+	sdioData.cmd = cmdDesc;
+	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
+	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 }
 
 static void cmd_wifi_on(int argc, char **argv)
@@ -125,6 +132,13 @@ static void cmd_wifi_on(int argc, char **argv)
 	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
 //todo: send relative data to Ameba
+	strcpy(cmdDesc.cmdtype, SDIO_CMD_wifi_on);	
+	cmdDesc.datatype = MNGMT_FRAME;
+	cmdDesc.offset = sizeof(CMD_DESC);
+	cmdDesc.pktsize = strlen(cmd_buf)-strlen(argv[0]);
+	sdioData.cmd = cmdDesc;
+	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
+	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 }
 
 static void cmd_wifi_off(int argc, char **argv)
@@ -133,6 +147,13 @@ static void cmd_wifi_off(int argc, char **argv)
 	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
 //todo: send relative data to Ameba
+	strcpy(cmdDesc.cmdtype, SDIO_CMD_wifi_off);	
+	cmdDesc.datatype = MNGMT_FRAME;
+	cmdDesc.offset = sizeof(CMD_DESC);
+	cmdDesc.pktsize = strlen(cmd_buf)-strlen(argv[0]);
+	sdioData.cmd = cmdDesc;
+	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
+	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 }
 
 static void cmd_wifi_ap(int argc, char **argv)
@@ -148,7 +169,13 @@ static void cmd_wifi_ap(int argc, char **argv)
 		printf("Usage: wifi_ap SSID CHANNEL [PASSWORD]\n\r");
 		return;
 	}
-
+	strcpy(cmdDesc.cmdtype, SDIO_CMD_wifi_ap);	
+	cmdDesc.datatype = MNGMT_FRAME;
+	cmdDesc.offset = sizeof(CMD_DESC);
+	cmdDesc.pktsize = strlen(cmd_buf)-strlen(argv[0])-1;
+	sdioData.cmd = cmdDesc;
+	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
+	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 }
 static void cmd_wifi_scan(int argc, char **argv)
 {
@@ -157,7 +184,14 @@ static void cmd_wifi_scan(int argc, char **argv)
 	printf("Do %s\n\r", __FUNCTION__);
 	int scan_cnt = 0, add_cnt = 0;
 	if(argc == 2 && argv[1]){
-		//todo: send relative data to Ameba
+	//todo: send relative data to Ameba
+		strcpy(cmdDesc.cmdtype, SDIO_CMD_wifi_scan);	
+		cmdDesc.datatype = MNGMT_FRAME;
+		cmdDesc.offset = sizeof(CMD_DESC);
+		cmdDesc.pktsize = strlen(cmd_buf)-strlen(argv[0])-1;
+		sdioData.cmd = cmdDesc;
+		memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
+		write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	}
 	else{
 		printf("Usage: wifi_scan BUFFER_LENGTH\n\r");
@@ -283,7 +317,7 @@ int main(void)
 {
 	char *argv[MAX_ARGC];
 	int i, argc;
-	char buf[64];
+	char buf[2040];
 	fd = open(INIC_8195A, O_RDWR);  
 	if(fd < 0)  
 	{  
