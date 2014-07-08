@@ -129,7 +129,7 @@ static int SendWlanCmdPkt(PCMD_DESC pWlan_cmd)
 		printk("tx[%d] = 0x%02x\n", i, data[i]);
 	}
 
-	pfunc = func;
+//	pfunc = func;
 //	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (sizeof(g_SDIO_cmdData)+sizeof(TX_DESC)), data);
 
 	return 0;	
