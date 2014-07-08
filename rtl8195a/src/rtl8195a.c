@@ -246,9 +246,9 @@ static int SendWlanCmdPkt(PCMD_DESC pWlan_cmd)
 //		{
 //			printk("g_SDIO_cmdData[%d] = 0x%02x\n", i, g_SDIO_cmdData[i]);
 //		}
-	printk("txdesc.off = %d\n", txdesc.offset);
+//	printk("txdesc.offset = %d\n", txdesc.offset);
 	memcpy(data, &txdesc, txdesc.offset);
-	memcpy(data+32, g_SDIO_cmdData, len);
+	memcpy((data+sizeof(TX_DESC)), g_SDIO_cmdData, len);
 	totlen = len + sizeof(TX_DESC);
 	for(i=0;i<totlen;i++)
 	{
@@ -256,7 +256,7 @@ static int SendWlanCmdPkt(PCMD_DESC pWlan_cmd)
 	}
 
 //	pfunc = func;
-//	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (sizeof(g_SDIO_cmdData)+sizeof(TX_DESC)), data);
+	sdio_write_port(gHal_Data->func, WLAN_TX_HIQ_DEVICE_ID, totlen, data);
 
 	return 0;	
 }
