@@ -149,7 +149,7 @@ static ssize_t myFunc_Write(struct file *file, const char *buf, size_t count, lo
 	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
 //	memset(g_SDIO_cmdData, 0, sizeof(g_SDIO_cmdData)); 
 
-	if(copy_from_user(g_SDIO_cmdData,buf,2048))
+	if(copy_from_user(&g_SDIO_cmdData,buf,sizeof(g_SDIO_cmdData)))
 	 {
 		 printk(KERN_DEBUG "copy from user failed!\n"); 
 		 return -EFAULT;
