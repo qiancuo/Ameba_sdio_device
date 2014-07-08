@@ -140,9 +140,10 @@ static ssize_t myFunc_Read(struct file *file, char *buf, size_t count, loff_t *p
 
 static ssize_t myFunc_Write(struct file *file, const char *buf, size_t count, loff_t *ppos)
 {
+	PCMD_DESC pwlan_cmd;
 	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
 //	memset(g_SDIO_cmdData, 0, sizeof(g_SDIO_cmdData)); 
-	PCMD_DESC pwlan_cmd;
+
 	if(copy_from_user(g_SDIO_cmdData,buf,sizeof(g_SDIO_cmdData)))
 	 {
 		 printk(KERN_DEBUG "copy from user failed!\n"); 
