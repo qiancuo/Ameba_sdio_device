@@ -72,57 +72,182 @@ static char g_SDIO_cmdData[2048] = {0};//2048
 static int Print_Message(u8 *message);
 static int RecvOnePkt(struct sdio_func * func);
 static int SendOnePkt(struct sdio_func * func);
+static TX_DESC TxDescGen(u16 pktsize, u16 seqNum)
+{
+	TX_DESC txdesc;
+//DWORD 0
+	txdesc.txpktsize = pktsize;
 
+	txdesc.offset = 0x20;
+
+	txdesc.bmc = 1;
+	txdesc.htc = 0;
+	txdesc.ls = 1;
+	txdesc.fs = 1;
+	txdesc.linip = 0;
+	txdesc.noacm = 0;
+	txdesc.gf = 0;
+	txdesc.own = 1;
+
+//DWORD 1
+	txdesc.macid = 0;
+	txdesc.agg_en = 0;
+	txdesc.bk = 0;
+	txdesc.rdg_en = 0;
+
+	txdesc.qsel = 6;
+	txdesc.rdg_nav_ext = 0;
+	txdesc.lsig_txop_en = 0;
+	txdesc.pifs = 0;
+
+	txdesc.rate_id = 0;
+	txdesc.navusehdr = 0;
+	txdesc.en_desc_id = 1;
+	txdesc.sectype = 0;
+
+	txdesc.rsvd2 = 0;
+	txdesc.pkt_offset = 0;
+	txdesc.rsvd3 = 0;
+
+//DWORD 2
+	txdesc.rts_rc = 0;
+	txdesc.data_rc = 0;
+	txdesc.rsvd8 = 0;
+	txdesc.bar_rty_th = 0;
+
+	txdesc.rsvd4 = 0;
+	txdesc.morefrag = 0;
+	txdesc.raw = 0;
+	txdesc.ccx = 0;
+	txdesc.ampdu_density = 7;
+	txdesc.rsvd5 = 0;
+
+	txdesc.antsel_a = 0;
+	txdesc.antsel_b =0;
+	txdesc.tx_ant_cck = 0;
+	txdesc.tx_antl = 0;
+	txdesc.tx_antht = 0;
+
+//DWORD 3
+	txdesc.nextheadpage = 0;
+	txdesc.tailpaget = 0;
+	txdesc.seq = seqNum;
+	txdesc.pkt_id = 0;
+
+//DWORD 4
+	txdesc.rtsrate = 3;
+	txdesc.ap_dcfe = 0;
+	txdesc.qos =1;
+	txdesc.hwseq_en =0;
+
+	txdesc.userate = 1;
+	txdesc.disrtsfb =1;
+	txdesc.disdatafb =1;
+	txdesc.cts2self =0;
+	txdesc.rtsen =0;
+	txdesc.hw_rts_en = 0;
+	txdesc.port_toggle =0;
+	txdesc.rsvd6 =0;
+
+	txdesc.rsvd7 =0;
+	txdesc.wait_dcts =0;
+	txdesc.cts2ap_en=0;
+	txdesc.data_txsc=0;
+
+	txdesc.data_short =0;
+	txdesc.databw =0;
+	txdesc.rts_short =0;
+	txdesc.rtsbw =0;
+	txdesc.rts_sc =0;
+	txdesc.vcs_stbc=0;
+
+//DWORD 5
+	txdesc.datarate = 0;
+
+	txdesc.data_ratefb_lmt =0;
+	txdesc.rts_ratefb_lmt =0;
+	txdesc.rty_en =0;
+	txdesc.data_rt_lmt =0;
+
+	txdesc.usb_txagg_num=0;
+
+//DWORD 6
+	txdesc.txagc_a = 0;
+	txdesc.txagc_b =0;
+	txdesc.use_max_len =0;
+	txdesc.max_agg_num = 0xf;
+
+	txdesc.mcsg1_max_len = 8;
+	txdesc.mcsg2_max_len =8;
+
+	txdesc.mcsg3_max_len = 8;
+	txdesc.mcsg7_max_len =8;
+
+//DWORD 7
+	txdesc.txbuffsize = 0x7da0;
+
+	txdesc.mcsg4_max_len =0;
+	txdesc.mcsg5_max_len =0;
+	txdesc.mcsg6_max_len =0;
+	txdesc.mcsg15_max_len =0;
+
+	return txdesc;
+	
+}
 #define WlanCmdSize 104
 static int SendWlanCmdPkt(PCMD_DESC pWlan_cmd)
 {
 	int i, len, totlen;
 	struct sdio_func *pfunc;
 	u8 data[WlanCmdSize];
+	TX_DESC txdesc;
 	
 	printk("pWlan_cmd.pktsize = %d\n\r", pWlan_cmd->pktsize);
 	printk("pWlan_cmd.offset = %d\n\r", pWlan_cmd->offset);
 	len = pWlan_cmd->pktsize+pWlan_cmd->offset;
+	txdesc = TxDescGen(len, 1);
 //Tx descriptor(32bytes)
-	data[0] = 0x48;//pkt len 0
-	data[1] = 0x00;//pkt len 1
-	data[2] = 0x20;
-	data[3] = 0x8d;
-	data[4] = 0x00;
-	data[5] = 0x06;
-	data[6] = 0x20;
-	data[7] = 0x00;
-	data[8] = 0x00;
-	data[9] = 0x00;
-	data[10] = 0x70;
-	data[11] = 0x00;
-	data[12] = 0x00;
-	data[13] = 0x00;	
-	data[14] = 0x01;
-	data[15] = 0x00;
-	data[16] = 0x43;
-	data[17] = 0x07;
-	data[18] = 0x00;
-	data[19] = 0x00;
-	data[20] = 0x00;
-	data[21] = 0x00;
-	data[22] = 0x00;	
-	data[23] = 0x00;
-	data[24] = 0x00;
-	data[25] = 0x78;
-	data[26] = 0x88;
-	data[27] = 0x88;
-	data[28] = 0xa0;
-	data[29] = 0x7d;
-	data[30] = 0x00;
-	data[31] = 0x00;
+//		data[0] = 0x48;//pkt len 0
+//		data[1] = 0x00;//pkt len 1
+//		data[2] = 0x20;
+//		data[3] = 0x8d;
+//		data[4] = 0x00;
+//		data[5] = 0x06;
+//		data[6] = 0x20;
+//		data[7] = 0x00;
+//		data[8] = 0x00;
+//		data[9] = 0x00;
+//		data[10] = 0x70;
+//		data[11] = 0x00;
+//		data[12] = 0x00;
+//		data[13] = 0x00;	
+//		data[14] = 0x01;
+//		data[15] = 0x00;
+//		data[16] = 0x43;
+//		data[17] = 0x07;
+//		data[18] = 0x00;
+//		data[19] = 0x00;
+//		data[20] = 0x00;
+//		data[21] = 0x00;
+//		data[22] = 0x00;	
+//		data[23] = 0x00;
+//		data[24] = 0x00;
+//		data[25] = 0x78;
+//		data[26] = 0x88;
+//		data[27] = 0x88;
+//		data[28] = 0xa0;
+//		data[29] = 0x7d;
+//		data[30] = 0x00;
+//		data[31] = 0x00;
 	
 //	cmd string content: AT cmd descriptor(8bytes) and cmd data //72bytes
-	printk("g_SDIO_cmdData length is %d\n", sizeof(g_SDIO_cmdData));
-	for(i=0;i<len;i++)
-	{
-		printk("g_SDIO_cmdData[%d] = 0x%02x\n", i, g_SDIO_cmdData[i]);
-	}
+//		printk("g_SDIO_cmdData length is %d\n", sizeof(g_SDIO_cmdData));
+//		for(i=0;i<len;i++)
+//		{
+//			printk("g_SDIO_cmdData[%d] = 0x%02x\n", i, g_SDIO_cmdData[i]);
+//		}
+	printk("txdesc.off = %d\n", txdesc.offset);
+	memcpy(data, &txdesc, txdesc.offset);
 	memcpy(data+32, g_SDIO_cmdData, len);
 	totlen = len + sizeof(TX_DESC);
 	for(i=0;i<totlen;i++)
