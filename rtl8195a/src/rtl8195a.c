@@ -234,13 +234,13 @@ static int SendOnePkt(struct sdio_func *func)
 	data[38] = 0x00; //resv
 	data[39] = 0x00; //resv
 //cmd string
-	data[40] = 0x72; //'r'
-	data[41] = 0x74; //'t'
-	data[42] = 0x6B;//'k'
+//		data[40] = 0x72; //'r'
+//		data[41] = 0x74; //'t'
+//		data[42] = 0x6B;//'k'
 //wlan pkt		
-//		data[40] = 0x88;
-//		data[41] = 0x01;
-//		data[42] = 0x00;
+	data[40] = 0x88;
+	data[41] = 0x01;
+	data[42] = 0x00;
 	data[43] = 0x00;
 	
 	data[44] = 0xff;	
@@ -286,12 +286,12 @@ static int SendOnePkt(struct sdio_func *func)
 	}
 	printk("tx packet length is %d\n", sizeof(data));
 
-	printk("g_SDIO_cmdData length is %d\n", sizeof(g_SDIO_cmdData));
-	for(i=0;i<sizeof(g_SDIO_cmdData);i++)
-	{
-		printk("g_SDIO_cmdData[%d] = 0x%02x\n", i, g_SDIO_cmdData[i]);
-	}
-	memcpy(data+32, g_SDIO_cmdData, sizeof(g_SDIO_cmdData));
+//		printk("g_SDIO_cmdData length is %d\n", sizeof(g_SDIO_cmdData));
+//		for(i=0;i<sizeof(g_SDIO_cmdData);i++)
+//		{
+//			printk("g_SDIO_cmdData[%d] = 0x%02x\n", i, g_SDIO_cmdData[i]);
+//		}
+//		memcpy(data+32, g_SDIO_cmdData, sizeof(g_SDIO_cmdData));
 
 	for(i=0;i<sizeof(data);i++)
 	{
@@ -299,7 +299,8 @@ static int SendOnePkt(struct sdio_func *func)
 	}
 
 	pfunc = func;
-	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (sizeof(g_SDIO_cmdData)+sizeof(TX_DESC)), data);
+	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, TxPktSize, data);
+//	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (sizeof(g_SDIO_cmdData)+sizeof(TX_DESC)), data);
 
 
 
@@ -362,7 +363,7 @@ static int __devinit rtl8195a_init_one(struct sdio_func *func, const struct sdio
 	gHal_Data->SdioRxFIFOCnt =0;
 	mutex_init(&Recv_Xmit_mutex);
 //	RecvOnePKt(func);
-//	SendOnePkt(func);
+	SendOnePkt(func);
 //	Xmit_Thread = kthread_run(SendOnePkt_Thread, (void *)gHal_Data, "xmit_thread");
 //	Recv_Thread = kthread_run(RecvOnePkt_Thread, (void *)gHal_Data, "recv_thread");
 //    printk(KERN_INFO "%s: This product is covered by one or more of the following patents: US6,570,884, US6,115,776, and US6,327,625.\n", MODULENAME);
