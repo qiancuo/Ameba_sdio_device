@@ -307,7 +307,7 @@ static void cmd_wifi_send_data(int argc, char **argv)
 	memcpy(sdioData.cmd_data+sizeof(wlan_header), payload, payload_len);
 	for(i=0;i<wlanpktsize;i++)
 		printf("wlanpkt[%d] = 0x%02x\n", i, sdioData.cmd_data[i]);
-//	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
+	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	
 }
 static const cmd_entry cmd_table[] = {
