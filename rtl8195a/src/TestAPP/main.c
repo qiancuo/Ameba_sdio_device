@@ -38,7 +38,7 @@ typedef struct _WIFI_NETWORK{
 
 typedef struct _SDIO_CMDDATA{
 	CMD_DESC cmd;
-	char cmd_data[2040];
+	unsigned char cmd_data[2040];
 }SDIO_CMDDATA, *PSDIO_CMDDATA;
 
 #define SDIO_CMD_wifi_connect 		"C0"
@@ -262,9 +262,9 @@ static void cmd_wifi_send_data(int argc, char **argv)
 	CMD_DESC cmdDesc;
 	SDIO_CMDDATA sdioData;
 	int i, payload_len;
-	char wlan_header[24];
+	unsigned char wlan_header[24];
 	payload_len = wlanpktsize-sizeof(wlan_header);
-	char payload[payload_len];	
+	unsigned char payload[payload_len];	
 
 	wlan_header[0]=0x88;
 	wlan_header[1]=0x01;
