@@ -305,7 +305,9 @@ static void cmd_wifi_send_data(int argc, char **argv)
 
 	memcpy(sdioData.cmd_data, (char *)wlan_header, sizeof(wlan_header));
 	memcpy(sdioData.cmd_data+sizeof(wlan_header), payload, payload_len);
-	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
+	for(i=0;i<wlanpktsize;i++)
+		printk("wlanpkt[%d] = 0x%02x\n", i, sdioData.cmd_data[i]);
+//	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	
 }
 static const cmd_entry cmd_table[] = {
@@ -376,12 +378,12 @@ int main(void)
 	char *argv[MAX_ARGC];
 	int i, argc;
 	char buf[2040];
-	fd = open(INIC_8195A, O_RDWR);  
-	if(fd < 0)  
-	{  
-	        printf("open file %s failed!\n", INIC_8195A);  
-	        return -1;  
-	}
+//		fd = open(INIC_8195A, O_RDWR);  
+//		if(fd < 0)  
+//		{  
+//		        printf("open file %s failed!\n", INIC_8195A);  
+//		        return -1;  
+//		}
 	printf("\n\rEnter the interative mode, please make your command as follow.\n\n\r");
 	for(i = 0; i < sizeof(cmd_table) / sizeof(cmd_table[0]); i ++)
 		printf("\n\r    %s", cmd_table[i].command);
@@ -408,7 +410,7 @@ int main(void)
 				printf("unknown command '%s'\n\r", argv[0]);
 		}
 	}while(global_exit);
-	close(fd);	
+//	close(fd);	
 	return 0;
 }
 
