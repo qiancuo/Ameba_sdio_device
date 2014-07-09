@@ -235,16 +235,16 @@ static ssize_t myFunc_Write(struct file *file, const char *buf, size_t count, lo
 		 printk(KERN_DEBUG "copy from user failed!\n"); 
 		 return -EFAULT;
 	  }
-	
+//		
 		pwlan_cmd = (PCMD_DESC)g_SDIO_cmdData;
-	if(pwlan_cmd->datatype == 1)
-	{
+//		if(pwlan_cmd->datatype == 1)
+//		{
 			SendWlanCmdPkt(pwlan_cmd);
-	}
-	else if(pwlan_cmd->datatype == 0)
-	{
-		SendOnePkt(gHal_Data->func);
-	}
+//	}
+//		else if(pwlan_cmd->datatype == 0)
+//		{
+//			SendOnePkt(gHal_Data->func);
+//		}
 	return 0;
 }
 
