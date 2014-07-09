@@ -262,7 +262,7 @@ static void cmd_wifi_send_data(int argc, char **argv)
 	CMD_DESC cmdDesc;
 	SDIO_CMDDATA sdioData;
 	int i, payload_len;
-	unsigned char wlan_header[24] = {0};
+	char wlan_header[24];
 	payload_len = wlanpktsize-sizeof(wlan_header);
 	unsigned char payload[payload_len];	
 
