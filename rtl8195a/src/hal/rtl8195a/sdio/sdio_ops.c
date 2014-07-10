@@ -507,7 +507,7 @@ s32 sdio_local_read(
 //		}
 	
        n = RND4(cnt);
-	ptmpbuf = (u8 *)_rtw_malloc(n);
+	ptmpbuf = (u8 *)rtw_malloc(n);
 	if(!ptmpbuf)
 		return (-1);
 	sdio_claim_host(pfunc);
@@ -517,7 +517,7 @@ s32 sdio_local_read(
 		_rtw_memcpy(pbuf, ptmpbuf, cnt);
 
 	if(ptmpbuf)
-		_rtw_mfree(ptmpbuf, n);	
+		rtw_mfree(ptmpbuf, n);	
 
 	return err;
 }

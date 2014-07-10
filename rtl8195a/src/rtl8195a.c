@@ -36,7 +36,7 @@
 #include "include/drv_type_sdio.h"
 #include "include/rtl8195a.h"
 
-//#include "include/osdep_service_linux.h"
+#include "include/osdep_service_linux.h"
 
 MODULE_AUTHOR("Realtek");
 MODULE_DESCRIPTION("RealTek RTL-8195a iNIC");
@@ -66,7 +66,7 @@ unsigned int resv: 16;
 static struct task_struct *Xmit_Thread = NULL;
 static struct task_struct *Recv_Thread = NULL;
 PHAL_DATA_TYPE gHal_Data = NULL;
-static struct mutex Recv_Xmit_mutex;
+static _mutex Recv_Xmit_mutex;
 static int major;
 static unsigned char g_SDIO_cmdData[2048] = {0};//2048
 static int Print_Message(u8 *message);
