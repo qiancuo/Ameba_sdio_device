@@ -57,4 +57,5 @@ void _rtw_memcpy(void* dst, void* src, u32 sz);
 
 #define rtw_malloc(sz)			_rtw_malloc((sz))
 #define rtw_mfree(pbuf, sz)		_rtw_mfree((pbuf), (sz))
+#define rtw_memcpy(dst, src, sz)	_rtw_memcpy((dst), (src), (sz))
 #endif
