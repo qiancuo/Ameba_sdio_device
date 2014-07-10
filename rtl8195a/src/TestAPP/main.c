@@ -215,9 +215,10 @@ static void cmd_wifi_info(int argc, char **argv)
 		printf("read wifi_info failed!\n");
 		return;
 	}
+	printf("size of AT_WIFI_INFO = %d\n\r", sizeof(AT_WIFI_INFO));
 	pWifiInfo = (AT_WIFI_INFO *)buf;
-	printf("\n\rWIFI Status (%s)", (pWifiInfo->running == 1) ? "Running" : "Stopped");
-	printf("\n\r==============================");
+	printf("WIFI Status (%s)\n\r", (pWifiInfo->running == 1) ? "Running" : "Stopped");
+	printf("==============================\n\r");
 }
 
 static void cmd_wifi_on(int argc, char **argv)
