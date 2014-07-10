@@ -318,7 +318,8 @@ static int cmd_wifi_recv_data(int argc, char **argv)
 {
 	unsigned char buf[2048];
 	int read_bytes, i;
-	read_bytes = read(fd, buf, 2048);
+	read_bytes = read(fd, buf, sizeof(buf));
+	printf("read_bytes = %d\n", read_bytes);
 	if(read_bytes < 0)
 	{
 		printf("read from 8195a failed!\n");
