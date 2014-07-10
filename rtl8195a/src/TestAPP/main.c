@@ -265,7 +265,7 @@ static void cmd_wifi_send_data(int argc, char **argv)
 	unsigned char wlan_header[26];
 	payload_len = wlanpktsize-sizeof(wlan_header);
 	unsigned char payload[payload_len];	
-
+	printf("Do %s\n\r", __FUNCTION__);
 	wlan_header[0]=0x88;
 	wlan_header[1]=0x01;
 	wlan_header[2]=0x00;
@@ -318,6 +318,7 @@ static int cmd_wifi_recv_data(int argc, char **argv)
 {
 	unsigned char buf[2048];
 	int read_bytes, i;
+	printf("Do %s\n\r", __FUNCTION__);
 	read_bytes = read(fd, buf, sizeof(buf));
 	printf("read_bytes = %d\n", read_bytes);
 	if(read_bytes < 0)
@@ -414,7 +415,7 @@ int main(void)
 		printf("Wlan: ");
 		gets(buf);
 		printf("The command entered is : %s\n\r", buf);
-		printf("buf size is : %d\n\r", sizeof(buf));
+//		printf("buf size is : %d\n\r", sizeof(buf));
 		strcpy(cmd_buf, buf);		
 		if((argc = parse_cmd(buf, argv)) > 0) {
 			int found = 0;
