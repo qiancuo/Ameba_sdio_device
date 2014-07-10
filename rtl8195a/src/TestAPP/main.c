@@ -371,10 +371,11 @@ static void cmd_wifi_recv_data(int argc, char **argv)
 //			printf("buf_read[%d] = 0x%02x\n", i, buf[i]);
 	pCmdDesc = (PCMD_DESC)buf;
 	printk("CMD Desc: \n");
-	DumpForOneBytes ((u8*)pCmdDesc, sizeof(CMD_DESC));
+	DumpForOneBytes ((unsigned char *)pCmdDesc, sizeof(CMD_DESC));
 	printk("WLAN Payload: \n");
-	DumpForOneBytes ((u8*)(buf+sizeof(CMD_DESC)), pCmdDesc->pktsize);
+	DumpForOneBytes ((unsigned char *)(buf+sizeof(CMD_DESC)), pCmdDesc->pktsize);
 }
+
 static const cmd_entry cmd_table[] = {
 	{"wifi_connect", cmd_wifi_connect},
 	{"wifi_disconnect", cmd_wifi_disconnect},
