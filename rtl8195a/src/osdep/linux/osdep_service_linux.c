@@ -1,4 +1,5 @@
 #include "../../include/osdep_service_linux.h"
+
 u8* _rtw_malloc(u32 sz)
 {
 	u8 *pbuf=NULL;

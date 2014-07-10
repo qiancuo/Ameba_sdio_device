@@ -51,5 +51,7 @@
 #else
 	typedef struct semaphore	_mutex;
 #endif
-
+u8* _rtw_malloc(u32 sz);
+void _rtw_mfree(u8 *pbuf, u32 sz);
+void _rtw_memcpy(void* dst, void* src, u32 sz);
 #endif
