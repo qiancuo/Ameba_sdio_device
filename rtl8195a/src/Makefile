@@ -13,7 +13,7 @@ else
 	RTKDIR := $(subst $(BASEDIR)/,,$(DRIVERDIR))
 
 .PHONY: all
-all: clean modules install
+all: clean modules
 
 .PHONY:modules
 modules:
