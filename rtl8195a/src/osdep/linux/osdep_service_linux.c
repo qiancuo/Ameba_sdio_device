@@ -28,7 +28,7 @@ void DumpForOneBytes(IN u8 *pData, IN u8 Len)
 
 	while( LineIndex< Length)
 	{		
-			printk("%08X: ", (pSbuf+LineIndex) );
+			printk("%08x: ", (pSbuf+LineIndex) );
 
 			if(LineIndex+16 < Length)
 				Offset=16;
