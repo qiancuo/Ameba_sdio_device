@@ -245,7 +245,7 @@ static int RecvWlanCmdPkt(PCMD_DESC pWlan_cmd, u16 *pLen)
 		}
 		pRxDesc = (PRX_DESC)pBuf;	
 		printk("pRxDesc->pkt_len + sizeof(RX_DESC) = %d\n", pRxDesc->pkt_len+sizeof(RX_DESC));
-		for(i=0;i<(pRxDesc->pkt_len+sizeof(RX_DESC);i++)
+		for(i=0;i<(pRxDesc->pkt_len+sizeof(RX_DESC));i++)
 		{
 			printk("Rx[%d] = 0x%02x\n", i, *(pBuf+i));
 		}
