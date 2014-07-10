@@ -263,7 +263,7 @@ static ssize_t myFunc_Read(struct file *file, char *buf, size_t count, loff_t *p
 	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
 	RecvWlanCmdPkt(NULL, &len);
 	printk("copy_to_user: len is %d\n", len);
-	if (copy_to_user(buf, g_SDIO_cmdData, len))
+	if (copy_to_user(buf, g_SDIO_cmdData, sizeof(g_SDIO_cmdData)))
 	{	
 		printk("copy_to_user failed!\n");
 		return -EFAULT;
