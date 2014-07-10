@@ -314,22 +314,19 @@ static void cmd_wifi_send_data(int argc, char **argv)
 	
 }
 
-static int cmd_wifi_recv_data(int argc, char **argv)
+static void cmd_wifi_recv_data(int argc, char **argv)
 {
 	unsigned char buf[2048];
 	int read_bytes, i;
 	printf("Do %s\n\r", __FUNCTION__);
 	read_bytes = read(fd, buf, sizeof(buf));
-	printf("read_bytes = %d\n", read_bytes);
 	if(read_bytes < 0)
 	{
 		printf("read from 8195a failed!\n");
-		return -1;
+		return;
 	}
-	for(i=0;i<read_bytes;i++)
+	for(i=0;i<50;i++)
 		printf("buf_read[%d] = 0x%02x\n", i, buf[i]);
-
-	return 0;
 }
 static const cmd_entry cmd_table[] = {
 	{"wifi_connect", cmd_wifi_connect},
