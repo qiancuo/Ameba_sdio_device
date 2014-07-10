@@ -243,12 +243,13 @@ static int RecvWlanCmdPkt(PCMD_DESC pWlan_cmd, u16 *pLen)
 			printk("sdio read port failed!\n");
 			return res;
 		}
-	
-		for(i=0;i<len;i++)
+		pRxDesc = (PRX_DESC)pBuf;	
+		printk("pkt_len is %d\n", pRxDesc->pkt_len);
+		for(i=0;i<pRxDesc->pkt_len;i++)
 		{
 			printk("Rx[%d] = 0x%02x\n", i, *(pBuf+i));
 		}
-		pRxDesc = (PRX_DESC)pBuf;
+
 		memcpy(g_SDIO_cmdData, pBuf, pRxDesc->pkt_len);
 		*pLen = pRxDesc->pkt_len;	
 		kfree(pBuf);
@@ -261,6 +262,7 @@ static ssize_t myFunc_Read(struct file *file, char *buf, size_t count, loff_t *p
 	u16 len =0;
 	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
 	RecvWlanCmdPkt(NULL, &len);
+	printk("copy_to_user: len is %d\n", len);
 	if (copy_to_user(buf, g_SDIO_cmdData, len))
 	{	
 		printk("copy_to_user failed!\n");
