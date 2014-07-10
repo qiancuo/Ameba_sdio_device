@@ -35,7 +35,41 @@ typedef struct _WIFI_NETWORK{
 	int 				password_len;
 	int					key_id;
 }WIFI_NETWORK;
+typedef enum _WIFI_MODE_TYPE{
+	WIFI_MODE_STA = 0,
+	WIFI_MODE_AP
+}WIFI_MODE_TYPE;
+typedef struct _WIFI_SETTING{
+	WIFI_MODE_TYPE		mode;
+	unsigned char 		ssid[33];
+	unsigned char		channel;
+	WIFI_SECURITY_TYPE	security_type;
+	unsigned char 		password[33];
+}WIFI_SETTING;
+struct net_device_stats {
+	unsigned long   rx_packets;             /* total packets received       */
+	unsigned long   tx_packets;             /* total packets transmitted    */
+	unsigned long   rx_dropped;             /* no space in linux buffers    */
+	unsigned long   tx_dropped;             /* no space available in linux  */
+	unsigned long   rx_bytes;               /* total bytes received         */
+	unsigned long   tx_bytes;               /* total bytes transmitted      */
+};
+typedef struct _AT_WIFI_INFO{
+	CMD_DESC CmdDesc;
+	int running;
+	unsigned char mac[6];
+	unsigned char ip[4];
+	unsigned char gw[4];
+	WIFI_SETTING setting;
+	struct net_device_stats stats;
+	int min_free_heap_size;
+	int max_skbbuf_used_num;
+	int skbbuf_used_num;
+	int max_skbdata_used_num;
+	int skbdata_used_num;
+	int max_timer_used_num;
 
+}AT_WIFI_INFO, PAT_WIFI_INFO;
 typedef struct _SDIO_CMDDATA{
 	CMD_DESC cmd;
 	unsigned char cmd_data[2040];
@@ -161,7 +195,10 @@ static void cmd_wifi_disconnect(int argc, char **argv)
 static void cmd_wifi_info(int argc, char **argv)
 {
 	CMD_DESC cmdDesc;
+	AT_WIFI_INFO *pWifiInfo;
 	SDIO_CMDDATA sdioData;
+	int read_bytes;
+	unsigned char buf[2048];
 	printf("Do %s\n\r", __FUNCTION__);
 //todo: send relative data to Ameba
 	strcpy(cmdDesc.cmdtype, SDIO_CMD_wifi_info);	
@@ -171,6 +208,16 @@ static void cmd_wifi_info(int argc, char **argv)
 	sdioData.cmd = cmdDesc;
 	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
+	
+	read_bytes = read(fd, buf, sizeof(buf));
+	if(read_bytes < 0)
+	{
+		printf("read wifi_info failed!\n");
+		return;
+	}
+	pWifiInfo = (AT_WIFI_INFO *)buf;
+	printf("\n\rWIFI Status (%s)", (pWifiInfo->running == 1) ? "Running" : "Stopped");
+	printf("\n\r==============================");
 }
 
 static void cmd_wifi_on(int argc, char **argv)
@@ -269,26 +316,34 @@ static void cmd_ping(int argc, char **argv)
 	CMD_DESC cmdDesc;
 	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
-	if(argc == 2) {
-//		do_ping_call(argv[1], 0, 5);	//Not loop, count=5
-		//todo: send relative data to Ameba
+//		if(argc == 2) {
+//	//		do_ping_call(argv[1], 0, 5);	//Not loop, count=5
+//			//todo: send relative data to Ameba
+//	
+//		}
+//		else if(argc == 3) {
+//			if(strcmp(argv[2], "loop") == 0)
+//				{
+//	//			do_ping_call(argv[1], 1, 0);	//loop, no count
+//				//todo: send relative data to Ameba
+//				}
+//			else
+//				{
+//	//			do_ping_call(argv[1], 0, atoi(argv[2]));	//Not loop, with count
+//				//todo: send relative data to Ameba
+//				}
+//		}
+//		else {
+//			printf("Usage: ping IP [COUNT/loop]\n\r");
+//		}
+	strcpy(cmdDesc.cmdtype, SDIO_CMD_wifi_ping);	
+	cmdDesc.datatype = MNGMT_FRAME;
+	cmdDesc.offset = sizeof(CMD_DESC);
+	cmdDesc.pktsize = strlen(cmd_buf)-strlen(argv[0])-1;
 
-	}
-	else if(argc == 3) {
-		if(strcmp(argv[2], "loop") == 0)
-			{
-//			do_ping_call(argv[1], 1, 0);	//loop, no count
-			//todo: send relative data to Ameba
-			}
-		else
-			{
-//			do_ping_call(argv[1], 0, atoi(argv[2]));	//Not loop, with count
-			//todo: send relative data to Ameba
-			}
-	}
-	else {
-		printf("Usage: ping IP [COUNT/loop]\n\r");
-	}
+	sdioData.cmd = cmdDesc;
+	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
+	write(fd, &sdioData,sizeof(SDIO_CMDDATA));	
 }
 
 static void cmd_exit(int argc, char **argv)
