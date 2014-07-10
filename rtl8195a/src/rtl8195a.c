@@ -249,7 +249,7 @@ static int RecvWlanCmdPkt(PCMD_DESC pWlan_cmd, u16 *pLen)
 		}
 
 		memcpy(g_SDIO_cmdData, pBuf, len);
-		pLen = len;	
+		*pLen = len;	
 		kfree(pBuf);
 	}
 	return 0;
