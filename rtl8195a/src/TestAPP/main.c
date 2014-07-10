@@ -313,6 +313,22 @@ static void cmd_wifi_send_data(int argc, char **argv)
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	
 }
+
+static int cmd_wifi_recv_data(int argc, char **argv)
+{
+	u8 buf[2048];
+	u32 read_bytes, i;
+	read_bytes = read(fd, buf, 2048);
+	if(read_bytes < 0)
+	{
+		printf("read from 8195a failed!\n");
+		return -1;
+	}
+	for(i=0;i<read_bytes;i++)
+		printf("buf_read[%d] = 0x%02x\n", i, buf[i]);
+
+	return 0;
+}
 static const cmd_entry cmd_table[] = {
 	{"wifi_connect", cmd_wifi_connect},
 	{"wifi_disconnect", cmd_wifi_disconnect},
@@ -328,7 +344,8 @@ static const cmd_entry cmd_table[] = {
 	{"ping", cmd_ping},
 	{"exit", cmd_exit},
 	{"help", cmd_help},
-	{"wifi_send_data", cmd_wifi_send_data}
+	{"wifi_send_pkt", cmd_wifi_send_data},
+	{"wifi_recv_pkt", cmd_wifi_recv_data}
 };
 
 
