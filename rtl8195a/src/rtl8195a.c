@@ -245,13 +245,18 @@ static int RecvWlanCmdPkt(PCMD_DESC pWlan_cmd, u16 *pLen)
 		}
 		pRxDesc = (PRX_DESC)pBuf;	
 		printk("pRxDesc->pkt_len + sizeof(RX_DESC) = %d\n", pRxDesc->pkt_len+sizeof(RX_DESC));
-		for(i=0;i<(pRxDesc->pkt_len+sizeof(RX_DESC));i++)
-		{
-			printk("Rx[%d] = 0x%02x\n", i, *(pBuf+i));
-		}
-
+//			for(i=0;i<(pRxDesc->pkt_len+sizeof(RX_DESC));i++)
+//			{
+//				printk("Rx[%d] = 0x%02x\n", i, *(pBuf+i));
+//			}
 		memcpy(g_SDIO_cmdData, pBuf+sizeof(RX_DESC), pRxDesc->pkt_len);
 		*pLen = pRxDesc->pkt_len;	
+
+		printk("RX Desc: \n");
+		DumpForOneBytes ((u8*)pRxDesc, sizeof(RX_DESC));
+		printk("RX Payload: \n");
+		DumpForOneBytes ((u8*)(pBuf+sizeof(RX_DESC)), pRxDesc->pkt_len);
+		
 		kfree(pBuf);
 	}
 	return 0;

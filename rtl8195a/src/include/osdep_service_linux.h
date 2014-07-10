@@ -54,7 +54,7 @@
 u8* _rtw_malloc(u32 sz);
 void _rtw_mfree(u8 *pbuf, u32 sz);
 void _rtw_memcpy(void* dst, void* src, u32 sz);
-
+void DumpForOneBytes(IN u8 *pData, IN u8 Len);
 #define rtw_malloc(sz)			_rtw_malloc((sz))
 #define rtw_mfree(pbuf, sz)		_rtw_mfree((pbuf), (sz))
 #define rtw_memcpy(dst, src, sz)	_rtw_memcpy((dst), (src), (sz))
