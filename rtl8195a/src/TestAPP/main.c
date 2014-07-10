@@ -70,7 +70,7 @@ void DumpForOneBytes(unsigned char *pData, unsigned char Len)
 
 	while( LineIndex< Length)
 	{		
-			printk("%08x: ", (pSbuf+LineIndex) );
+			printf("%08x: ", (pSbuf+LineIndex) );
 
 			if(LineIndex+16 < Length)
 				Offset=16;
@@ -370,9 +370,9 @@ static void cmd_wifi_recv_data(int argc, char **argv)
 //		for(i=0;i<50;i++)
 //			printf("buf_read[%d] = 0x%02x\n", i, buf[i]);
 	pCmdDesc = (PCMD_DESC)buf;
-	printk("CMD Desc: \n");
+	printf("CMD Desc: \n");
 	DumpForOneBytes ((unsigned char *)pCmdDesc, sizeof(CMD_DESC));
-	printk("WLAN Payload: \n");
+	printf("WLAN Payload: \n");
 	DumpForOneBytes ((unsigned char *)(buf+sizeof(CMD_DESC)), pCmdDesc->pktsize);
 }
 
