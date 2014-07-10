@@ -208,7 +208,7 @@ static void cmd_wifi_info(int argc, char **argv)
 	sdioData.cmd = cmdDesc;
 	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
-	for(i=0;i<1000000;i++);
+	for(i=0;i<100000000;i++);
 	read_bytes = read(fd, buf, sizeof(buf));
 	if(read_bytes < 0)
 	{
