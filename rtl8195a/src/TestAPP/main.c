@@ -70,7 +70,7 @@ void DumpForOneBytes(unsigned char *pData, unsigned char Len)
 
 	while( LineIndex< Length)
 	{		
-			printf("%08x: ", (pSbuf+LineIndex) );
+			printf("%08x: ", (unsigned int)(pSbuf+LineIndex));
 
 			if(LineIndex+16 < Length)
 				Offset=16;
