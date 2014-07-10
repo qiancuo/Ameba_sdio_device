@@ -197,7 +197,7 @@ static void cmd_wifi_info(int argc, char **argv)
 	CMD_DESC cmdDesc;
 	AT_WIFI_INFO *pWifiInfo;
 	SDIO_CMDDATA sdioData;
-	int read_bytes;
+	int read_bytes, i;
 	unsigned char buf[2048];
 	printf("Do %s\n\r", __FUNCTION__);
 //todo: send relative data to Ameba
@@ -208,7 +208,7 @@ static void cmd_wifi_info(int argc, char **argv)
 	sdioData.cmd = cmdDesc;
 	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
-	
+	for(i=0;i<10000;i++);
 	read_bytes = read(fd, buf, sizeof(buf));
 	if(read_bytes < 0)
 	{
