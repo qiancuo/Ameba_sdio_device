@@ -244,13 +244,13 @@ static int RecvWlanCmdPkt(PCMD_DESC pWlan_cmd, u16 *pLen)
 			return res;
 		}
 		pRxDesc = (PRX_DESC)pBuf;	
-		printk("pkt_len is %d\n", pRxDesc->pkt_len);
-		for(i=0;i<pRxDesc->pkt_len;i++)
+		printk("pRxDesc->pkt_len + sizeof(RX_DESC) = %d\n", pRxDesc->pkt_len+sizeof(RX_DESC));
+		for(i=0;i<(pRxDesc->pkt_len+sizeof(RX_DESC);i++)
 		{
 			printk("Rx[%d] = 0x%02x\n", i, *(pBuf+i));
 		}
 
-		memcpy(g_SDIO_cmdData, pBuf, pRxDesc->pkt_len);
+		memcpy(g_SDIO_cmdData, pBuf+sizeof(RX_DESC), pRxDesc->pkt_len);
 		*pLen = pRxDesc->pkt_len;	
 		kfree(pBuf);
 	}
