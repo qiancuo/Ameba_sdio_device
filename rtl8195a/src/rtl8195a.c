@@ -227,6 +227,7 @@ static int RecvWlanCmdPkt(PCMD_DESC pWlan_cmd, u16 *pLen)
 	u16 len = 0;
 	u8 *pBuf;
 	struct sdio_func *pfunc;
+	PRX_DESC pRxDesc;
 	pfunc = gHal_Data->func;
 	len = sdio_local_read(gHal_Data, SDIO_RX0_REQ_LEN, 4, (u8 *)&tmp);
 	len = le16_to_cpu(tmp);
@@ -247,9 +248,9 @@ static int RecvWlanCmdPkt(PCMD_DESC pWlan_cmd, u16 *pLen)
 		{
 			printk("Rx[%d] = 0x%02x\n", i, *(pBuf+i));
 		}
-
-		memcpy(g_SDIO_cmdData, pBuf, len);
-		*pLen = len;	
+		pRxDesc = (PRX_DESC)pBuf;
+		memcpy(g_SDIO_cmdData, pBuf, pRxDesc->pkt_len);
+		*pLen = pRxDesc->pkt_len;	
 		kfree(pBuf);
 	}
 	return 0;
@@ -261,8 +262,10 @@ static ssize_t myFunc_Read(struct file *file, char *buf, size_t count, loff_t *p
 	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
 	RecvWlanCmdPkt(NULL, &len);
 	if (copy_to_user(buf, g_SDIO_cmdData, len))
+	{	
+		printk("copy_to_user failed!\n");
 		return -EFAULT;
-	
+	}
 	return 0;
 }
 
