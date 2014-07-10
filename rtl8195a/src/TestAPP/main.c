@@ -262,7 +262,7 @@ static void cmd_wifi_send_data(int argc, char **argv)
 	CMD_DESC cmdDesc;
 	SDIO_CMDDATA sdioData;
 	int i, payload_len;
-	unsigned char wlan_header[24];
+	unsigned char wlan_header[26];
 	payload_len = wlanpktsize-sizeof(wlan_header);
 	unsigned char payload[payload_len];	
 
@@ -294,6 +294,9 @@ static void cmd_wifi_send_data(int argc, char **argv)
 //SEQ control	
 	wlan_header[22]=0x00;
 	wlan_header[23]=0x00;
+//QoS control
+	wlan_header[24]=0x06;
+	wlan_header[25]=0x00;
 	for(i=0; i<payload_len; i++)
 		payload[i] = 0x3e;
 

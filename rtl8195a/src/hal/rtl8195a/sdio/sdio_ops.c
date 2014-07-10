@@ -478,3 +478,47 @@ u32 sdio_write_port(
 	}
 	return _SUCCESS;
 }
+
+/*
+ * Todo: align address to 4 bytes.
+ */
+s32 sdio_local_read(
+	PHAL_DATA_TYPE pData,
+	u32		addr,
+	u32		cnt,
+	u8		*pbuf)
+{
+	s32 err;
+	u8 *ptmpbuf;
+	u32 n;
+	struct sdio_func *pfunc;
+	pfunc=pData->func;
+	HalSdioGetCmdAddr8195ASdio(pfunc, SDIO_LOCAL_DEVICE_ID, addr, &addr);
+
+//		rtw_hal_get_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
+//		if ((_FALSE == bMacPwrCtrlOn)
+//	#ifdef CONFIG_LPS_LCLK
+//			|| (_TRUE == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode)
+//	#endif
+//			)
+//		{
+//			err = sd_cmd52_read(pintfhdl, addr, cnt, pbuf);
+//			return err;
+//		}
+	
+       n = RND4(cnt);
+	ptmpbuf = (u8*)kmalloc(n);
+	if(!ptmpbuf)
+		return (-1);
+	sdio_claim_host(pfunc);
+	err = _sd_read(pfunc, addr, n, ptmpbuf);
+	sdio_release_host(pfunc);
+	if (!err)
+		memcpy(pbuf, ptmpbuf, cnt);
+
+	if(ptmpbuf)
+		kfree(ptmpbuf, n);	
+
+	return err;
+}
+

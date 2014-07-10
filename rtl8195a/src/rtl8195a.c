@@ -72,6 +72,7 @@ static unsigned char g_SDIO_cmdData[2048] = {0};//2048
 static int Print_Message(u8 *message);
 static int RecvOnePkt(struct sdio_func * func);
 static int SendOnePkt(struct sdio_func * func);
+
 static TX_DESC TxDescGen(u16 pktsize, u16 seqNum)
 {
 	TX_DESC txdesc;
@@ -218,9 +219,40 @@ static int SendWlanCmdPkt(PCMD_DESC pWlan_cmd)
 	sdio_write_port(gHal_Data->func, WLAN_TX_HIQ_DEVICE_ID, totlen, data);
 	return 0;	
 }
+
+static int RecvWlanCmdPkt(PCMD_DESC pWlan_cmd)
+{
+	int res, i=0;
+	u32 tmp;
+	u16 len = 0;
+	u8 *pBuf;
+
+	len = sdio_local_read(gHal_Data->func, SDIO_RX0_REQ_LEN, 4, (u8 *)&tmp);
+	len = le16_to_cpu(tmp);
+	printk("Rx len is %d\n", len);
+	if(len>0)
+	{
+		pBuf = kmalloc(len, GFP_KERNEL);
+	sdio_claim_host(pfunc);
+		res = sdio_read_port(gHal_Data, WLAN_RX0FF_DEVICE_ID, len, pBuf);
+	sdio_release_host(pfunc);
+		if (res == _FAIL)
+			printk("sdio read port failed!\n");
+	
+		for(i=0;i<len;i++)
+		{
+			printk("Rx[%d] = 0x%02x\n", i, *(pBuf+i));
+		}
+		
+		kfree(pBuf);
+	}
+	return 0;
+}
 static ssize_t myFunc_Read(struct file *file, char *buf, size_t count, loff_t *ppos)
 {
+	PCMD_DESC pWlan_cmd;
 	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
+	RecvWlanCmdPkt(NULL);
 	return 0;
 }
 
