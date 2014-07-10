@@ -1,6 +1,6 @@
 #include "../../../include/sdio_ops.h"
 #include "../../../include/8195_sdio_reg.h"
-//#include <linux/string.h>
+#include "../../../include/osdep_service_linux.h"
 
 
 //
@@ -507,17 +507,17 @@ s32 sdio_local_read(
 //		}
 	
        n = RND4(cnt);
-	ptmpbuf = (u8*)kmalloc(n);
+	ptmpbuf = (u8*)_rtw_malloc(n);
 	if(!ptmpbuf)
 		return (-1);
 	sdio_claim_host(pfunc);
 	err = _sd_read(pfunc, addr, n, ptmpbuf);
 	sdio_release_host(pfunc);
 	if (!err)
-		memcpy(pbuf, ptmpbuf, cnt);
+		_rtw_memcpy(pbuf, ptmpbuf, cnt);
 
 	if(ptmpbuf)
-		kfree(ptmpbuf, n);	
+		_rtw_mfree(ptmpbuf, n);	
 
 	return err;
 }
