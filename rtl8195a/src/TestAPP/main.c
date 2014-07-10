@@ -59,6 +59,47 @@ static int fd;
 static char cmd_buf[2040] = {0};
 static void cmd_help(int argc, char **argv);
 
+
+void DumpForOneBytes(unsigned char *pData, unsigned char Len)
+{
+	unsigned char *pSbuf = pData;	
+	char Length=Len;
+
+	char LineIndex=0,BytesIndex,Offset;
+	printf("\r [Addr]   .0 .1 .2 .3 .4 .5 .6 .7 .8 .9 .A .B .C .D .E .F\r\n" );
+
+	while( LineIndex< Length)
+	{		
+			printk("%08x: ", (pSbuf+LineIndex) );
+
+			if(LineIndex+16 < Length)
+				Offset=16;
+			else			
+				Offset=Length-LineIndex;
+			
+
+			for(BytesIndex=0; BytesIndex<Offset; BytesIndex++)
+				printf("%02x ", pSbuf[LineIndex+BytesIndex]);	
+
+			for(BytesIndex=0;BytesIndex<16-Offset;BytesIndex++)	//a last line
+    			printf("   ");
+
+
+			printf("    ");		//between byte and char
+			
+			for(BytesIndex=0;  BytesIndex<Offset; BytesIndex++) {
+                
+				if( ' ' <= pSbuf[LineIndex+BytesIndex]  && pSbuf[LineIndex+BytesIndex] <= '~')
+					printf("%c", pSbuf[LineIndex+BytesIndex]);
+				else
+					printf(".");
+			}
+            
+			printf("\n\r");
+			LineIndex += 16;
+	}
+	
+}
 static CMD_DESC CmdDescGen()
 {
 	CMD_DESC cmdDesc;
@@ -317,6 +358,7 @@ static void cmd_wifi_send_data(int argc, char **argv)
 static void cmd_wifi_recv_data(int argc, char **argv)
 {
 	unsigned char buf[2048];
+	PCMD_DESC pCmdDesc;
 	int read_bytes, i;
 	printf("Do %s\n\r", __FUNCTION__);
 	read_bytes = read(fd, buf, sizeof(buf));
@@ -325,8 +367,13 @@ static void cmd_wifi_recv_data(int argc, char **argv)
 		printf("read from 8195a failed!\n");
 		return;
 	}
-	for(i=0;i<50;i++)
-		printf("buf_read[%d] = 0x%02x\n", i, buf[i]);
+//		for(i=0;i<50;i++)
+//			printf("buf_read[%d] = 0x%02x\n", i, buf[i]);
+	pCmdDesc = (PCMD_DESC)buf;
+	printk("CMD Desc: \n");
+	DumpForOneBytes ((u8*)pCmdDesc, sizeof(CMD_DESC));
+	printk("WLAN Payload: \n");
+	DumpForOneBytes ((u8*)(buf+sizeof(CMD_DESC)), pCmdDesc->pktsize);
 }
 static const cmd_entry cmd_table[] = {
 	{"wifi_connect", cmd_wifi_connect},
