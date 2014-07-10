@@ -36,7 +36,7 @@
 #include "include/drv_type_sdio.h"
 #include "include/rtl8195a.h"
 
-#include "include/osdep_service_linux.h"
+//#include "include/osdep_service_linux.h"
 
 MODULE_AUTHOR("Realtek");
 MODULE_DESCRIPTION("RealTek RTL-8195a iNIC");
