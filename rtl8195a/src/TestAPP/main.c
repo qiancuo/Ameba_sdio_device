@@ -316,8 +316,8 @@ static void cmd_wifi_send_data(int argc, char **argv)
 
 static int cmd_wifi_recv_data(int argc, char **argv)
 {
-	u8 buf[2048];
-	u32 read_bytes, i;
+	unsigned char buf[2048];
+	int read_bytes, i;
 	read_bytes = read(fd, buf, 2048);
 	if(read_bytes < 0)
 	{
