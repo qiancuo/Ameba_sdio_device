@@ -131,6 +131,48 @@ void DumpForOneBytes(unsigned char *pData, unsigned char Len)
 	}
 	
 }
+int wifi_show_setting(WIFI_SETTING *pSetting)
+{
+	int ret = 0;
+	printf("\n\r\nWIFI Setting:");
+	printf("\n\r==============================");
+
+	switch(pSetting->mode) {
+		case WIFI_MODE_AP:
+			printf("\n\r      MODE => AP");
+			break;
+		case WIFI_MODE_STA:
+			printf("\n\r      MODE => STATION");
+			break;
+		default:
+			printf("\n\r      MODE => UNKNOWN");
+	}
+
+	printf("\n\r      SSID => %s", pSetting->ssid);
+	printf("\n\r   CHANNEL => %d", pSetting->channel);
+
+	switch(pSetting->security_type) {
+		case WIFI_SECURITY_OPEN:
+			printf("\n\r  SECURITY => OPEN");
+			break;
+		case WIFI_SECURITY_WEP:
+			printf("\n\r  SECURITY => WEP");
+			break;
+		case WIFI_SECURITY_WPA:
+			printf("\n\r  SECURITY => WPA");
+			break;
+		case WIFI_SECURITY_WPA2:
+			printf("\n\r  SECURITY => WPA2");
+			break;
+		default:
+			printf("\n\r  SECURITY => UNKNOWN");
+	}
+
+	printf("\n\r  PASSWORD => %s", pSetting->password);
+	printf("\n\r");
+
+	return ret;
+}
 static CMD_DESC CmdDescGen()
 {
 	CMD_DESC cmdDesc;
@@ -175,7 +217,7 @@ static void cmd_wifi_connect(int argc, char **argv)
 	if(fd < 0)  
 	{  
 	        printf("open file %s failed!\n", INIC_8195A);  
-	        return -1;  
+	        return;  
 	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	close(fd);
@@ -199,53 +241,12 @@ static void cmd_wifi_disconnect(int argc, char **argv)
 	if(fd < 0)  
 	{  
 	        printf("open file %s failed!\n", INIC_8195A);  
-	        return -1;  
+	        return;  
 	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	close(fd);
 }
-int wifi_show_setting(WIFI_SETTING *pSetting)
-{
-	int ret = 0;
-	printf("\n\r\nWIFI Setting:");
-	printf("\n\r==============================");
 
-	switch(pSetting->mode) {
-		case WIFI_MODE_AP:
-			printf("\n\r      MODE => AP");
-			break;
-		case WIFI_MODE_STA:
-			printf("\n\r      MODE => STATION");
-			break;
-		default:
-			printf("\n\r      MODE => UNKNOWN");
-	}
-
-	printf("\n\r      SSID => %s", pSetting->ssid);
-	printf("\n\r   CHANNEL => %d", pSetting->channel);
-
-	switch(pSetting->security_type) {
-		case WIFI_SECURITY_OPEN:
-			printf("\n\r  SECURITY => OPEN");
-			break;
-		case WIFI_SECURITY_WEP:
-			printf("\n\r  SECURITY => WEP");
-			break;
-		case WIFI_SECURITY_WPA:
-			printf("\n\r  SECURITY => WPA");
-			break;
-		case WIFI_SECURITY_WPA2:
-			printf("\n\r  SECURITY => WPA2");
-			break;
-		default:
-			printf("\n\r  SECURITY => UNKNOWN");
-	}
-
-	printf("\n\r  PASSWORD => %s", pSetting->password);
-	printf("\n\r");
-
-	return ret;
-}
 static void cmd_wifi_info(int argc, char **argv)
 {
 	static int fd;
@@ -268,7 +269,7 @@ static void cmd_wifi_info(int argc, char **argv)
 	if(fd < 0)  
 	{  
 	        printf("open file %s failed!\n", INIC_8195A);  
-	        return -1;  
+	        return;  
 	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	for(i=0;i<1000000000;i++);
@@ -318,7 +319,7 @@ static void cmd_wifi_on(int argc, char **argv)
 	if(fd < 0)  
 	{  
 	        printf("open file %s failed!\n", INIC_8195A);  
-	        return -1;  
+	        return;  
 	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	close(fd);
@@ -341,7 +342,7 @@ static void cmd_wifi_off(int argc, char **argv)
 	if(fd < 0)  
 	{  
 	        printf("open file %s failed!\n", INIC_8195A);  
-	        return -1;  
+	        return;  
 	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	close(fd);
@@ -371,7 +372,7 @@ static void cmd_wifi_ap(int argc, char **argv)
 	if(fd < 0)  
 	{  
 	        printf("open file %s failed!\n", INIC_8195A);  
-	        return -1;  
+	        return;  
 	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	close(fd);
@@ -395,7 +396,7 @@ static void cmd_wifi_scan(int argc, char **argv)
 		if(fd < 0)  
 		{  
 		        printf("open file %s failed!\n", INIC_8195A);  
-		        return -1;  
+		        return;  
 		}
 		write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 		close(fd);
@@ -428,7 +429,7 @@ static void cmd_wifi_get_rssi(int argc, char **argv)
 	if(fd < 0)  
 	{  
 	        printf("open file %s failed!\n", INIC_8195A);  
-	        return -1;  
+	        return;  
 	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	for(i=0;i<100000;i++);
@@ -486,7 +487,7 @@ static void cmd_ping(int argc, char **argv)
 	if(fd < 0)  
 	{  
 	        printf("open file %s failed!\n", INIC_8195A);  
-	        return -1;  
+	        return;  
 	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	close(fd);
@@ -557,7 +558,7 @@ static void cmd_wifi_send_data(int argc, char **argv)
 	if(fd < 0)  
 	{  
 	        printf("open file %s failed!\n", INIC_8195A);  
-	        return -1;  
+	        return;  
 	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	close(fd);
@@ -574,7 +575,7 @@ static void cmd_wifi_recv_data(int argc, char **argv)
 	if(fd < 0)  
 	{  
 	        printf("open file %s failed!\n", INIC_8195A);  
-	        return -1;  
+	        return;  
 	}
 	read_bytes = read(fd, buf, sizeof(buf));
 	close(fd);
