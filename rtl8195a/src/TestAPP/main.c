@@ -265,7 +265,7 @@ static void cmd_wifi_info(int argc, char **argv)
 	printf("pDesc->datatype: %d\n\r", pDesc->datatype);
 	printf("pDesc->offset: %d\n\r", pDesc->offset);
 	printf("pDesc->pktsize: %d\n\r", pDesc->pktsize);
-	wifi_show_setting(pWifiInfo->setting);
+	wifi_show_setting(&(pWifiInfo->setting));
 	printf("WIFI Status (%s)\n\r", (pWifiInfo->running == 1) ? "Running" : "Stopped");
 	printf("==============================\n\r");
 	
