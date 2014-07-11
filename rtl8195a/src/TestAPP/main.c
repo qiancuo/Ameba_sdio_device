@@ -55,20 +55,18 @@ struct net_device_stats {
 	unsigned long   tx_bytes;               /* total bytes transmitted      */
 };
 typedef struct _AT_WIFI_INFO{
-	CMD_DESC CmdDesc;
-	int running;
-	unsigned char mac[6];
-	unsigned char ip[4];
-	unsigned char gw[4];
-	WIFI_SETTING setting;
 	struct net_device_stats stats;
+	int running;
 	int min_free_heap_size;
 	int max_skbbuf_used_num;
 	int skbbuf_used_num;
 	int max_skbdata_used_num;
 	int skbdata_used_num;
 	int max_timer_used_num;
-
+	WIFI_SETTING setting;
+	u8 mac[6];
+	u8 ip[4];
+	u8 gw[4];
 }AT_WIFI_INFO, PAT_WIFI_INFO;
 typedef struct _SDIO_CMDDATA{
 	CMD_DESC cmd;
@@ -195,6 +193,7 @@ static void cmd_wifi_disconnect(int argc, char **argv)
 static void cmd_wifi_info(int argc, char **argv)
 {
 	CMD_DESC cmdDesc;
+	PCMD_DESC pDesc;
 	AT_WIFI_INFO *pWifiInfo;
 	SDIO_CMDDATA sdioData;
 	int read_bytes, i;
@@ -208,35 +207,34 @@ static void cmd_wifi_info(int argc, char **argv)
 	sdioData.cmd = cmdDesc;
 	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
-//		for(i=0;i<100000000;i++);
-//		read_bytes = read(fd, buf, sizeof(buf));
-//		if(read_bytes < 0)
-//		{
-//			printf("read wifi_info failed!\n");
-//			return;
-//		}
-//	
-//	
-//		
-//		printf("size of AT_WIFI_INFO = %d\n\r", sizeof(AT_WIFI_INFO));
-//		pWifiInfo = (AT_WIFI_INFO *)buf;
-//	
-//		printf("pWifiInfo->CmdDesc->cmdtype: %s\n\r", pWifiInfo->CmdDesc.cmdtype);
-//		printf("pWifiInfo->CmdDesc->datatype: %d\n\r", pWifiInfo->CmdDesc.datatype);
-//		printf("pWifiInfo->CmdDesc->offset: %d\n\r", pWifiInfo->CmdDesc.offset);
-//		printf("pWifiInfo->CmdDesc->pktsize: %d\n\r", pWifiInfo->CmdDesc.pktsize);
-//		
-//		printf("WIFI Status (%s)\n\r", (pWifiInfo->running == 1) ? "Running" : "Stopped");
-//		printf("==============================\n\r");
-//	
-//		printf("\n\rmin_free_heap_size=%d, current heap free size=", pWifiInfo->min_free_heap_size);
-//		printf("\n\rmax_skbbuf_used_num=%d, skbbuf_used_num=%d", pWifiInfo->max_skbbuf_used_num, pWifiInfo->skbbuf_used_num);
-//		printf("\n\rmax_skbdata_used_num=%d, skbdata_used_num=%d", pWifiInfo->max_skbdata_used_num, pWifiInfo->skbdata_used_num);
-//		printf("\n\rmax_timer_used_num=%d", pWifiInfo->max_timer_used_num);
-//	
-//		printf("\n\r  MAC => %02x:%02x:%02x:%02x:%02x:%02x", pWifiInfo->mac[0], pWifiInfo->mac[1], pWifiInfo->mac[2], pWifiInfo->mac[3], pWifiInfo->mac[4], pWifiInfo->mac[5]) ;
-//		printf("\n\r  IP  => %d.%d.%d.%d", pWifiInfo->ip[0], pWifiInfo->ip[1], pWifiInfo->ip[2], pWifiInfo->ip[3]);
-//		printf("\n\r  GW  => %d.%d.%d.%d\n\r", pWifiInfo->gw[0], pWifiInfo->gw[1], pWifiInfo->gw[2], pWifiInfo->gw[3]);
+//	for(i=0;i<100000000;i++);
+	read_bytes = read(fd, buf, sizeof(buf));
+	if(read_bytes < 0)
+	{
+		printf("read wifi_info failed!\n");
+		return;
+	}
+	printf("size of CMD_DESC = %d\n\r", sizeof(CMD_DESC));
+	pDesc = (PCMD_DESC)buf;
+	printf("size of AT_WIFI_INFO = %d\n\r", sizeof(AT_WIFI_INFO));
+	pWifiInfo = (AT_WIFI_INFO *)(buf+sizeof(CMD_DESC));
+	
+	printf("pDesc->cmdtype: %s\n\r", pDesc->cmdtype);
+	printf("pDesc->datatype: %d\n\r", pDesc->datatype);
+	printf("pDesc->offset: %d\n\r", pDesc->offset);
+	printf("pDesc->pktsize: %d\n\r", pDesc->pktsize);
+	
+	printf("WIFI Status (%s)\n\r", (pWifiInfo->running == 1) ? "Running" : "Stopped");
+	printf("==============================\n\r");
+	
+	printf("\n\r[rltk_wlan_statistic]min_free_heap_size=%d, current heap free size=", pWifiInfo->min_free_heap_size);
+	printf("\n\r[rltk_wlan_statistic]max_skbbuf_used_num=%d, skbbuf_used_num=%d", pWifiInfo->max_skbbuf_used_num, pWifiInfo->skbbuf_used_num);
+	printf("\n\r[rltk_wlan_statistic]max_skbdata_used_num=%d, skbdata_used_num=%d", pWifiInfo->max_skbdata_used_num, pWifiInfo->skbdata_used_num);
+	printf("\n\r[rltk_wlan_statistic]max_timer_used_num=%d", pWifiInfo->max_timer_used_num);
+	
+	printf("\n\r  MAC => %02x:%02x:%02x:%02x:%02x:%02x", pWifiInfo->mac[0], pWifiInfo->mac[1], pWifiInfo->mac[2], pWifiInfo->mac[3], pWifiInfo->mac[4], pWifiInfo->mac[5]) ;
+	printf("\n\r  IP  => %d.%d.%d.%d", pWifiInfo->ip[0], pWifiInfo->ip[1], pWifiInfo->ip[2], pWifiInfo->ip[3]);
+	printf("\n\r  GW  => %d.%d.%d.%d\n\r", pWifiInfo->gw[0], pWifiInfo->gw[1], pWifiInfo->gw[2], pWifiInfo->gw[3]);
 }
 
 static void cmd_wifi_on(int argc, char **argv)
