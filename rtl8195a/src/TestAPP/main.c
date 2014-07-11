@@ -358,7 +358,7 @@ static void cmd_wifi_get_rssi(int argc, char **argv)
 	printf("Do %s\n\r", __FUNCTION__);
 	int read_bytes, i;
 	unsigned char buf[2048];
-	int rssi = 0;
+	int *rssi ;
 //	wifi_get_rssi(&rssi);
 //todo: send relative data to Ameba
 	strcpy(cmdDesc.cmdtype, SDIO_CMD_wifi_get_rssi);	
