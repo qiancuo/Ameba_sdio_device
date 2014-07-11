@@ -229,8 +229,12 @@ static int RecvWlanCmdPkt(PCMD_DESC pWlan_cmd, u16 *pLen)
 	struct sdio_func *pfunc;
 	PRX_DESC pRxDesc;
 	pfunc = gHal_Data->func;
+	do{
 	len = sdio_local_read(gHal_Data, SDIO_RX0_REQ_LEN, 4, (u8 *)&tmp);
 	len = le16_to_cpu(tmp);
+	if((++i)>1000)
+		break;
+	}while(len<=0);
 	printk("Rx len is %d\n", len);
 	if(len>0)
 	{
