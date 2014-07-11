@@ -40,10 +40,10 @@ typedef enum _WIFI_MODE_TYPE{
 	WIFI_MODE_AP
 }WIFI_MODE_TYPE;
 typedef struct _WIFI_SETTING{
-	WIFI_MODE_TYPE		mode;
+	unsigned char		mode;
 	unsigned char 		ssid[33];
 	unsigned char		channel;
-	WIFI_SECURITY_TYPE	security_type;
+	unsigned char	security_type;
 	unsigned char 		password[33];
 }WIFI_SETTING;
 struct net_device_stats {
@@ -64,9 +64,9 @@ typedef struct _AT_WIFI_INFO{
 	int skbdata_used_num;
 	int max_timer_used_num;
 	WIFI_SETTING setting;
-	u8 mac[6];
-	u8 ip[4];
-	u8 gw[4];
+	unsigned char mac[6];
+	unsigned char ip[4];
+	unsigned char gw[4];
 }AT_WIFI_INFO, PAT_WIFI_INFO;
 typedef struct _SDIO_CMDDATA{
 	CMD_DESC cmd;
@@ -189,12 +189,54 @@ static void cmd_wifi_disconnect(int argc, char **argv)
 	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 }
+int wifi_show_setting(WIFI_SETTING *pSetting)
+{
+	int ret = 0;
+	printf("\n\r\nWIFI Setting:");
+	printf("\n\r==============================");
 
+	switch(pSetting->mode) {
+		case WIFI_MODE_AP:
+			printf("\n\r      MODE => AP");
+			break;
+		case WIFI_MODE_STA:
+			printf("\n\r      MODE => STATION");
+			break;
+		default:
+			printf("\n\r      MODE => UNKNOWN");
+	}
+
+	printf("\n\r      SSID => %s", pSetting->ssid);
+	printf("\n\r   CHANNEL => %d", pSetting->channel);
+
+	switch(pSetting->security_type) {
+		case WIFI_SECURITY_OPEN:
+			printf("\n\r  SECURITY => OPEN");
+			break;
+		case WIFI_SECURITY_WEP:
+			printf("\n\r  SECURITY => WEP");
+			break;
+		case WIFI_SECURITY_WPA:
+			printf("\n\r  SECURITY => WPA");
+			break;
+		case WIFI_SECURITY_WPA2:
+			printf("\n\r  SECURITY => WPA2");
+			break;
+		default:
+			printf("\n\r  SECURITY => UNKNOWN");
+	}
+
+	printf("\n\r  PASSWORD => %s", pSetting->password);
+	printf("\n\r");
+
+	return ret;
+}
 static void cmd_wifi_info(int argc, char **argv)
 {
 	CMD_DESC cmdDesc;
 	PCMD_DESC pDesc;
 	AT_WIFI_INFO *pWifiInfo;
+//	WIFI_SETTING *pWifiSet;
 	SDIO_CMDDATA sdioData;
 	int read_bytes, i;
 	unsigned char buf[2048];
@@ -218,12 +260,12 @@ static void cmd_wifi_info(int argc, char **argv)
 	pDesc = (PCMD_DESC)buf;
 	printf("size of AT_WIFI_INFO = %d\n\r", sizeof(AT_WIFI_INFO));
 	pWifiInfo = (AT_WIFI_INFO *)(buf+sizeof(CMD_DESC));
-	
+//	pWifiSet = pWifiInfo->setting;
 	printf("pDesc->cmdtype: %s\n\r", pDesc->cmdtype);
 	printf("pDesc->datatype: %d\n\r", pDesc->datatype);
 	printf("pDesc->offset: %d\n\r", pDesc->offset);
 	printf("pDesc->pktsize: %d\n\r", pDesc->pktsize);
-	
+	wifi_show_setting(pWifiInfo->setting);
 	printf("WIFI Status (%s)\n\r", (pWifiInfo->running == 1) ? "Running" : "Stopped");
 	printf("==============================\n\r");
 	
