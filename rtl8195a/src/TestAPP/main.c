@@ -258,13 +258,12 @@ static void cmd_wifi_info(int argc, char **argv)
 	}
 	printf("size of CMD_DESC = %d\n\r", sizeof(CMD_DESC));
 	pDesc = (PCMD_DESC)buf;
-	printf("size of AT_WIFI_INFO = %d\n\r", sizeof(AT_WIFI_INFO));
-	pWifiInfo = (AT_WIFI_INFO *)(buf+sizeof(CMD_DESC));
-//	pWifiSet = pWifiInfo->setting;
 	printf("pDesc->cmdtype: %s\n\r", pDesc->cmdtype);
 	printf("pDesc->datatype: %d\n\r", pDesc->datatype);
 	printf("pDesc->offset: %d\n\r", pDesc->offset);
 	printf("pDesc->pktsize: %d\n\r", pDesc->pktsize);
+	
+	pWifiInfo = (AT_WIFI_INFO *)(buf+sizeof(CMD_DESC));
 	wifi_show_setting(&(pWifiInfo->setting));
 	printf("WIFI Status (%s)\n\r", (pWifiInfo->running == 1) ? "Running" : "Stopped");
 	printf("==============================\n\r");
@@ -354,8 +353,11 @@ static void cmd_wifi_scan(int argc, char **argv)
 static void cmd_wifi_get_rssi(int argc, char **argv)
 {
 	CMD_DESC cmdDesc;
+	PCMD_DESC pDesc;
 	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
+	int read_bytes, i;
+	unsigned char buf[2048];
 	int rssi = 0;
 //	wifi_get_rssi(&rssi);
 //todo: send relative data to Ameba
@@ -367,6 +369,20 @@ static void cmd_wifi_get_rssi(int argc, char **argv)
 	sdioData.cmd = cmdDesc;
 	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
+
+	read_bytes = read(fd, buf, sizeof(buf));
+	if(read_bytes < 0)
+	{
+		printf("read wifi_info failed!\n");
+		return;
+	}
+	printf("size of CMD_DESC = %d\n\r", sizeof(CMD_DESC));
+	pDesc = (PCMD_DESC)buf;
+	printf("pDesc->cmdtype: %s\n\r", pDesc->cmdtype);
+	printf("pDesc->datatype: %d\n\r", pDesc->datatype);
+	printf("pDesc->offset: %d\n\r", pDesc->offset);
+	printf("pDesc->pktsize: %d\n\r", pDesc->pktsize);
+	rssi = (int *)(buf+sizeof(CMD_DESC));
 	printf("wifi_get_rssi: rssi = %d\n\r", rssi);
 }
 
