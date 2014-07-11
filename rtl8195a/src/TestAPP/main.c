@@ -87,7 +87,6 @@ typedef struct _SDIO_CMDDATA{
 
 #define INIC_8195A "/dev/inic_8195a"
 static int global_exit =1;
-static int fd;
 static char cmd_buf[2040] = {0};
 static void cmd_help(int argc, char **argv);
 
@@ -140,6 +139,7 @@ static CMD_DESC CmdDescGen()
 
 static void cmd_wifi_connect(int argc, char **argv)
 {
+	static int fd;
 	CMD_DESC cmdDesc;
 	SDIO_CMDDATA sdioData;
 	WIFI_NETWORK wifi = {0};
@@ -171,10 +171,18 @@ static void cmd_wifi_connect(int argc, char **argv)
 	strcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1));
 	printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
 //todo: send sdioData to Ameba driver
+	fd = open(INIC_8195A, O_RDWR);  
+	if(fd < 0)  
+	{  
+	        printf("open file %s failed!\n", INIC_8195A);  
+	        return -1;  
+	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
+	close(fd);
 }
 static void cmd_wifi_disconnect(int argc, char **argv)
 {
+	static int fd;
 	CMD_DESC cmdDesc;
 	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
@@ -187,7 +195,14 @@ static void cmd_wifi_disconnect(int argc, char **argv)
 
 	sdioData.cmd = cmdDesc;
 	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
+	fd = open(INIC_8195A, O_RDWR);  
+	if(fd < 0)  
+	{  
+	        printf("open file %s failed!\n", INIC_8195A);  
+	        return -1;  
+	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
+	close(fd);
 }
 int wifi_show_setting(WIFI_SETTING *pSetting)
 {
@@ -233,6 +248,7 @@ int wifi_show_setting(WIFI_SETTING *pSetting)
 }
 static void cmd_wifi_info(int argc, char **argv)
 {
+	static int fd;
 	CMD_DESC cmdDesc;
 	PCMD_DESC pDesc;
 	AT_WIFI_INFO *pWifiInfo;
@@ -248,14 +264,21 @@ static void cmd_wifi_info(int argc, char **argv)
 	cmdDesc.pktsize = strlen(cmd_buf)-strlen(argv[0]);
 	sdioData.cmd = cmdDesc;
 	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
+	fd = open(INIC_8195A, O_RDWR);  
+	if(fd < 0)  
+	{  
+	        printf("open file %s failed!\n", INIC_8195A);  
+	        return -1;  
+	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
-	for(i=0;i<100000000;i++);
+	for(i=0;i<1000000000;i++);
 	read_bytes = read(fd, buf, sizeof(buf));
 	if(read_bytes < 0)
 	{
 		printf("read wifi_info failed!\n");
 		return;
 	}
+	close(fd);
 	printf("size of CMD_DESC = %d\n\r", sizeof(CMD_DESC));
 	pDesc = (PCMD_DESC)buf;
 	printf("pDesc->cmdtype: %s\n\r", pDesc->cmdtype);
@@ -280,6 +303,7 @@ static void cmd_wifi_info(int argc, char **argv)
 
 static void cmd_wifi_on(int argc, char **argv)
 {
+	static int fd;
 	CMD_DESC cmdDesc;
 	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
@@ -290,11 +314,19 @@ static void cmd_wifi_on(int argc, char **argv)
 	cmdDesc.pktsize = strlen(cmd_buf)-strlen(argv[0]);
 	sdioData.cmd = cmdDesc;
 	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
+	fd = open(INIC_8195A, O_RDWR);  
+	if(fd < 0)  
+	{  
+	        printf("open file %s failed!\n", INIC_8195A);  
+	        return -1;  
+	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
+	close(fd);
 }
 
 static void cmd_wifi_off(int argc, char **argv)
 {
+	static int fd;
 	CMD_DESC cmdDesc;
 	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
@@ -305,11 +337,19 @@ static void cmd_wifi_off(int argc, char **argv)
 	cmdDesc.pktsize = strlen(cmd_buf)-strlen(argv[0]);
 	sdioData.cmd = cmdDesc;
 	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
+	fd = open(INIC_8195A, O_RDWR);  
+	if(fd < 0)  
+	{  
+	        printf("open file %s failed!\n", INIC_8195A);  
+	        return -1;  
+	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
+	close(fd);
 }
 
 static void cmd_wifi_ap(int argc, char **argv)
 {
+	static int fd;
 	CMD_DESC cmdDesc;
 	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
@@ -327,10 +367,18 @@ static void cmd_wifi_ap(int argc, char **argv)
 	cmdDesc.pktsize = strlen(cmd_buf)-strlen(argv[0])-1;
 	sdioData.cmd = cmdDesc;
 	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
+	fd = open(INIC_8195A, O_RDWR);  
+	if(fd < 0)  
+	{  
+	        printf("open file %s failed!\n", INIC_8195A);  
+	        return -1;  
+	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
+	close(fd);
 }
 static void cmd_wifi_scan(int argc, char **argv)
 {
+	static int fd;
 	CMD_DESC cmdDesc;
 	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
@@ -343,7 +391,14 @@ static void cmd_wifi_scan(int argc, char **argv)
 		cmdDesc.pktsize = strlen(cmd_buf)-strlen(argv[0])-1;
 		sdioData.cmd = cmdDesc;
 		memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
+		fd = open(INIC_8195A, O_RDWR);  
+		if(fd < 0)  
+		{  
+		        printf("open file %s failed!\n", INIC_8195A);  
+		        return -1;  
+		}
 		write(fd, &sdioData,sizeof(SDIO_CMDDATA));
+		close(fd);
 	}
 	else{
 		printf("Usage: wifi_scan BUFFER_LENGTH\n\r");
@@ -352,6 +407,7 @@ static void cmd_wifi_scan(int argc, char **argv)
 
 static void cmd_wifi_get_rssi(int argc, char **argv)
 {
+	static int fd;
 	CMD_DESC cmdDesc;
 	PCMD_DESC pDesc;
 	SDIO_CMDDATA sdioData;
@@ -368,6 +424,12 @@ static void cmd_wifi_get_rssi(int argc, char **argv)
 
 	sdioData.cmd = cmdDesc;
 	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
+	fd = open(INIC_8195A, O_RDWR);  
+	if(fd < 0)  
+	{  
+	        printf("open file %s failed!\n", INIC_8195A);  
+	        return -1;  
+	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	for(i=0;i<100000;i++);
 	read_bytes = read(fd, buf, sizeof(buf));
@@ -376,6 +438,7 @@ static void cmd_wifi_get_rssi(int argc, char **argv)
 		printf("read wifi_info failed!\n");
 		return;
 	}
+	close(fd);
 	printf("size of CMD_DESC = %d\n\r", sizeof(CMD_DESC));
 	pDesc = (PCMD_DESC)buf;
 	printf("pDesc->cmdtype: %s\n\r", pDesc->cmdtype);
@@ -388,6 +451,7 @@ static void cmd_wifi_get_rssi(int argc, char **argv)
 
 static void cmd_ping(int argc, char **argv)
 {
+	static int fd;
 	CMD_DESC cmdDesc;
 	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
@@ -418,7 +482,14 @@ static void cmd_ping(int argc, char **argv)
 
 	sdioData.cmd = cmdDesc;
 	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
-	write(fd, &sdioData,sizeof(SDIO_CMDDATA));	
+	fd = open(INIC_8195A, O_RDWR);  
+	if(fd < 0)  
+	{  
+	        printf("open file %s failed!\n", INIC_8195A);  
+	        return -1;  
+	}
+	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
+	close(fd);
 }
 
 static void cmd_exit(int argc, char **argv)
@@ -430,6 +501,7 @@ static void cmd_exit(int argc, char **argv)
 #define wlanpktsize 282
 static void cmd_wifi_send_data(int argc, char **argv)
 {
+	static int fd;
 	CMD_DESC cmdDesc;
 	SDIO_CMDDATA sdioData;
 	int i, payload_len;
@@ -481,17 +553,31 @@ static void cmd_wifi_send_data(int argc, char **argv)
 	memcpy(sdioData.cmd_data+sizeof(wlan_header), payload, payload_len);
 	for(i=0;i<wlanpktsize;i++)
 		printf("wlanpkt[%d] = 0x%02x\n", i, sdioData.cmd_data[i]);
+	fd = open(INIC_8195A, O_RDWR);  
+	if(fd < 0)  
+	{  
+	        printf("open file %s failed!\n", INIC_8195A);  
+	        return -1;  
+	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
-	
+	close(fd);
 }
 
 static void cmd_wifi_recv_data(int argc, char **argv)
 {
+	static int fd;
 	unsigned char buf[2048];
 	PCMD_DESC pCmdDesc;
 	int read_bytes, i;
 	printf("Do %s\n\r", __FUNCTION__);
+	fd = open(INIC_8195A, O_RDWR);  
+	if(fd < 0)  
+	{  
+	        printf("open file %s failed!\n", INIC_8195A);  
+	        return -1;  
+	}
 	read_bytes = read(fd, buf, sizeof(buf));
+	close(fd);
 	if(read_bytes < 0)
 	{
 		printf("read from 8195a failed!\n");
@@ -575,12 +661,7 @@ int main(void)
 	char *argv[MAX_ARGC];
 	int i, argc;
 	char buf[2040];
-	fd = open(INIC_8195A, O_RDWR);  
-	if(fd < 0)  
-	{  
-	        printf("open file %s failed!\n", INIC_8195A);  
-	        return -1;  
-	}
+
 	printf("\n\rEnter the interative mode, please make your command as follow.\n\n\r");
 	for(i = 0; i < sizeof(cmd_table) / sizeof(cmd_table[0]); i ++)
 		printf("\n\r    %s", cmd_table[i].command);
@@ -606,8 +687,7 @@ int main(void)
 			if(!found)
 				printf("unknown command '%s'\n\r", argv[0]);
 		}
-	}while(global_exit);
-	close(fd);	
+	}while(global_exit);	
 	return 0;
 }
 
