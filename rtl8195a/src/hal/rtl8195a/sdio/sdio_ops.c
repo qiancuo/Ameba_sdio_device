@@ -386,8 +386,8 @@ _func_enter_;
 	}
 
 	size = cnt;
-	printk("%s(): write to addr 0x%x\n", __func__, addr);
-	printk("%s(): write size %d\n", __func__, size);
+//	printk("%s(): write to addr 0x%x\n", __func__, addr);
+//	printk("%s(): write size %d\n", __func__, size);
 	err = sdio_memcpy_toio(pfunc, addr, pdata, size);
 	if (err) {
 		printk("%s: FAIL(%d)! ADDR=%#x Size=%d(%d)\n", __func__, err, addr, cnt, size);
@@ -456,11 +456,11 @@ u32 sdio_write_port(
 	s32 err;
 	struct sdio_func *pfunc = func;
 //	struct xmit_buf *xmitbuf = (struct xmit_buf *)mem;
-	printk("%s(): addr is %d\n", __func__, addr);
+//	printk("%s(): addr is %d\n", __func__, addr);
 	cnt = _RND4(cnt);
-	printk("%s(): cnt is %d\n", __func__, cnt);
+//	printk("%s(): cnt is %d\n", __func__, cnt);
 	HalSdioGetCmdAddr8195ASdio(pfunc, addr, cnt >> 2, &addr);
-	printk("%s(): Get Cmd Addr is 0x%x\n", __func__, addr);
+//	printk("%s(): Get Cmd Addr is 0x%x\n", __func__, addr);
 	
 	if (cnt > pfunc->cur_blksize)
 		cnt = _RND(cnt, pfunc->cur_blksize);

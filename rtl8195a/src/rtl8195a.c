@@ -204,18 +204,18 @@ static int SendWlanCmdPkt(PCMD_DESC pWlan_cmd)
 	len = pWlan_cmd->pktsize+pWlan_cmd->offset;
 	totlen = len + sizeof(TX_DESC);
 	u8 data[totlen];	
-	printk("pWlan_cmd->pktsize = %d\n\r", pWlan_cmd->pktsize);
-	printk("pWlan_cmd->offset = %d\n\r", pWlan_cmd->offset);
-	printk("pWlan_cmd->datatype = %d\n\r", pWlan_cmd->datatype);
+//		printk("pWlan_cmd->pktsize = %d\n\r", pWlan_cmd->pktsize);
+//		printk("pWlan_cmd->offset = %d\n\r", pWlan_cmd->offset);
+//		printk("pWlan_cmd->datatype = %d\n\r", pWlan_cmd->datatype);
 
 	txdesc = TxDescGen(len, 1);
 	memcpy(data, &txdesc, txdesc.offset);
 	memcpy((data+sizeof(TX_DESC)), g_SDIO_cmdData, len);
 
-	for(i=0;i<totlen;i++)
-	{
-		printk("data[%d] = 0x%02x\n", i, data[i]);
-	}
+//		for(i=0;i<totlen;i++)
+//		{
+//			printk("data[%d] = 0x%02x\n", i, data[i]);
+//		}
 	sdio_write_port(gHal_Data->func, WLAN_TX_HIQ_DEVICE_ID, totlen, data);
 	return 0;	
 }
@@ -255,12 +255,10 @@ static int RecvWlanCmdPkt(PCMD_DESC pWlan_cmd, u16 *pLen)
 //			}
 		memcpy(g_SDIO_cmdData, pBuf+sizeof(RX_DESC), pRxDesc->pkt_len);
 		*pLen = pRxDesc->pkt_len;	
-
-		printk("RX Desc: \n");
-		DumpForOneBytes ((u8*)pRxDesc, sizeof(RX_DESC));
-		printk("RX Payload: \n");
-		DumpForOneBytes ((u8*)(pBuf+sizeof(RX_DESC)), pRxDesc->pkt_len);
-		
+//			printk("RX Desc: \n");
+//			DumpForOneBytes ((u8*)pRxDesc, sizeof(RX_DESC));
+//			printk("RX Payload: \n");
+//			DumpForOneBytes ((u8*)(pBuf+sizeof(RX_DESC)), pRxDesc->pkt_len);		
 		kfree(pBuf);
 	}
 	return 0;
