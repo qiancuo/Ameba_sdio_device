@@ -383,7 +383,7 @@ static void cmd_wifi_get_rssi(int argc, char **argv)
 	printf("pDesc->offset: %d\n\r", pDesc->offset);
 	printf("pDesc->pktsize: %d\n\r", pDesc->pktsize);
 	rssi = (int *)(buf+sizeof(CMD_DESC));
-	printf("wifi_get_rssi: rssi = %d\n\r", rssi);
+	printf("wifi_get_rssi: rssi = %d\n\r", *rssi);
 }
 
 static void cmd_ping(int argc, char **argv)
