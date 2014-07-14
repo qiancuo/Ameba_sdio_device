@@ -474,13 +474,16 @@ static void cmd_ping(int argc, char **argv)
 	        printf("open file %s failed!\n", INIC_8195A);  
 	        return;  
 	}
-	printf("sdioData.cmd.cmdtype is: %s\n\r", sdioData.cmd.cmdtype);
-	printf("sdioData.cmd.datatype is: %d\n\r", sdioData.cmd.datatype);
-	printf("sdioData.cmd.offset is: %d\n\r", sdioData.cmd.offset);
-	printf("sdioData.cmd.pktsize is: %d\n\r", sdioData.cmd.pktsize);
-	
-	
-	printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
+//		printf("sdioData.cmd.cmdtype is: %s\n\r", sdioData.cmd.cmdtype);
+//		printf("sdioData.cmd.datatype is: %d\n\r", sdioData.cmd.datatype);
+//		printf("sdioData.cmd.offset is: %d\n\r", sdioData.cmd.offset);
+//		printf("sdioData.cmd.pktsize is: %d\n\r", sdioData.cmd.pktsize);
+//		
+//		printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
+	printf("CMD Desc: \n");
+	DumpForOneBytes ((unsigned char *)&sdioData.cmd, sizeof(CMD_DESC));
+	printf("WLAN Payload: \n");
+	DumpForOneBytes ((unsigned char *)(&sdioData.cmd_data), sdioData.cmd.pktsize);
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	close(fd);
 }
