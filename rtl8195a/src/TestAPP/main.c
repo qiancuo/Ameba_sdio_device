@@ -210,7 +210,7 @@ static void cmd_wifi_connect(int argc, char **argv)
 //		printf("The command entered is : %s\n\r", cmd_buf);		
 //		strcpy(sdioData.cmd_data, cmd_buf);
 //		printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);	
-	strcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1));
+	strcpy(sdioData.cmd_data, (unsigned char *)(cmd_buf+strlen(argv[0])+1));
 	printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
 //todo: send sdioData to Ameba driver
 	fd = open(INIC_8195A, O_RDWR);  
@@ -667,7 +667,7 @@ int main(void)
 		printf("Wlan: ");
 		gets(buf);
 		printf("The command entered is : %s\n\r", buf);
-//		printf("buf size is : %d\n\r", sizeof(buf));
+
 		strcpy(cmd_buf, buf);		
 		if((argc = parse_cmd(buf, argv)) > 0) {
 			int found = 0;
