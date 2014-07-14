@@ -456,26 +456,10 @@ static void cmd_ping(int argc, char **argv)
 	CMD_DESC cmdDesc;
 	SDIO_CMDDATA sdioData;
 	printf("Do %s\n\r", __FUNCTION__);
-//		if(argc == 2) {
-//	//		do_ping_call(argv[1], 0, 5);	//Not loop, count=5
-//			//todo: send relative data to Ameba
-//	
-//		}
-//		else if(argc == 3) {
-//			if(strcmp(argv[2], "loop") == 0)
-//				{
-//	//			do_ping_call(argv[1], 1, 0);	//loop, no count
-//				//todo: send relative data to Ameba
-//				}
-//			else
-//				{
-//	//			do_ping_call(argv[1], 0, atoi(argv[2]));	//Not loop, with count
-//				//todo: send relative data to Ameba
-//				}
-//		}
-//		else {
-//			printf("Usage: ping IP [COUNT/loop]\n\r");
-//		}
+	if((argc!=2)&&(argc!=3))
+	{
+		printf("Usage: ping IP [COUNT/loop]\n\r");
+	}
 	strcpy(cmdDesc.cmdtype, SDIO_CMD_wifi_ping);	
 	cmdDesc.datatype = MNGMT_FRAME;
 	cmdDesc.offset = sizeof(CMD_DESC);
