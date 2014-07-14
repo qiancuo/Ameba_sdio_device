@@ -497,7 +497,7 @@ static void cmd_ping(int argc, char **argv)
 	
 	
 	printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
-//	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
+	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	close(fd);
 }
 
