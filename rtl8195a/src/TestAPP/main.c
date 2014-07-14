@@ -482,14 +482,21 @@ static void cmd_ping(int argc, char **argv)
 	cmdDesc.pktsize = strlen(cmd_buf)-strlen(argv[0])-1;
 
 	sdioData.cmd = cmdDesc;
-	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
+//	memcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1), cmdDesc.pktsize);
+	strcpy(sdioData.cmd_data, (char *)(cmd_buf+strlen(argv[0])+1));
 	fd = open(INIC_8195A, O_RDWR);  
 	if(fd < 0)  
 	{  
 	        printf("open file %s failed!\n", INIC_8195A);  
 	        return;  
 	}
-	DumpForOneBytes((unsigned char *)&sdioData,sizeof(SDIO_CMDDATA));
+	printf("sdioData.cmd.cmdtype is: %s\n\r", sdioData.cmd.cmdtype);
+	printf("sdioData.cmd.datatype is: %d\n\r", sdioData.cmd.datatype);
+	printf("sdioData.cmd.offset is: %d\n\r", sdioData.cmd.offset);
+	printf("sdioData.cmd.pktsize is: %d\n\r", sdioData.cmd.pktsize);
+	
+	
+	printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
 //	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	close(fd);
 }
