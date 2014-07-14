@@ -489,7 +489,7 @@ static void cmd_ping(int argc, char **argv)
 	        printf("open file %s failed!\n", INIC_8195A);  
 	        return;  
 	}
-	DumpForOneBytes(&sdioData,sizeof(SDIO_CMDDATA));
+	DumpForOneBytes((char *)&sdioData,sizeof(SDIO_CMDDATA));
 //	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	close(fd);
 }
