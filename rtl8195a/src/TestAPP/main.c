@@ -617,7 +617,8 @@ static void cmd_wifi_recv_data(int argc, char **argv)
 {
 	static int fd;
 	unsigned char buf[2048];
-	PCMD_DESC pCmdDesc;
+	PAT_CMD_DESC pCmdDesc;
+	PAT_CMD_TYPE pAtCmdType;
 	int read_bytes, i;
 	printf("Do %s\n\r", __FUNCTION__);
 	fd = open(INIC_8195A, O_RDWR);  
@@ -635,7 +636,7 @@ static void cmd_wifi_recv_data(int argc, char **argv)
 	}
 //		for(i=0;i<50;i++)
 //			printf("buf_read[%d] = 0x%02x\n", i, buf[i]);
-	pCmdDesc = (PCMD_DESC)buf;
+	pCmdDesc = (PAT_CMD_DESC)buf;
 	printf("CMD Desc: \n");
 	DumpForOneBytes ((unsigned char *)pCmdDesc, sizeof(AT_CMD_DESC));
 	printf("WLAN Payload: \n");
