@@ -552,11 +552,11 @@ static int sdio_init(struct sdio_func *func)
 		printk("%s():sdio_set_block_size FAIL!\n",__FUNCTION__);
 		goto release;
 	}
-	rc = sdio_claim_irq(func, &sd_sync_int_hdl);
-	if(rc){
-		printk("%s():sdio_claim_irq FAIL!\n",__FUNCTION__);
-		goto release;
-	}
+//		rc = sdio_claim_irq(func, &sd_sync_int_hdl);
+//		if(rc){
+//			printk("%s():sdio_claim_irq FAIL!\n",__FUNCTION__);
+//			goto release;
+//		}
 	sdio_release_host(func);
 	return rc;
 release:
