@@ -270,8 +270,8 @@ typedef struct hal_com_data
 //	u32			IntrMaskToSet[1];
 //	LOG_INTERRUPT		InterruptLog;
 	struct sdio_func *func;
-//	u32			sdio_himr;
-//	u32			sdio_hisr;
+	u32			sdio_himr;
+	u32			sdio_hisr;
 
 	//
 	// SDIO Tx FIFO related.
@@ -287,7 +287,7 @@ typedef struct hal_com_data
 	// SDIO Rx FIFO related.
 	//
 	u8			SdioRxFIFOCnt;
-//	u16			SdioRxFIFOSize;
+	u16			SdioRxFIFOSize;
 
 //	u32			sdio_tx_max_len[SDIO_MAX_TX_QUEUE];// H, N, L, used for sdio tx aggregation max length per queue
 

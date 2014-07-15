@@ -57,4 +57,29 @@
 #define HRPWM							0x80 // 1byte, driver to FW, host domain, sync to CRPWM
 #define HRPWM2							0x82 // 2bytes, driver to FW, host domain, sync to CRPWM2
 
+// SDIO Host Interrupt Service Routine
+#define SDIO_HISR_RX_REQUEST				BIT0
+#define SDIO_HISR_AVAL_INT					BIT1
+#define SDIO_HISR_TXPKT_OVER_BUFF		BIT2
+#define SDIO_HISR_TX_AGG_SIZE_MISMATCH	BIT3
+//BIT4~16 not used
+#define SDIO_HISR_C2H_MSG_INT				BIT17
+#define SDIO_HISR_CPWM1					BIT18
+#define SDIO_HISR_CPWM2					BIT19
+#define SDIO_HISR_H2C_BUS_FAIL				BIT20
+#define SDIO_HISR_TXBD_OVF					BIT21
+#define SDIO_HISR_CPU_NOT_RDY				BIT22
+//BIT21~31 not used
+
+#define MASK_SDIO_HISR_CLEAR				(SDIO_HISR_TXPKT_OVER_BUFF|\
+											SDIO_HISR_TX_AGG_SIZE_MISMATCH|\
+											SDIO_HISR_C2H_MSG_INT|\
+											SDIO_HISR_CPWM1|\
+											SDIO_HISR_CPWM2|\
+											SDIO_HISR_H2C_BUS_FAIL|\
+											SDIO_HISR_TXBD_OVF|\
+											SDIO_HISR_CPU_NOT_RDY)
+											
+// RTL8195A SDIO Host Interrupt Mask Register
+#define SDIO_HIMR_RX_REQUEST_MSK			BIT1
 #endif

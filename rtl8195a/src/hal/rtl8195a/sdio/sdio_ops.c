@@ -313,17 +313,17 @@ _func_exit_;
 
 u32 sdio_read_port(
 //	struct sdio_func *func,
-	PHAL_DATA_TYPE pData,
+	PHAL_DATA_TYPE pHalData,
 	u32 addr,
 	u32 cnt,
 	u8 *mem)
 {
 	s32 err;
 	struct sdio_func *func;
-	func = pData->func;
+	func = pHalData->func;
 	printk("%s(): addr is %d\n", __func__, addr);
-	printk("%s(): SDIORxFIFOCnt is %d\n", __func__, pData->SdioRxFIFOCnt);
-	HalSdioGetCmdAddr8195ASdio(func, addr, pData->SdioRxFIFOCnt++, &addr);
+	printk("%s(): SDIORxFIFOCnt is %d\n", __func__, pHalData->SdioRxFIFOCnt);
+	HalSdioGetCmdAddr8195ASdio(func, addr, pHalData->SdioRxFIFOCnt++, &addr);
 
 	printk("%s(): Get Cmd Addr is 0x%x\n", __func__, addr);
 
@@ -483,7 +483,7 @@ u32 sdio_write_port(
  * Todo: align address to 4 bytes.
  */
 s32 sdio_local_read(
-	PHAL_DATA_TYPE pData,
+	PHAL_DATA_TYPE pHalData,
 	u32		addr,
 	u32		cnt,
 	u8		*pbuf)
@@ -492,7 +492,7 @@ s32 sdio_local_read(
 	u8 *ptmpbuf;
 	u32 n;
 	struct sdio_func *pfunc;
-	pfunc=pData->func;
+	pfunc=pHalData->func;
 	HalSdioGetCmdAddr8195ASdio(pfunc, SDIO_LOCAL_DEVICE_ID, addr, &addr);
 
 //		rtw_hal_get_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
@@ -521,4 +521,126 @@ s32 sdio_local_read(
 
 	return err;
 }
+/*
+ * Todo: align address to 4 bytes.
+ */
+s32 _sdio_local_write(
+//	PADAPTER	padapter,
+	PHAL_DATA_TYPE pHalData,
+	u32		addr,
+	u32		cnt,
+	u8		*pbuf)
+{
+//		struct intf_hdl * pintfhdl;
+//		u8 bMacPwrCtrlOn;
+	s32 err;
+	u8 *ptmpbuf;
+	struct sdio_func *pfunc;
+	pfunc = pHalData->func;
+	if(addr & 0x3)
+		printk("%s, address must be 4 bytes alignment\n", __FUNCTION__);
 
+	if(cnt  & 0x3)
+		printk("%s, size must be the multiple of 4 \n", __FUNCTION__);
+
+//	pintfhdl=&padapter->iopriv.intf;
+	
+	HalSdioGetCmdAddr8195ASdio(pfunc, SDIO_LOCAL_DEVICE_ID, addr, &addr);
+
+//		rtw_hal_get_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
+//		if ((_FALSE == bMacPwrCtrlOn)
+//	#ifdef CONFIG_LPS_LCLK
+//	//		|| (_TRUE == adapter_to_pwrctl(padapter)->bFwCurrentInPSMode)
+//	#endif
+//			)
+//		{
+//			err = _sd_cmd52_write(pintfhdl, addr, cnt, pbuf);
+//			return err;
+//		}
+
+        ptmpbuf = (u8*)rtw_malloc(cnt);
+	if(!ptmpbuf)
+		return (-1);
+
+	_rtw_memcpy(ptmpbuf, pbuf, cnt);
+
+	err = _sd_write(pfunc, addr, cnt, ptmpbuf);
+	
+	if (ptmpbuf)
+		rtw_mfree(ptmpbuf, cnt);
+
+	return err;
+}
+void sd_int_dpc(PHAL_DATA_TYPE pHalData)
+{
+	if (pHalData->sdio_hisr & SDIO_HISR_RX_REQUEST)
+	{
+//		struct recv_buf *precvbuf;
+
+		//DBG_8192C("%s: RX Request, size=%d\n", __func__, phal->SdioRxFIFOSize);
+		pHalData->sdio_hisr ^= SDIO_HISR_RX_REQUEST;
+//	#ifdef CONFIG_MAC_LOOPBACK_DRIVER
+//			sd_recv_loopback(padapter, pHalData->SdioRxFIFOSize);
+//	#else
+		do {
+			//Sometimes rx length will be zero. driver need to use cmd53 read again.
+			if(pHalData->SdioRxFIFOSize == 0)
+			{
+				u8 data[4];
+
+				sdio_local_read(pHalData, SDIO_RX0_REQ_LEN, 4, data);
+
+				pHalData->SdioRxFIFOSize = le16_to_cpu(*(u16*)data);
+			}
+
+			if(pHalData->SdioRxFIFOSize)
+			{
+//				precvbuf = sd_recv_rxfifo(padapter, pHalData->SdioRxFIFOSize);
+
+				pHalData->SdioRxFIFOSize = 0;
+
+//				if (precvbuf)
+//					sd_rxhandler(padapter, precvbuf);
+//				else
+//					break;
+			}
+			else
+				break;
+#ifdef CONFIG_SDIO_DISABLE_RXFIFO_POLLING_LOOP			
+		} while (0);
+#else
+		} while (1);
+#endif
+
+
+}
+void sd_int_hal(PHAL_DATA_TYPE pHalData)
+{
+	u8 data[4];
+
+	sdio_local_read(pHalData, SDIO_HISR, 4, data);
+	pHalData->sdio_hisr = le32_to_cpu(*(u32*)data);
+	pHalData->SdioRxFIFOSize = le16_to_cpu(*(u16*)&data[4]);
+
+	if (pHalData->sdio_hisr & pHalData->sdio_himr)
+	{
+		u32 v32;
+
+		pHalData->sdio_hisr &= pHalData->sdio_himr;
+
+		// clear HISR
+		v32 = pHalData->sdio_hisr & MASK_SDIO_HISR_CLEAR;
+		if (v32) {
+			v32 = cpu_to_le32(v32);
+			_sdio_local_write(pHalData, SDIO_HISR, 4, (u8*)&v32);
+		}
+
+		sd_int_dpc(pHalData);
+		
+	} 
+	else 
+	{
+		printk("%s: HISR(0x%08x) and HIMR(0x%08x) not match!\n",
+				__FUNCTION__, pHalData->sdio_hisr, pHalData->sdio_himr);
+	}	
+}

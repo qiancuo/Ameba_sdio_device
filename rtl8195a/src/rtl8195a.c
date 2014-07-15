@@ -42,14 +42,24 @@ MODULE_AUTHOR("Realtek");
 MODULE_DESCRIPTION("RealTek RTL-8195a iNIC");
 MODULE_LICENSE("GPL");
 MODULE_VERSION(RTL8195_VERSION);
+//	typedef struct _CMD_DESC{
+//	//DWORD 0
+//	unsigned int pktsize: 16; //=tx_desc.pktsize - cmd_desc.offset
+//	unsigned int offset: 8; //cmd header size
+//	unsigned int datatype: 8; // only first bit used, 0: data frame 1: management frame
+//	//DWORD 1
+//	unsigned char cmdtype[2]; //to call which API
+//	unsigned int resv: 16;
+//	}CMD_DESC, *PCMD_DESC;
 typedef struct _CMD_DESC{
 //DWORD 0
 unsigned int pktsize: 16; //=tx_desc.pktsize - cmd_desc.offset
 unsigned int offset: 8; //cmd header size
-unsigned int datatype: 8; // only first bit used, 0: data frame 1: management frame
+unsigned int resv: 7;
+unsigned int datatype: 1; // only one bit used, 0: data frame 1: management frame
 //DWORD 1
-unsigned char cmdtype[2]; //to call which API
-unsigned int resv: 16;
+//unsigned char cmdtype[2]; //to call which API
+//unsigned int resv: 16;
 }CMD_DESC, *PCMD_DESC;
 #define Message_Recv		"Here is Recv action!"
 #define Message_Xmit			"Here is Xmit action!"
@@ -522,6 +532,13 @@ static int SendOnePkt(struct sdio_func *func)
 	return 0;	
 }
 
+static void sd_sync_int_hdl(struct sdio_func *func)
+{
+	u32 sdio_himr;
+	sdio_himr = (u32)(SDIO_HIMR_RX_REQUEST_MSK);
+	sd_int_hdl(func);
+//	rtw_sdio_set_irq_thd(psdpriv, NULL);
+}
 static int sdio_init(struct sdio_func *func)
 {
 	int rc = 0;
@@ -536,6 +553,11 @@ static int sdio_init(struct sdio_func *func)
 	rc = sdio_set_block_size(func, 512);
 	if(rc ){
 		printk("%s():sdio_set_block_size FAIL!\n",__FUNCTION__);
+		goto release;
+	}
+	rc = sdio_claim_irq(func, &sd_sync_int_hdl);
+	if(rc){
+		printk("%s():sdio_claim_irq FAIL!\n",__FUNCTION__);
 		goto release;
 	}
 	sdio_release_host(func);
@@ -598,6 +620,10 @@ static void __devexit rtl8195a_remove_one(struct sdio_func *func)
 	if(rc){
 		printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
 	}
+	rc = sdio_release_irq(func);
+	if(rc){
+		printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
+	}	
 	sdio_release_host(func);
 }
 
