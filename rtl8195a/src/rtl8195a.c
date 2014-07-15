@@ -534,9 +534,12 @@ static int SendOnePkt(struct sdio_func *func)
 
 static void sd_sync_int_hdl(struct sdio_func *func)
 {
-	u32 sdio_himr;
-	sdio_himr = (u32)(SDIO_HIMR_RX_REQUEST_MSK);
-	sd_int_hdl(func);
+//	u32 sdio_himr;
+	gHal_Data->sdio_himr = (u32)(	\
+								SDIO_HIMR_RX_REQUEST_MSK | 
+								SDIO_HIMR_AVAL_MSK	|	
+								0);
+	sd_int_hal(gHal_Data);
 //	rtw_sdio_set_irq_thd(psdpriv, NULL);
 }
 static int sdio_init(struct sdio_func *func)

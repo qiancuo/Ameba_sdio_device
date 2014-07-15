@@ -81,5 +81,6 @@
 											SDIO_HISR_CPU_NOT_RDY)
 											
 // RTL8195A SDIO Host Interrupt Mask Register
-#define SDIO_HIMR_RX_REQUEST_MSK			BIT1
+#define SDIO_HIMR_RX_REQUEST_MSK			BIT0
+#define SDIO_HIMR_AVAL_MSK				BIT1
 #endif
