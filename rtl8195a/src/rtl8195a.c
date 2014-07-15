@@ -269,7 +269,7 @@ static int RecvWlanCmdPkt(PAT_CMD_DESC pWlan_cmd, u16 *pLen)
 }
 static ssize_t myFunc_Read(struct file *file, char *buf, size_t count, loff_t *ppos)
 {
-	PCMD_DESC pWlan_cmd;
+	PAT_CMD_DESC pWlan_cmd;
 	u16 len =0;
 	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
 	RecvWlanCmdPkt(NULL, &len);
