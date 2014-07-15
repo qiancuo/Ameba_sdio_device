@@ -233,6 +233,7 @@ static int RecvWlanCmdPkt(PAT_CMD_DESC pWlan_cmd, u16 *pLen)
 	struct sdio_func *pfunc;
 	PRX_DESC pRxDesc;
 	pfunc = gHal_Data->func;
+	memset(g_SDIO_cmdData, 0, sizeof(g_SDIO_cmdData)); 
 	do{
 	len = sdio_local_read(gHal_Data, SDIO_RX0_REQ_LEN, 4, (u8 *)&tmp);
 	len = le16_to_cpu(tmp);
