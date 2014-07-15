@@ -293,7 +293,7 @@ static void cmd_wifi_info(int argc, char **argv)
 {
 	static int fd;
 	AT_CMD_DESC cmdDesc;
-	unsigned char *pAtCmdType;
+	PAT_CMD_TYPE pAtCmdType;
 	PAT_CMD_DESC pDesc;
 	AT_WIFI_INFO *pWifiInfo;
 //	WIFI_SETTING *pWifiSet;
@@ -330,7 +330,7 @@ static void cmd_wifi_info(int argc, char **argv)
 	printf("pDesc->offset: %d\n\r", pDesc->offset);
 	printf("pDesc->pktsize: %d\n\r", pDesc->pktsize);
 	pAtCmdType = (PAT_CMD_TYPE)(buf+sizeof(AT_CMD_DESC));
-	printf("pAtCmdType: %s\n\r", (unsigned char *)pAtCmdType);
+	printf("pAtCmdType: %s\n\r", (unsigned char *)pAtCmdType->atcmd);
 	
 	pWifiInfo = (AT_WIFI_INFO *)(buf+sizeof(AT_CMD_DESC)+sizeof(AT_CMD_TYPE));
 	wifi_show_setting(&(pWifiInfo->setting));
