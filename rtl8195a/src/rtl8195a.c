@@ -207,9 +207,9 @@ static int SendWlanCmdPkt(PAT_CMD_DESC pWlan_cmd)
 	len = pWlan_cmd->pktsize+pWlan_cmd->offset;
 	totlen = len + sizeof(TX_DESC);
 	u8 data[totlen];	
-//		printk("pWlan_cmd->pktsize = %d\n\r", pWlan_cmd->pktsize);
-//		printk("pWlan_cmd->offset = %d\n\r", pWlan_cmd->offset);
-//		printk("pWlan_cmd->datatype = %d\n\r", pWlan_cmd->datatype);
+	printk("pWlan_cmd->pktsize = %d\n\r", pWlan_cmd->pktsize);
+	printk("pWlan_cmd->offset = %d\n\r", pWlan_cmd->offset);
+	printk("pWlan_cmd->datatype = %d\n\r", pWlan_cmd->datatype);
 	memset(data, 0, sizeof(data));
 	txdesc = TxDescGen(len, 1);
 	memcpy(data, &txdesc, txdesc.offset);
@@ -220,7 +220,7 @@ static int SendWlanCmdPkt(PAT_CMD_DESC pWlan_cmd)
 //			printk("data[%d] = 0x%02x\n", i, data[i]);
 //		}
 
-	sdio_write_port(gHal_Data->func, WLAN_TX_HIQ_DEVICE_ID, totlen, data);
+//	sdio_write_port(gHal_Data->func, WLAN_TX_HIQ_DEVICE_ID, totlen, data);
 	return 0;	
 }
 
@@ -288,7 +288,7 @@ static ssize_t myFunc_Write(struct file *file, const char *buf, size_t count, lo
 	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
 	memset(g_SDIO_cmdData, 0, sizeof(g_SDIO_cmdData)); 
 
-	if(copy_from_user(&g_SDIO_cmdData,buf,sizeof(g_SDIO_cmdData)))
+	if(copy_from_user(g_SDIO_cmdData,buf,sizeof(g_SDIO_cmdData)))
 	 {
 		 printk(KERN_DEBUG "copy from user failed!\n"); 
 		 return -EFAULT;
