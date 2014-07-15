@@ -623,10 +623,10 @@ static void __devexit rtl8195a_remove_one(struct sdio_func *func)
 	if(rc){
 		printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
 	}
-	rc = sdio_release_irq(func);
-	if(rc){
-		printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
-	}	
+//	rc = sdio_release_irq(func);
+//	if(rc){
+//		printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
+//	}	
 	sdio_release_host(func);
 }
 
