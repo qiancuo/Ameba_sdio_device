@@ -616,7 +616,7 @@ static void cmd_wifi_send_data(int argc, char **argv)
 static void cmd_wifi_recv_data(int argc, char **argv)
 {
 	static int fd;
-	unsigned char buf[2048];
+	unsigned char buf[2048] = {0};
 	PAT_CMD_DESC pCmdDesc;
 	PAT_CMD_TYPE pAtCmdType;
 	int read_bytes, i;
