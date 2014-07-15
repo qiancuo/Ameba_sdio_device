@@ -571,6 +571,7 @@ s32 _sdio_local_write(
 
 	return err;
 }
+
 void sd_int_dpc(PHAL_DATA_TYPE pHalData)
 {
 	if (pHalData->sdio_hisr & SDIO_HISR_RX_REQUEST)
@@ -606,13 +607,10 @@ void sd_int_dpc(PHAL_DATA_TYPE pHalData)
 			}
 			else
 				break;
-#ifdef CONFIG_SDIO_DISABLE_RXFIFO_POLLING_LOOP			
-		} while (0);
-#else
+
 		} while (1);
-#endif
 
-
+	}
 }
 void sd_int_hal(PHAL_DATA_TYPE pHalData)
 {
