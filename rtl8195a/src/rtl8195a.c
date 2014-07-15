@@ -42,16 +42,8 @@ MODULE_AUTHOR("Realtek");
 MODULE_DESCRIPTION("RealTek RTL-8195a iNIC");
 MODULE_LICENSE("GPL");
 MODULE_VERSION(RTL8195_VERSION);
-//	typedef struct _CMD_DESC{
-//	//DWORD 0
-//	unsigned int pktsize: 16; //=tx_desc.pktsize - cmd_desc.offset
-//	unsigned int offset: 8; //cmd header size
-//	unsigned int datatype: 8; // only first bit used, 0: data frame 1: management frame
-//	//DWORD 1
-//	unsigned char cmdtype[2]; //to call which API
-//	unsigned int resv: 16;
-//	}CMD_DESC, *PCMD_DESC;
-typedef struct _CMD_DESC{
+
+typedef struct _AT_CMD_DESC{
 //DWORD 0
 unsigned int pktsize: 16; //=tx_desc.pktsize - cmd_desc.offset
 unsigned int offset: 8; //cmd header size
@@ -60,7 +52,8 @@ unsigned int datatype: 1; // only one bit used, 0: data frame 1: management fram
 //DWORD 1
 //unsigned char cmdtype[2]; //to call which API
 //unsigned int resv: 16;
-}CMD_DESC, *PCMD_DESC;
+}AT_CMD_DESC, *PAT_CMD_DESC;
+
 #define Message_Recv		"Here is Recv action!"
 #define Message_Xmit			"Here is Xmit action!"
 #ifndef SLEEP_MILLI_SEC
@@ -206,7 +199,7 @@ static TX_DESC TxDescGen(u16 pktsize, u16 seqNum)
 	
 }
 
-static int SendWlanCmdPkt(PCMD_DESC pWlan_cmd)
+static int SendWlanCmdPkt(PAT_CMD_DESC pWlan_cmd)
 {
 	int i, len, totlen;
 	struct sdio_func *pfunc;	
@@ -231,7 +224,7 @@ static int SendWlanCmdPkt(PCMD_DESC pWlan_cmd)
 	return 0;	
 }
 
-static int RecvWlanCmdPkt(PCMD_DESC pWlan_cmd, u16 *pLen)
+static int RecvWlanCmdPkt(PAT_CMD_DESC pWlan_cmd, u16 *pLen)
 {
 	int res, i=0;
 	u32 tmp;
@@ -291,7 +284,7 @@ static ssize_t myFunc_Read(struct file *file, char *buf, size_t count, loff_t *p
 
 static ssize_t myFunc_Write(struct file *file, const char *buf, size_t count, loff_t *ppos)
 {
-	PCMD_DESC pwlan_cmd;
+	PAT_CMD_DESC pwlan_cmd;
 	printk(KERN_DEBUG "%s():\n", __FUNCTION__);
 	memset(g_SDIO_cmdData, 0, sizeof(g_SDIO_cmdData)); 
 
@@ -301,7 +294,7 @@ static ssize_t myFunc_Write(struct file *file, const char *buf, size_t count, lo
 		 return -EFAULT;
 	  }
 //		
-		pwlan_cmd = (PCMD_DESC)g_SDIO_cmdData;
+		pwlan_cmd = (PAT_CMD_DESC)g_SDIO_cmdData;
 //		if(pwlan_cmd->datatype == 1)
 //		{
 			SendWlanCmdPkt(pwlan_cmd);

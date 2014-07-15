@@ -497,7 +497,7 @@ static void cmd_wifi_get_rssi(int argc, char **argv)
 	printf("pDesc->datatype: %d\n\r", pDesc->datatype);
 	printf("pDesc->offset: %d\n\r", pDesc->offset);
 	printf("pDesc->pktsize: %d\n\r", pDesc->pktsize);
-	pAtCmdType = (PAT_CMD_TYPE)(buf+sizeof(AT_CMD_TYPE));
+	pAtCmdType = (PAT_CMD_TYPE)(buf+sizeof(AT_CMD_DESC));
 	printf("pAtCmdType: %s\n\r", (unsigned char *)pAtCmdType);
 	rssi = (int *)(buf+sizeof(AT_CMD_DESC)+sizeof(AT_CMD_TYPE));
 	printf("wifi_get_rssi: rssi = %d\n\r", *rssi);
