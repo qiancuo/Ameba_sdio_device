@@ -1,5 +1,6 @@
 #ifndef __BASIC_TYPES_H__
 #define __BASIC_TYPES_H__
+
 #include <linux/types.h>
 #include "autoconf.h"
 #include "osdep_service.h"
@@ -9,8 +10,6 @@
 
 #define SUCCESS	1
 #define FAIL	0
-//#define _SUCCESS SUCCESS
-//#define _FAIL FAIL
 
 #ifndef FALSE
 #define FALSE 0
@@ -22,6 +21,7 @@
 
 #define _TRUE TRUE
 #define _FALSE FALSE
+
 #define u8 unsigned char
 #define u16 unsigned short
 #define u32 unsigned int
