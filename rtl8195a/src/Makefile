@@ -1,5 +1,5 @@
 EXTRA_CFLAGS = -I$(shell pwd)/include
-echo $(EXTRA_CFLAGS)
+$(echo $(EXTRA_CFLAGS))
 #ifneq ($(KERNELRELEASE),)
 	obj-m := inic_8195a.o
 	inic_8195a-objs := rtl8195a.o hal/rtl8195a/sdio/sdio_ops.o osdep/linux/osdep_service_linux.o \
