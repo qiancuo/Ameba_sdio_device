@@ -1,5 +1,5 @@
-EXTRA_CFLAGS = -I$(shell pwd)/include
-$(echo $(EXTRA_CFLAGS))
+EXTRA_CFLAGS = -I$(PWD)/include/
+
 #ifneq ($(KERNELRELEASE),)
 	obj-m := inic_8195a.o
 	inic_8195a-objs := rtl8195a.o hal/rtl8195a/sdio/sdio_ops.o osdep/linux/osdep_service_linux.o \
@@ -7,7 +7,7 @@ $(echo $(EXTRA_CFLAGS))
 #else
 #	BASEDIR := /lib/modules/$(shell uname -r)
 #	KERNELDIR ?= $(BASEDIR)/build
-	PWD :=$(shell pwd)
+#	PWD :=$(shell pwd)
 #	DRIVERDIR := $(shell find $(BASEDIR)/kernel/drivers/net -name realtek -type d)
 #	ifeq ($(DRIVERDIR),)
 #		DRIVERDIR := $(BASEDIR)/kernel/drivers/net
