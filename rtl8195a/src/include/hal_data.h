@@ -2,6 +2,12 @@
 #define __HAL_DATA_H__
 #include "autoconf.h"
 #include <linux/mmc/sdio_func.h>
+enum RTL871X_HCI_TYPE {
+	RTW_PCIE	= BIT0,
+	RTW_USB 	= BIT1,
+	RTW_SDIO 	= BIT2,
+	RTW_GSPI	= BIT3,
+};
 typedef struct hal_com_data
 {
 //	HAL_VERSION			VersionID;

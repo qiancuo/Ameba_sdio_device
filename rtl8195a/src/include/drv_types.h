@@ -343,5 +343,16 @@ struct dvobj_priv{
 	INTF_DATA intf_data;
 #endif
 };
+enum _IFACE_TYPE {
+	IFACE_PORT0, //mapping to port0 for C/D series chips
+	IFACE_PORT1, //mapping to port1 for C/D series chip
+	MAX_IFACE_PORT,
+};
+
+enum _ADAPTER_TYPE {
+	PRIMARY_ADAPTER,
+	SECONDARY_ADAPTER,
+	MAX_ADAPTER = 0xFF,
+};
 
 #endif

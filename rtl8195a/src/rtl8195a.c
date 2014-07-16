@@ -571,8 +571,8 @@ _func_enter_;
 	psdio_data->block_transfer_len = 512;
 	psdio_data->tx_block_mode = 1;
 	psdio_data->rx_block_mode = 1;
-	sdio_release_host(func);
-	return rc;
+//	sdio_release_host(func);
+
 release:
     sdio_release_host(func);
 exit:
@@ -712,6 +712,191 @@ _func_enter_;
 _func_exit_;
 	return;
 }
+_adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_id  *pdid)
+{
+	int status = _FAIL;
+	struct net_device *pnetdev;
+	PADAPTER padapter = NULL;
+	
+	if ((padapter = (_adapter *)rtw_zvmalloc(sizeof(*padapter))) == NULL) {
+		goto exit;
+	}
+
+#ifdef RTW_SUPPORT_PLATFORM_SHUTDOWN
+	g_test_adapter = padapter;
+#endif // RTW_SUPPORT_PLATFORM_SHUTDOWN
+	padapter->dvobj = dvobj;
+	dvobj->if1 = padapter;
+
+	padapter->bDriverStopped=_TRUE;
+
+	dvobj->padapters[dvobj->iface_nums++] = padapter;
+	padapter->iface_id = IFACE_ID0;
+
+#if defined(CONFIG_CONCURRENT_MODE) || defined(CONFIG_DUALMAC_CONCURRENT)
+	//set adapter_type/iface type for primary padapter
+	padapter->isprimary = _TRUE;
+	padapter->adapter_type = PRIMARY_ADAPTER;	
+	#ifndef CONFIG_HWPORT_SWAP
+	padapter->iface_type = IFACE_PORT0;
+	#else
+	padapter->iface_type = IFACE_PORT1;
+	#endif
+#endif
+
+	padapter->interface_type = RTW_SDIO;
+//	rtw_decide_chip_type_by_device_id(padapter, pdid);
+	
+	//3 1. init network device data
+	pnetdev = rtw_init_netdev(padapter);
+	if (!pnetdev)
+		goto free_adapter;
+	
+//		SET_NETDEV_DEV(pnetdev, dvobj_to_dev(dvobj));
+//	
+//		padapter = rtw_netdev_priv(pnetdev);
+//	
+//	#ifdef CONFIG_IOCTL_CFG80211
+//		rtw_wdev_alloc(padapter, dvobj_to_dev(dvobj));
+//	#endif
+//	
+//		//3 3. init driver special setting, interface, OS and hardware relative
+//	
+//		//4 3.1 set hardware operation functions
+//		rtw_set_hal_ops(padapter);
+//	
+//	
+//		//3 5. initialize Chip version
+//		padapter->intf_start = &sd_intf_start;
+//		padapter->intf_stop = &sd_intf_stop;
+//	
+//		padapter->intf_init = &sdio_init;
+//		padapter->intf_deinit = &sdio_deinit;
+//		padapter->intf_alloc_irq = &sdio_alloc_irq;
+//		padapter->intf_free_irq = &sdio_free_irq;
+//	
+//		if (rtw_init_io_priv(padapter, sdio_set_intf_ops) == _FAIL)
+//		{
+//			RT_TRACE(_module_hci_intfs_c_, _drv_err_,
+//				("rtw_drv_init: Can't init io_priv\n"));
+//			goto free_hal_data;
+//		}
+//	
+//		rtw_hal_read_chip_version(padapter);
+//	
+//		rtw_hal_chip_configure(padapter);
+//	
+//	#ifdef CONFIG_BT_COEXIST
+//		rtw_btcoex_Initialize(padapter);
+//	#endif // CONFIG_BT_COEXIST
+//	
+//		//3 6. read efuse/eeprom data
+//		rtw_hal_read_chip_info(padapter);
+//	
+//		//3 7. init driver common data
+//		if (rtw_init_drv_sw(padapter) == _FAIL) {
+//			RT_TRACE(_module_hci_intfs_c_, _drv_err_,
+//				 ("rtw_drv_init: Initialize driver software resource Failed!\n"));
+//			goto free_hal_data;
+//		}
+//	
+//		//3 8. get WLan MAC address
+//		// set mac addr
+//		rtw_macaddr_cfg(padapter->eeprompriv.mac_addr);
+//		rtw_init_wifidirect_addrs(padapter, padapter->eeprompriv.mac_addr, padapter->eeprompriv.mac_addr);
+//	
+//		rtw_hal_disable_interrupt(padapter);
+//	
+//		DBG_871X("bDriverStopped:%d, bSurpriseRemoved:%d, bup:%d, hw_init_completed:%d\n"
+//			,padapter->bDriverStopped
+//			,padapter->bSurpriseRemoved
+//			,padapter->bup
+//			,padapter->hw_init_completed
+//		);
+//		
+//		status = _SUCCESS;
+	
+//	free_hal_data:
+//		if(status != _SUCCESS && padapter->HalData)
+//			rtw_mfree(padapter->HalData, sizeof(*(padapter->HalData)));
+//	
+//	free_wdev:
+//		if(status != _SUCCESS) {
+//			#ifdef CONFIG_IOCTL_CFG80211
+//			rtw_wdev_unregister(padapter->rtw_wdev);
+//			rtw_wdev_free(padapter->rtw_wdev);
+//			#endif
+//		}
+
+free_adapter:
+	if (status != _SUCCESS) {
+		if (pnetdev)
+			rtw_free_netdev(pnetdev);
+		else
+			rtw_vmfree((u8*)padapter, sizeof(*padapter));
+		padapter = NULL;
+	}
+exit:
+	return padapter;
+}
+
+static void rtw_sdio_if1_deinit(_adapter *if1)
+{
+	struct net_device *pnetdev = if1->pnetdev;
+	struct mlme_priv *pmlmepriv= &if1->mlmepriv;
+
+	if(check_fwstate(pmlmepriv, _FW_LINKED))
+		rtw_disassoc_cmd(if1, 0, _FALSE);
+
+#ifdef CONFIG_AP_MODE
+	free_mlme_ap_info(if1);
+	#ifdef CONFIG_HOSTAPD_MLME
+	hostapd_mode_unload(if1);
+	#endif
+#endif
+
+#ifdef CONFIG_GPIO_WAKEUP
+#ifdef CONFIG_PLATFORM_ARM_SUN6I 
+        sw_gpio_eint_set_enable(gpio_eint_wlan, 0);
+        sw_gpio_irq_free(eint_wlan_handle);
+#else  
+	gpio_hostwakeup_free_irq(if1);
+#endif
+#endif
+
+	rtw_cancel_all_timer(if1);
+
+#ifdef CONFIG_WOWLAN
+	adapter_to_pwrctl(if1)->wowlan_mode=_FALSE;
+	DBG_871X_LEVEL(_drv_always_, "%s wowlan_mode:%d\n", __func__, adapter_to_pwrctl(if1)->wowlan_mode);
+#endif //CONFIG_WOWLAN
+
+	rtw_dev_unload(if1);
+	DBG_871X("+r871xu_dev_remove, hw_init_completed=%d\n", if1->hw_init_completed);
+	
+	rtw_handle_dualmac(if1, 0);
+
+#ifdef CONFIG_IOCTL_CFG80211
+	if (if1->rtw_wdev) {
+		rtw_wdev_free(if1->rtw_wdev);
+	}
+#endif
+
+	rtw_free_drv_sw(if1);
+
+	if(pnetdev)
+		rtw_free_netdev(pnetdev);
+
+#ifdef CONFIG_PLATFORM_RTD2880B
+	DBG_871X("wlan link down\n");
+	rtd2885_wlan_netlink_sendMsg("linkdown", "8712");
+#endif
+
+#ifdef RTW_SUPPORT_PLATFORM_SHUTDOWN
+	g_test_adapter = NULL;
+#endif // RTW_SUPPORT_PLATFORM_SHUTDOWN
+}
+
 /*
  * drv_init() - a device potentially for us
  *
@@ -741,9 +926,6 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 		DBG_871X("rtw_init_primary_adapter Failed!\n");
 		goto free_dvobj;
 	}
-
-
-
 
 
 
