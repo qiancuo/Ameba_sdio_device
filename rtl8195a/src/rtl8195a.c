@@ -842,59 +842,59 @@ exit:
 
 static void rtw_sdio_if1_deinit(_adapter *if1)
 {
-	struct net_device *pnetdev = if1->pnetdev;
-	struct mlme_priv *pmlmepriv= &if1->mlmepriv;
-
-	if(check_fwstate(pmlmepriv, _FW_LINKED))
-		rtw_disassoc_cmd(if1, 0, _FALSE);
-
-#ifdef CONFIG_AP_MODE
-	free_mlme_ap_info(if1);
-	#ifdef CONFIG_HOSTAPD_MLME
-	hostapd_mode_unload(if1);
-	#endif
-#endif
-
-#ifdef CONFIG_GPIO_WAKEUP
-#ifdef CONFIG_PLATFORM_ARM_SUN6I 
-        sw_gpio_eint_set_enable(gpio_eint_wlan, 0);
-        sw_gpio_irq_free(eint_wlan_handle);
-#else  
-	gpio_hostwakeup_free_irq(if1);
-#endif
-#endif
-
-	rtw_cancel_all_timer(if1);
-
-#ifdef CONFIG_WOWLAN
-	adapter_to_pwrctl(if1)->wowlan_mode=_FALSE;
-	DBG_871X_LEVEL(_drv_always_, "%s wowlan_mode:%d\n", __func__, adapter_to_pwrctl(if1)->wowlan_mode);
-#endif //CONFIG_WOWLAN
-
-	rtw_dev_unload(if1);
-	DBG_871X("+r871xu_dev_remove, hw_init_completed=%d\n", if1->hw_init_completed);
-	
-	rtw_handle_dualmac(if1, 0);
-
-#ifdef CONFIG_IOCTL_CFG80211
-	if (if1->rtw_wdev) {
-		rtw_wdev_free(if1->rtw_wdev);
-	}
-#endif
-
-	rtw_free_drv_sw(if1);
-
-	if(pnetdev)
-		rtw_free_netdev(pnetdev);
-
-#ifdef CONFIG_PLATFORM_RTD2880B
-	DBG_871X("wlan link down\n");
-	rtd2885_wlan_netlink_sendMsg("linkdown", "8712");
-#endif
-
-#ifdef RTW_SUPPORT_PLATFORM_SHUTDOWN
-	g_test_adapter = NULL;
-#endif // RTW_SUPPORT_PLATFORM_SHUTDOWN
+//		struct net_device *pnetdev = if1->pnetdev;
+//		struct mlme_priv *pmlmepriv= &if1->mlmepriv;
+//	
+//		if(check_fwstate(pmlmepriv, _FW_LINKED))
+//			rtw_disassoc_cmd(if1, 0, _FALSE);
+//	
+//	#ifdef CONFIG_AP_MODE
+//		free_mlme_ap_info(if1);
+//		#ifdef CONFIG_HOSTAPD_MLME
+//		hostapd_mode_unload(if1);
+//		#endif
+//	#endif
+//	
+//	#ifdef CONFIG_GPIO_WAKEUP
+//	#ifdef CONFIG_PLATFORM_ARM_SUN6I 
+//	        sw_gpio_eint_set_enable(gpio_eint_wlan, 0);
+//	        sw_gpio_irq_free(eint_wlan_handle);
+//	#else  
+//		gpio_hostwakeup_free_irq(if1);
+//	#endif
+//	#endif
+//	
+//		rtw_cancel_all_timer(if1);
+//	
+//	#ifdef CONFIG_WOWLAN
+//		adapter_to_pwrctl(if1)->wowlan_mode=_FALSE;
+//		DBG_871X_LEVEL(_drv_always_, "%s wowlan_mode:%d\n", __func__, adapter_to_pwrctl(if1)->wowlan_mode);
+//	#endif //CONFIG_WOWLAN
+//	
+//		rtw_dev_unload(if1);
+//		DBG_871X("+r871xu_dev_remove, hw_init_completed=%d\n", if1->hw_init_completed);
+//		
+//		rtw_handle_dualmac(if1, 0);
+//	
+//	#ifdef CONFIG_IOCTL_CFG80211
+//		if (if1->rtw_wdev) {
+//			rtw_wdev_free(if1->rtw_wdev);
+//		}
+//	#endif
+//	
+//		rtw_free_drv_sw(if1);
+//	
+//		if(pnetdev)
+//			rtw_free_netdev(pnetdev);
+//	
+//	#ifdef CONFIG_PLATFORM_RTD2880B
+//		DBG_871X("wlan link down\n");
+//		rtd2885_wlan_netlink_sendMsg("linkdown", "8712");
+//	#endif
+//	
+//	#ifdef RTW_SUPPORT_PLATFORM_SHUTDOWN
+//		g_test_adapter = NULL;
+//	#endif // RTW_SUPPORT_PLATFORM_SHUTDOWN
 }
 
 /*
