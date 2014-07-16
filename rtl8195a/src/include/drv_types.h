@@ -2,7 +2,7 @@
 #define __DRV_TYPE_H__
 
 #include "autoconf.h"
-#include "basic_types.h"
+//#include "basic_types.h"
 #include "sta_info.h"
 #include "if_ether.h"
 #include "rtw_xmit.h"
