@@ -1,6 +1,6 @@
 #ifndef __RTL8195A_H__
 #define __RTL8195A_H__
-
+#include "autoconf.h"
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(3,8,0)
 #define __devinit
 #define __devexit

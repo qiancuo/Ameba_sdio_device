@@ -1,6 +1,7 @@
 #ifndef __BASIC_TYPES_H__
 #define __BASIC_TYPES_H__
 #include <linux/types.h>
+#include "autoconf.h"
 #include "osdep_service.h"
 
 #define _func_enter_ do{}while(0)

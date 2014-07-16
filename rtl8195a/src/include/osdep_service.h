@@ -20,6 +20,7 @@
 #ifndef __OSDEP_SERVICE_H_
 #define __OSDEP_SERVICE_H_
 
+#include "autoconf.h"
 
 #define _FAIL		0
 #define _SUCCESS	1
@@ -38,7 +39,7 @@
 #endif
 
 #ifdef PLATFORM_LINUX
-#include <osdep_service_linux.h>
+#include "osdep_service_linux.h"
 #endif
 
 #ifdef PLATFORM_OS_XP

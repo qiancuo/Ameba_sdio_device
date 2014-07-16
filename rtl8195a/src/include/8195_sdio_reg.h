@@ -1,5 +1,6 @@
 #ifndef _8195_SDIO_REG_H
 #define _8195_SDIO_REG_H
+#include "autoconf.h"
 #include "basic_types.h"
 
 

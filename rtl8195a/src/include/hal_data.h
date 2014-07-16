@@ -1,6 +1,6 @@
 #ifndef __HAL_DATA_H__
 #define __HAL_DATA_H__
-
+#include "autoconf.h"
 #include <linux/mmc/sdio_func.h>
 typedef struct hal_com_data
 {

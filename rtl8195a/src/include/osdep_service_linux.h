@@ -19,7 +19,7 @@
  ******************************************************************************/
 #ifndef __OSDEP_LINUX_SERVICE_H_
 #define __OSDEP_LINUX_SERVICE_H_
-
+#include "autoconf.h"
 	#include <linux/version.h>
 	#include <linux/spinlock.h>
 	#include <linux/compiler.h>

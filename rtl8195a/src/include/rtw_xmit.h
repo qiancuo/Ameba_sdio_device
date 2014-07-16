@@ -19,7 +19,7 @@
  ******************************************************************************/
 #ifndef __RTW_XMIT_H__
 #define __RTW_XMIT_H__
-
+#include "autoconf.h"
 
 #if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
 #ifdef CONFIG_TX_AGGREGATION

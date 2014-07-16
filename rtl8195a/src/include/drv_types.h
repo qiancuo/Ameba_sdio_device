@@ -1,7 +1,7 @@
 #ifndef __DRV_TYPE_H__
 #define __DRV_TYPE_H__
 
-
+#include "autoconf.h"
 #include "basic_types.h"
 #include "sta_info.h"
 #include "if_ether.h"
@@ -9,7 +9,7 @@
 
 
 #ifdef CONFIG_SDIO_HCI
-#include <drv_types_sdio.h>
+#include "drv_types_sdio.h"
 #define INTF_DATA SDIO_DATA
 #elif defined(CONFIG_GSPI_HCI)
 #include <drv_types_gspi.h>

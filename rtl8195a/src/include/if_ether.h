@@ -20,7 +20,7 @@
  
 #ifndef _LINUX_IF_ETHER_H
 #define _LINUX_IF_ETHER_H
-
+#include "autoconf.h"
 /*
  *	IEEE 802.3 Ethernet magic constants.  The frame sizes omit the preamble
  *	and FCS/CRC (frame check sequence). 
