@@ -20,16 +20,16 @@
 #ifndef __OSDEP_LINUX_SERVICE_H_
 #define __OSDEP_LINUX_SERVICE_H_
 
-	#include "autoconf.h"
-	#include "basic_types.h"
-	#include <linux/version.h>
-	#include <linux/spinlock.h>
-	#include <linux/compiler.h>
-	#include <linux/kernel.h>
-	#include <linux/errno.h>
-	#include <linux/init.h>
-	#include <linux/slab.h>
-	#include <linux/module.h>
+#include "autoconf.h"
+#include "basic_types.h"
+#include <linux/version.h>
+#include <linux/spinlock.h>
+#include <linux/compiler.h>
+#include <linux/kernel.h>
+#include <linux/errno.h>
+#include <linux/init.h>
+#include <linux/slab.h>
+#include <linux/module.h>
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,5))
 	#include <linux/kref.h>
 #endif
@@ -244,7 +244,7 @@ __inline static void _set_timer(_timer *ptimer,u32 delay_time)
 {	
 	mod_timer(ptimer , (jiffies+(delay_time*HZ/1000)));	
 }
-
+#define _TRUE TRUE
 __inline static void _cancel_timer(_timer *ptimer,u8 *bcancelled)
 {
 	del_timer_sync(ptimer); 	
