@@ -71,7 +71,7 @@ struct debug_priv {
 	u64 dbg_rx_ampdu_window_shift_cnt;
 };
 
-struct _ADAPTER{
+typedef struct _ADAPTER{
 	int	DriverState;// for disable driver using module, use dongle to replace module.
 	int	pid[3];//process id from UI, 0:wps, 1:hostapd, 2:dhcpcd
 	int	bDongle;//build-in module or external dongle
