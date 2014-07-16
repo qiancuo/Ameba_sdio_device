@@ -244,13 +244,12 @@ __inline static void _set_timer(_timer *ptimer,u32 delay_time)
 {	
 	mod_timer(ptimer , (jiffies+(delay_time*HZ/1000)));	
 }
-#define _TRUE 1
+
 __inline static void _cancel_timer(_timer *ptimer,u8 *bcancelled)
 {
 	del_timer_sync(ptimer); 	
 	*bcancelled=  _TRUE;//TRUE ==1; FALSE==0
 }
-
 
 __inline static void _init_workitem(_workitem *pwork, void *pfunc, void *cntx)
 {
