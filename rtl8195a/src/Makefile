@@ -1,7 +1,8 @@
 
 ifneq ($(KERNELRELEASE),)
 	obj-m := inic_8195a.o
-	inic_8195a-objs := rtl8195a.o hal/rtl8195a/sdio/sdio_ops.o osdep/linux/osdep_service_linux.o
+	inic_8195a-objs := rtl8195a.o hal/rtl8195a/sdio/sdio_ops.o osdep/linux/osdep_service_linux.o \
+						core/rtw_debug.o
 else
 	BASEDIR := /lib/modules/$(shell uname -r)
 	KERNELDIR ?= $(BASEDIR)/build
