@@ -41,8 +41,8 @@
 
 #define SUCCESS	1
 #define FAIL	0
-#define _SUCCESS SUCCESS
-#define _FAIL FAIL
+//#define _SUCCESS SUCCESS
+//#define _FAIL FAIL
 
 #ifndef FALSE
 #define FALSE 0
@@ -54,14 +54,14 @@
 
 #ifndef TRUE
 	#define _TRUE	1
-#else
-	#define _TRUE	TRUE	
+//#else
+//	#define _TRUE	TRUE	
 #endif
 		
 #ifndef FALSE		
 	#define _FALSE	0
-#else
-	#define _FALSE	FALSE	
+//#else
+//	#define _FALSE	FALSE	
 #endif
 
 #define IN
