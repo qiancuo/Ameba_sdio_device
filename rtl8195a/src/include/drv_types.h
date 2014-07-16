@@ -7,7 +7,7 @@
 #include "sta_info.h"
 //#include "if_ether.h"
 #include "rtw_xmit.h"
-
+#include "rtw_security.h"
 
 #ifdef CONFIG_SDIO_HCI
 #include "drv_types_sdio.h"
