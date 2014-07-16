@@ -21,6 +21,7 @@
 #define __IEEE80211_H
 
 #include "basic_types.h"
+#include "wifi.h"
 #ifndef CONFIG_RTL8711FW
 
 	#if defined PLATFORM_OS_XP

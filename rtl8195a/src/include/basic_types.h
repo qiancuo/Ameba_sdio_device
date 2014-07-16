@@ -19,18 +19,6 @@
 #ifndef TRUE
 #define TRUE  1
 #endif
-
-#define IN
-#define OUT
-#define VOID void
-#define sint signed int
-#define uint unsigned int
-
-#ifndef	PVOID
-typedef void * PVOID;
-//#define PVOID	(void *)
-#endif
-
 #define u8 unsigned char
 #define u16 unsigned short
 #define u32 unsigned int
@@ -46,6 +34,18 @@ typedef void * PVOID;
 #define s32 signed int
 #define s64 signed long long
 #define u64 unsigned long long
+#define IN
+#define OUT
+#define VOID void
+#define sint signed int
+#define uint unsigned int
+
+#ifndef	PVOID
+typedef void * PVOID;
+//#define PVOID	(void *)
+#endif
+
+
 
 //	#define _RND(sz, r) ((((sz)+((r)-1))/(r))*(r))
 //	#define RND4(x)	(((x >> 2) + (((x & 3) == 0) ?  0: 1)) << 2)

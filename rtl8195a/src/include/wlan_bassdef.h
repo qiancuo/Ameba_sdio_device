@@ -21,6 +21,9 @@
 #define __WLAN_BSSDEF_H__
 
 #include "autoconf.h"
+#include "basic_types.h"
+
+
 
 #define MAX_IE_SZ	768
 
