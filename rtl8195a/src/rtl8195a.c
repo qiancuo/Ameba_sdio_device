@@ -33,7 +33,7 @@
 #include "include/sdio_ops.h"
 #include "include/8195_desc.h"
 #include "include/8195_sdio_reg.h"
-#include "include/drv_type_sdio.h"
+#include "include/drv_types_sdio.h"
 #include "include/rtl8195a.h"
 #include "include/autoconf.h"
 #include "include/rtw_debug.h"
@@ -575,6 +575,45 @@ static int rtw_sdio_resume(struct device *dev)
 	int ret = 0;
 	return ret;
 }
+struct dvobj_priv *devobj_init(void)
+{
+	struct dvobj_priv *pdvobj = NULL;
+
+	if ((pdvobj = (struct dvobj_priv*)rtw_zmalloc(sizeof(*pdvobj))) == NULL) 
+	{
+		return NULL;
+	}
+
+	_rtw_mutex_init(&pdvobj->hw_init_mutex);
+	_rtw_mutex_init(&pdvobj->h2c_fwcmd_mutex);
+	_rtw_mutex_init(&pdvobj->setch_mutex);
+	_rtw_mutex_init(&pdvobj->setbw_mutex);
+
+	_rtw_spinlock_init(&pdvobj->lock);
+
+	pdvobj->macid[1] = _TRUE; //macid=1 for bc/mc stainfo
+
+	pdvobj->processing_dev_remove = _FALSE;
+
+	ATOMIC_SET(&pdvobj->disable_func, 0);
+
+	return pdvobj;
+
+}
+void devobj_deinit(struct dvobj_priv *pdvobj)
+{
+	if(!pdvobj)
+		return;
+
+	_rtw_spinlock_free(&pdvobj->lock);
+
+	_rtw_mutex_free(&pdvobj->hw_init_mutex);
+	_rtw_mutex_free(&pdvobj->h2c_fwcmd_mutex);
+	_rtw_mutex_free(&pdvobj->setch_mutex);
+	_rtw_mutex_free(&pdvobj->setbw_mutex);
+
+	rtw_mfree((u8*)pdvobj, sizeof(*pdvobj));
+}
 static struct dvobj_priv *sdio_dvobj_init(struct sdio_func *func)
 {
 	int status = _FAIL;
@@ -595,7 +634,7 @@ _func_enter_;
 		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("%s: initialize SDIO Failed!\n", __FUNCTION__));
 		goto free_dvobj;
 	}
-	rtw_reset_continual_io_error(dvobj);
+//	rtw_reset_continual_io_error(dvobj);
 	status = _SUCCESS;
 
 free_dvobj:

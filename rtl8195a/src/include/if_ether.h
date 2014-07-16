@@ -18,8 +18,8 @@
  *
  ******************************************************************************/
  
-#ifndef __IF_ETHER_H__
-#define __IF_ETHER_H__
+#ifndef _LINUX_IF_ETHER_H
+#define _LINUX_IF_ETHER_H
 
 /*
  *	IEEE 802.3 Ethernet magic constants.  The frame sizes omit the preamble
