@@ -7,7 +7,6 @@
 #include "sta_info.h"
 //#include "if_ether.h"
 #include "rtw_xmit.h"
-#include "rtw_security.h"
 
 #ifdef CONFIG_SDIO_HCI
 #include "drv_types_sdio.h"
@@ -18,7 +17,7 @@
 #elif defined(CONFIG_PCI_HCI)
 #include <drv_types_pci.h>
 #endif
-
+typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #define ETH_ALEN 6 //6 octets for 
 struct cam_entry_cache {
 	u16 ctrl;
@@ -72,7 +71,7 @@ struct debug_priv {
 	u64 dbg_rx_ampdu_window_shift_cnt;
 };
 
-typedef struct _ADAPTER{
+struct _ADAPTER{
 	int	DriverState;// for disable driver using module, use dongle to replace module.
 	int	pid[3];//process id from UI, 0:wps, 1:hostapd, 2:dhcpcd
 	int	bDongle;//build-in module or external dongle
@@ -285,7 +284,7 @@ typedef struct _ADAPTER{
 	u8 fix_rate;
 
 	unsigned char     in_cta_test;
-}_adapter, ADAPTER, *PADAPTER;
+};
 
 struct dvobj_priv{
 	/*-------- below is common data --------*/	
