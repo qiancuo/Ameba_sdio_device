@@ -31,6 +31,8 @@
 
 #endif
 
+#define sint signed int
+#define uint unsigned int
 #define MGMT_QUEUE_NUM 5
 
 #define ETH_ALEN	6
