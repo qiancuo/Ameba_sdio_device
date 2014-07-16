@@ -19,7 +19,7 @@
  ******************************************************************************/
 #define _RTW_DEBUG_C_
 
-#include "drv_types.h"
+#include <drv_types.h>
 
 u32 GlobalDebugLevel = _drv_err_;
 
