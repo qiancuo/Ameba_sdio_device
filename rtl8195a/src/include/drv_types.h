@@ -285,7 +285,9 @@ struct _ADAPTER{
 
 	unsigned char     in_cta_test;
 };
-typedef struct _ADAPTER _adapter, ADAPTER, *PADAPTER;
+typedef struct _ADAPTER _adapter; 
+typedef struct _ADAPTER ADAPTER;
+typedef struct _ADAPTER *PADAPTER;
 struct dvobj_priv{
 	/*-------- below is common data --------*/	
 	_adapter *if1; //PRIMARY_ADAPTER
