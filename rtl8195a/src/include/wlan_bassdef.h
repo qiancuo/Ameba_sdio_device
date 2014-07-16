@@ -40,15 +40,21 @@ typedef unsigned char   NDIS_802_11_RATES[NDIS_802_11_LENGTH_RATES];        // S
 typedef unsigned char   NDIS_802_11_RATES_EX[NDIS_802_11_LENGTH_RATES_EX];  // Set of 16 data rates
 
 
-typedef  unsigned int  NDIS_802_11_KEY_INDEX;
+#define  NDIS_802_11_KEY_INDEX unsigned int
 typedef unsigned long long NDIS_802_11_KEY_RSC;
 
 #ifndef ULONG
 typedef unsigned int ULONG;
 #endif
+
+
+
 #ifndef ULONG
 typedef unsigned char UCHAR;
 #endif
+
+
+
 typedef struct _NDIS_802_11_SSID
 {
   ULONG  SsidLength;
