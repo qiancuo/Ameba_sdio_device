@@ -564,21 +564,31 @@ release:
     return rc;    
 }
 
-
-static int __devinit rtl8195a_init_one(struct sdio_func *func, const struct sdio_device_id *id)
+static int rtw_sdio_suspend(struct device *dev)
 {
-	static int board_idx = -1;
+	int ret =0;
+	return ret;
+}
+static int rtw_sdio_resume(struct device *dev)
+{
+	int ret = 0;
+	return ret;
+}
+static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_device_id *id)
+{
+//	static int board_idx = -1;
 
-	int rc = 0;
-	board_idx++;
-	printk("%s():++\n",__FUNCTION__);
+	int ret = 0;
+//	board_idx++;
+//	printk("%s():++\n",__FUNCTION__);
 
+	
 	gHal_Data = kmalloc(sizeof(PHAL_DATA_TYPE), GFP_KERNEL);
 //	g_SDIO_cmdData = kmalloc(2048, GFP_KERNEL);
 	// 1.init SDIO bus and read chip version	
-	rc = sdio_init(func);
-	if(rc)
-		return rc;
+	ret = sdio_init(func);
+	if(ret)
+		return ret;
 	gHal_Data->func = func;
 	gHal_Data->SdioRxFIFOCnt =0;
 	mutex_init(&Recv_Xmit_mutex);
@@ -589,11 +599,10 @@ static int __devinit rtl8195a_init_one(struct sdio_func *func, const struct sdio
 //    printk(KERN_INFO "%s: This product is covered by one or more of the following patents: US6,570,884, US6,115,776, and US6,327,625.\n", MODULENAME);
 
 //    printk("%s", GPL_CLAIM);
-
-	return rc;
+	return ret;
 }
 
-static void __devexit rtl8195a_remove_one(struct sdio_func *func)
+static void __devexit rtw_dev_remove(struct sdio_func *func)
 
 {
 
@@ -633,46 +642,102 @@ static struct file_operations fops =
 	unlocked_ioctl : myFunc_ioctl
 };
 
-
 static const struct sdio_device_id sdio_ids[] =
 {
 	{ SDIO_DEVICE(0x024c, 0x8821),.driver_data = RTL8195A},
 };
 
-struct sdio_driver rtl8195a = {
-	.probe	= rtl8195a_init_one,
-	.remove	= __devexit_p(rtl8195a_remove_one),
-	.name	= MODULENAME,
-	.id_table	= sdio_ids,
+//	struct sdio_driver rtl8195a = {
+//		.probe	= rtl8195a_init_one,
+//		.remove	= __devexit_p(rtl8195a_remove_one),
+//		.name	= MODULENAME,
+//		.id_table	= sdio_ids,
+//	};
+
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29)) 
+static const struct dev_pm_ops rtw_sdio_pm_ops = {
+	.suspend	= rtw_sdio_suspend,
+	.resume	= rtw_sdio_resume,
+};
+#endif
+	
+struct sdio_drv_priv {
+	struct sdio_driver r8195a_drv;
+	int drv_registered;
 };
 
+static struct sdio_drv_priv sdio_drvpriv = {
+	.r8195a_drv.probe = rtw_drv_init,
+	.r8195a_drv.remove = rtw_dev_remove,
+	.r8195a_drv.name = (char*)DRV_NAME,
+	.r8195a_drv.id_table = sdio_ids,
+	#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29)) 
+	.r8195a_drv.drv = {
+		.pm = &rtw_sdio_pm_ops,
+	}
+	#endif
+};
 
+static int platform_wifi_power_on(void)
+{
+	int ret = 0;
+	return ret;
+}
+void platform_wifi_power_off(void)
+{
 
+}
 static int __init rtl8195a_init_module(void)
 {
 
 	int ret;
+
+	DBG_871X_LEVEL(_drv_always_, "module init start\n");
+	dump_drv_version(RTW_DBGDUMP);
+#ifdef BTCOEXVERSION
+	DBG_871X_LEVEL(_drv_always_, DRV_NAME" BT-Coex version = %s\n", BTCOEXVERSION);
+#endif // BTCOEXVERSION
+
+	ret = platform_wifi_power_on();
+	if (ret)
+	{
+		DBG_871X("%s: power on failed!!(%d)\n", __FUNCTION__, ret);
+		ret = -1;
+		goto exit;
+	}
+	
+
 	ret = register_chrdev(major,"inic_8195a",&fops);
 	if (ret < 0)
 	{
 		printk(KERN_WARNING "%s(): function error!\n", __FUNCTION__);
 		return ret;
 	}
-//		major = ret;
-//		printk(KERN_DEBUG "MAJOR : %d\n",ret);
-	ret = sdio_register_driver(&rtl8195a);
+	sdio_drvpriv.drv_registered = _TRUE;
+	ret = sdio_register_driver(&sdio_drvpriv.r8195a_drv);
 	if(ret!=0)
-		printk("sdio register driver Failed!\n");
+	{	
+		sdio_drvpriv.drv_registered = _FALSE;
+		DBG_871X("%s: register driver failed!!(%d)\n", __FUNCTION__, ret);
+		goto poweroff;
+	}
+	goto exit;
+poweroff:
+	platform_wifi_power_off();
+exit:
+	DBG_871X_LEVEL(_drv_always_, "module init ret=%d\n", ret);
 	return ret;
-
 }
 
 static void __exit rtl8195a_cleanup_module(void)
 {
+	DBG_871X_LEVEL(_drv_always_, "module exit start\n");
 
+	sdio_drvpriv.drv_registered = _FALSE;
 	unregister_chrdev(major, "inic_8195a");
-	sdio_unregister_driver(&rtl8195a);
-
+	sdio_unregister_driver(&sdio_drvpriv.r8195a_drv);
+	platform_wifi_power_off();
+	DBG_871X_LEVEL(_drv_always_, "module exit success\n");
 }
 
 module_init(rtl8195a_init_module);
