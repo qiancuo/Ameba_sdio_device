@@ -35,7 +35,8 @@
 #include "include/8195_sdio_reg.h"
 #include "include/drv_type_sdio.h"
 #include "include/rtl8195a.h"
-
+#include "include/autoconf.h"
+#include "include/rtw_debug.h"
 #include "include/osdep_service_linux.h"
 
 MODULE_AUTHOR("Realtek");
