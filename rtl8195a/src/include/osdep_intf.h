@@ -119,7 +119,7 @@ u16 rtw_recv_select_queue(struct sk_buff *skb);
 int rtw_ndev_notifier_register(void);
 void rtw_ndev_notifier_unregister(void);
 
-#include "../os_dep/linux/rtw_proc.h"
+//#include "../os_dep/linux/rtw_proc.h"
 #endif //PLATFORM_LINUX
 
 
