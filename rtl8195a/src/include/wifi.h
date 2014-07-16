@@ -430,7 +430,7 @@ enum WIFI_REG_DOMAIN {
 		(addr[2] == 0xff) && (addr[3] == 0xff) && \
 		(addr[4] == 0xff) && (addr[5] == 0xff) )  ? _TRUE : _FALSE \
 )
-#define _FALSE 0
+
 __inline static int IS_MCAST(unsigned char *da)
 {
 	if ((*da) & 0x01)
