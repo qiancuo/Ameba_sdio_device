@@ -1,6 +1,76 @@
 #ifndef __DRV_TYPE_H__
 #define __DRV_TYPE_H__
+
+
 #include "basic_types.h"
+#include "sta_info.h"
+#include "if_ether.h"
+#include "rtw_xmit.h"
+
+
+#ifdef CONFIG_SDIO_HCI
+#include <drv_types_sdio.h>
+#define INTF_DATA SDIO_DATA
+#elif defined(CONFIG_GSPI_HCI)
+#include <drv_types_gspi.h>
+#define INTF_DATA GSPI_DATA
+#elif defined(CONFIG_PCI_HCI)
+#include <drv_types_pci.h>
+#endif
+
+#define ETH_ALEN 6 //6 octets for 
+struct cam_entry_cache {
+	u16 ctrl;
+	u8 mac[ETH_ALEN];
+	u8 key[16];
+};
+enum _IFACE_ID {
+	IFACE_ID0, //maping to PRIMARY_ADAPTER
+	IFACE_ID1, //maping to SECONDARY_ADAPTER
+	IFACE_ID2,
+	IFACE_ID3,
+	IFACE_ID_MAX,
+};
+struct debug_priv {
+	u32 dbg_sdio_free_irq_error_cnt;
+	u32 dbg_sdio_alloc_irq_error_cnt;
+	u32 dbg_sdio_free_irq_cnt;
+	u32 dbg_sdio_alloc_irq_cnt;
+	u32 dbg_sdio_deinit_error_cnt;
+	u32 dbg_sdio_init_error_cnt;
+	u32 dbg_suspend_error_cnt;
+	u32 dbg_suspend_cnt;
+	u32 dbg_resume_cnt;
+	u32 dbg_resume_error_cnt;
+	u32 dbg_deinit_fail_cnt;
+	u32 dbg_carddisable_cnt;
+	u32 dbg_carddisable_error_cnt;
+	u32 dbg_ps_insuspend_cnt;
+	u32	dbg_dev_unload_inIPS_cnt;
+	u32 dbg_wow_leave_ps_fail_cnt;
+	u32 dbg_scan_pwr_state_cnt;
+	u32 dbg_downloadfw_pwr_state_cnt;
+	u32 dbg_fw_read_ps_state_fail_cnt;
+	u32 dbg_leave_ips_fail_cnt;
+	u32 dbg_leave_lps_fail_cnt;
+	u32 dbg_h2c_leave32k_fail_cnt;
+	u32 dbg_diswow_dload_fw_fail_cnt;
+	u32 dbg_enwow_dload_fw_fail_cnt;
+	u32 dbg_ips_drvopen_fail_cnt;
+	u32 dbg_poll_fail_cnt;
+	u32 dbg_rpwm_toogle_cnt;
+	u32 dbg_rpwm_timeout_fail_cnt;
+	u32 dbg_sreset_cnt;
+	u64 dbg_rx_fifo_last_overflow;
+	u64 dbg_rx_fifo_curr_overflow;
+	u64 dbg_rx_fifo_diff_overflow;
+	u64 dbg_rx_ampdu_drop_count;
+	u64 dbg_rx_ampdu_forced_indicate_count;
+	u64 dbg_rx_ampdu_loss_count;
+	u64 dbg_rx_dup_mgt_frame_drop_count;
+	u64 dbg_rx_ampdu_window_shift_cnt;
+};
+
 struct _ADAPTER{
 	int	DriverState;// for disable driver using module, use dongle to replace module.
 	int	pid[3];//process id from UI, 0:wps, 1:hostapd, 2:dhcpcd
@@ -217,5 +287,60 @@ struct _ADAPTER{
 };
 typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 struct dvobj_priv{
+	/*-------- below is common data --------*/	
+	_adapter *if1; //PRIMARY_ADAPTER
+	_adapter *if2; //SECONDARY_ADAPTER
+
+	s32	processing_dev_remove;
+
+	struct debug_priv drv_dbg;
+
+	//for local/global synchronization
+	//
+	_lock	lock;
+	int macid[NUM_STA];
+
+	_mutex hw_init_mutex;
+	_mutex h2c_fwcmd_mutex;
+	_mutex setch_mutex;
+	_mutex setbw_mutex;
+
+	unsigned char	oper_channel; //saved channel info when call set_channel_bw
+	unsigned char	oper_bwmode;
+	unsigned char	oper_ch_offset;//PRIME_CHNL_OFFSET
+	u32 on_oper_ch_time;
+
+	//extend to support mulitu interface
+	//padapters[IFACE_ID0] == if1
+	//padapters[IFACE_ID1] == if2
+	_adapter *padapters[IFACE_ID_MAX];
+	u8 iface_nums; // total number of ifaces used runtime
+
+	struct cam_entry_cache cam_cache[32];
+
+	//For 92D, DMDP have 2 interface.
+	u8	InterfaceNumber;
+	u8	NumInterfaces;
+
+	//In /Out Pipe information
+	int	RtInPipe[2];
+	int	RtOutPipe[4];
+	u8	Queue2Pipe[HW_QUEUE_ENTRY];//for out pipe mapping
+
+	u8	irq_alloc;
+	ATOMIC_T continual_io_error;
+
+	ATOMIC_T disable_func;
+
+//	struct pwrctrl_priv pwrctl_priv;
+
+//	struct rtw_traffic_statistics	traffic_stat;
+
+/*-------- below is for SDIO INTERFACE --------*/
+
+#ifdef INTF_DATA
+	INTF_DATA intf_data;
+#endif
 };
+
 #endif

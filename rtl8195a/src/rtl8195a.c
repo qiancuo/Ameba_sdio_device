@@ -575,15 +575,75 @@ static int rtw_sdio_resume(struct device *dev)
 	int ret = 0;
 	return ret;
 }
+static struct dvobj_priv *sdio_dvobj_init(struct sdio_func *func)
+{
+	int status = _FAIL;
+	struct dvobj_priv *dvobj = NULL;
+	PSDIO_DATA psdio;
+_func_enter_;
+
+	if((dvobj = devobj_init()) == NULL) {
+		goto exit;
+	}
+
+	sdio_set_drvdata(func, dvobj);
+
+	psdio = &dvobj->intf_data;
+	psdio->func = func;
+
+	if (sdio_init(dvobj) != _SUCCESS) {
+		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("%s: initialize SDIO Failed!\n", __FUNCTION__));
+		goto free_dvobj;
+	}
+	rtw_reset_continual_io_error(dvobj);
+	status = _SUCCESS;
+
+free_dvobj:
+	if (status != _SUCCESS && dvobj) {
+		sdio_set_drvdata(func, NULL);
+		
+		devobj_deinit(dvobj);
+		
+		dvobj = NULL;
+	}
+exit:
+_func_exit_;
+	return dvobj;
+}
+/*
+ * drv_init() - a device potentially for us
+ *
+ * notes: drv_init() is called when the bus driver has located a card for us to support.
+ *        We accept the new device by returning 0.
+ */
 static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_device_id *id)
 {
 //	static int board_idx = -1;
-
+	int status = _FAIL;
+	struct net_device *pnetdev;
+	PADAPTER if1 = NULL, if2 = NULL;
+	struct dvobj_priv *dvobj;
 	int ret = 0;
 //	board_idx++;
 //	printk("%s():++\n",__FUNCTION__);
 
-	
+	RT_TRACE(_module_hci_intfs_c_, _drv_info_,
+		("+rtw_drv_init: vendor=0x%04x device=0x%04x class=0x%02x\n",
+		func->vendor, func->device, func->class));
+
+	if ((dvobj = sdio_dvobj_init(func)) == NULL) {
+		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("initialize device object priv Failed!\n"));
+		goto exit;
+	}
+
+
+
+
+
+
+
+
+
 	gHal_Data = kmalloc(sizeof(PHAL_DATA_TYPE), GFP_KERNEL);
 //	g_SDIO_cmdData = kmalloc(2048, GFP_KERNEL);
 	// 1.init SDIO bus and read chip version	
@@ -600,7 +660,10 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 //    printk(KERN_INFO "%s: This product is covered by one or more of the following patents: US6,570,884, US6,115,776, and US6,327,625.\n", MODULENAME);
 
 //    printk("%s", GPL_CLAIM);
-	return ret;
+//	return ret;
+
+exit:
+	return status == _SUCCESS?0:-ENODEV;
 }
 
 static void __devexit rtw_dev_remove(struct sdio_func *func)
@@ -690,7 +753,6 @@ void platform_wifi_power_off(void)
 }
 static int __init rtl8195a_init_module(void)
 {
-
 	int ret;
 
 	DBG_871X_LEVEL(_drv_always_, "module init start\n");
@@ -705,8 +767,7 @@ static int __init rtl8195a_init_module(void)
 		DBG_871X("%s: power on failed!!(%d)\n", __FUNCTION__, ret);
 		ret = -1;
 		goto exit;
-	}
-	
+	}	
 
 	ret = register_chrdev(major,"inic_8195a",&fops);
 	if (ret < 0)

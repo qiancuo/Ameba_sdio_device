@@ -86,6 +86,8 @@ typedef void * PVOID;
 #define s8 signed char
 #define s16 signed short
 #define s32 signed int
+typedef signed long long s64;
+typedef unsigned long long u64;
 
 #define _RND(sz, r) ((((sz)+((r)-1))/(r))*(r))
 #define RND4(x)	(((x >> 2) + (((x & 3) == 0) ?  0: 1)) << 2)
