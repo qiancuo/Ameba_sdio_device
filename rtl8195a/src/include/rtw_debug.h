@@ -21,6 +21,7 @@
 #define __RTW_DEBUG_H__
 #include <linux/kernel.h>
 #include <linux/seq_file.h>
+#include "drv_types.h"
 #include "autoconf.h"
 #include "rtw_version.h"
 
