@@ -1,4 +1,4 @@
-EXTRA_CFLAGS += -I$(src)/include
+EXTRA_CFLAGS = -I$(src)/include
 #ifneq ($(KERNELRELEASE),)
 	obj-m := inic_8195a.o
 	inic_8195a-objs := rtl8195a.o hal/rtl8195a/sdio/sdio_ops.o osdep/linux/osdep_service_linux.o \
@@ -18,7 +18,7 @@ all: clean modules
 
 .PHONY:modules
 modules:
-	$(MAKE) -C $(KERNEL_DIR) SUBDIRS=$(PWD) modules
+	$(MAKE) -C $(KERNEL_DIR) SUBDIRS=$(PWD) $(EXTRA_CFLAGS) modules
 
 .PHONY:clean
 clean:
