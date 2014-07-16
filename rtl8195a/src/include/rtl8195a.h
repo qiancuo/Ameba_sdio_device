@@ -10,6 +10,7 @@
 #define MODULENAME "iNIC_8195a"
 #define GPL_CLAIM "=== iNIC_8195a ===\n"
 #define RTL8195_VERSION "8195a"
+#define DRV_NAME "rtl8195a"
 
 enum _CHIP_TYPE {
 	NULL_CHIP_TYPE,	
