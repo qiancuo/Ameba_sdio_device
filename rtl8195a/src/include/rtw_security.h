@@ -23,7 +23,7 @@
 #include "autoconf.h"
 //#include "basic_types.h"
 //#include "wlan_bassdef.h"
-//#include "ieee80211.h"
+#include "ieee80211.h"
 
 #define _NO_PRIVACY_		0x0
 #define _WEP40_				0x1
