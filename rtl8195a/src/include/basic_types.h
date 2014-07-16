@@ -3,7 +3,6 @@
 
 #include <linux/types.h>
 #include "autoconf.h"
-#include "osdep_service.h"
 
 #define _func_enter_ do{}while(0)
 #define _func_exit_ do{}while(0)
