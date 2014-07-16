@@ -10,7 +10,7 @@ all: clean modules
 
 .PHONY:modules
 modules:
-	$(MAKE) $(EXTRA_CFLAGS) -C $(KERNEL_DIR) SUBDIRS=$(PWD) modules
+	$(MAKE) -C $(KERNEL_DIR) SUBDIRS=$(PWD) modules
 
 .PHONY:clean
 clean:
