@@ -44,10 +44,10 @@ typedef  unsigned int  NDIS_802_11_KEY_INDEX;
 typedef unsigned long long NDIS_802_11_KEY_RSC;
 
 #ifndef ULONG
-typedef unsigned int ULONG
+typedef unsigned int ULONG;
 #endif
 #ifndef ULONG
-typedef unsigned char UCHAR
+typedef unsigned char UCHAR;
 #endif
 typedef struct _NDIS_802_11_SSID
 {
