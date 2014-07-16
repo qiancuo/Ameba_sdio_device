@@ -20,7 +20,8 @@
 #ifndef __RTW_XMIT_H__
 #define __RTW_XMIT_H__
 #include "autoconf.h"
-
+#include "rtw_security.h"
+#include "drv_types.h"
 #if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
 #ifdef CONFIG_TX_AGGREGATION
 #define MAX_XMITBUF_SZ	(20480)	// 20k

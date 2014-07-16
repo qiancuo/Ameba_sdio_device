@@ -19,7 +19,9 @@
  ******************************************************************************/
 #ifndef __OSDEP_LINUX_SERVICE_H_
 #define __OSDEP_LINUX_SERVICE_H_
-#include "autoconf.h"
+
+	#include "autoconf.h"
+	#include "basic_types.h"
 	#include <linux/version.h>
 	#include <linux/spinlock.h>
 	#include <linux/compiler.h>
@@ -88,7 +90,7 @@
 	#include <linux/fs.h>
 #endif //CONFIG_EFUSE_CONFIG_FILE
 
-#include "basic_types.h"
+
 
 	typedef struct 	semaphore _sema;
 	typedef	spinlock_t	_lock;
@@ -250,7 +252,7 @@ __inline static void _cancel_timer(_timer *ptimer,u8 *bcancelled)
 }
 
 
-__inline static void _init_workitem(_workitem *pwork, void *pfunc, PVOID cntx)
+__inline static void _init_workitem(_workitem *pwork, void *pfunc, void *cntx)
 {
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,20))
 	INIT_WORK(pwork, pfunc);

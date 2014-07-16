@@ -68,8 +68,8 @@
 #define IN
 #define OUT
 #define VOID void
-typedef	signed int sint;
-typedef unsigned int uint;
+#define sint signed int;
+#define uint unsigned int;
 
 #ifndef	PVOID
 typedef void * PVOID;

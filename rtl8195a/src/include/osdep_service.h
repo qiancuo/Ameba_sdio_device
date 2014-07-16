@@ -21,7 +21,8 @@
 #define __OSDEP_SERVICE_H_
 
 #include "autoconf.h"
-
+#include "drv_types.h"
+#include "basic_types.h"
 #define _FAIL		0
 #define _SUCCESS	1
 #define RTW_RX_HANDLED 2
@@ -50,8 +51,6 @@
 #include <osdep_service_ce.h>
 #endif
 
-#include "drv_types.h"
-#include "basic_types.h"
 #define RTW_TIMER_HDL_NAME(name) rtw_##name##_timer_hdl
 #define RTW_DECLARE_TIMER_HDL(name) void RTW_TIMER_HDL_NAME(name)(RTW_TIMER_HDL_ARGS)
 
