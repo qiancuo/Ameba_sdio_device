@@ -19,7 +19,7 @@ EXTRA_CFLAGS += -I$(PWD)/include/
 #CFLAGS += $(EXTRA_CFLAGS)
 KERNEL_DIR := /lib/modules/$(shell uname -r)/build
 CFLAGS = -I$(PWD)/include/
-#CC = gcc
+CC = gcc
 #ifneq ($(KERNELRELEASE),)
 obj-m := inic_8195a.o
 inic_8195a-objs := rtl8195a.o hal/rtl8195a/sdio/sdio_ops.o osdep/linux/osdep_service_linux.o \
@@ -39,7 +39,7 @@ all: clean modules
 
 .PHONY:modules
 modules:
-	$(MAKE) $(EXTRA_CFLAGS) -C $(KERNEL_DIR) SUBDIRS=$(PWD) modules
+	$(CC) $(EXTRA_CFLAGS) -C $(KERNEL_DIR) SUBDIRS=$(PWD) modules
 
 .PHONY:clean
 clean:
