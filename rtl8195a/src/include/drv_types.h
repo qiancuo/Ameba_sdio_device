@@ -164,7 +164,7 @@ struct _ADAPTER{
 	//for iface_id > SECONDARY_ADAPTER(IFACE_ID1), refer to padapters[iface_id]  in struct dvobj_priv
 	//and their pbuddy_adapter is PRIMARY_ADAPTER.
 	//for PRIMARY_ADAPTER(IFACE_ID0) can directly refer to if1 in struct dvobj_priv
-	_adapter *pbuddy_adapter;
+//	_adapter *pbuddy_adapter;
 
 #if defined(CONFIG_CONCURRENT_MODE) || defined(CONFIG_DUALMAC_CONCURRENT)
 	u8 isprimary; //is primary adapter or not
