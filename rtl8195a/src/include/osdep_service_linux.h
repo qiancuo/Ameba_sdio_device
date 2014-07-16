@@ -88,6 +88,7 @@
 	#include <linux/fs.h>
 #endif //CONFIG_EFUSE_CONFIG_FILE
 
+#include "basic_types.h"
 
 	typedef struct 	semaphore _sema;
 	typedef	spinlock_t	_lock;

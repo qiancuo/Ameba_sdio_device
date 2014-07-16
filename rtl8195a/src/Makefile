@@ -3,7 +3,7 @@ KERNEL_DIR := /lib/modules/$(shell uname -r)/build
 
 obj-m := inic_8195a.o
 inic_8195a-objs := rtl8195a.o hal/rtl8195a/sdio/sdio_ops.o osdep/linux/osdep_service_linux.o \
-					core/rtw_debug.o
+					core/rtw_debug.o osdep/osdep_service.o
 
 .PHONY: all
 all: clean modules
