@@ -6,7 +6,7 @@
 //#include "basic_types.h"
 #include "sta_info.h"
 //#include "if_ether.h"
-#include "rtw_xmit.h"
+
 
 #ifdef CONFIG_SDIO_HCI
 #include "drv_types_sdio.h"
@@ -18,6 +18,7 @@
 #include <drv_types_pci.h>
 #endif
 typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
+#include "rtw_xmit.h"
 #define ETH_ALEN 6 //6 octets for 
 struct cam_entry_cache {
 	u16 ctrl;
