@@ -21,6 +21,7 @@
 
 #include "../../include/drv_types.h"
 #include "../../include/hal_data.h"
+#include "../../include/osdep_intf.h"
 
 #if defined (PLATFORM_LINUX) && defined (PLATFORM_WINDOWS)
 
