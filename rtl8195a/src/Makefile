@@ -16,7 +16,7 @@
 
 PWD :=$(shell pwd)
 EXTRA_CFLAGS += -I$(PWD)/include/
-CFLAGS += $(EXTRA_CFLAGS)
+#CFLAGS += $(EXTRA_CFLAGS)
 KERNEL_DIR := /lib/modules/$(shell uname -r)/build
 
 CC = gcc
@@ -39,7 +39,7 @@ all: clean modules
 
 .PHONY:modules
 modules:
-	$(MAKE) $(CFLAGS) -C $(KERNEL_DIR) SUBDIRS=$(PWD) modules
+	$(MAKE) $(EXTRA_CFLAGS) -C $(KERNEL_DIR) SUBDIRS=$(PWD) modules
 
 .PHONY:clean
 clean:
