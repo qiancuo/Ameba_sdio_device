@@ -22,6 +22,7 @@
 
 #include "autoconf.h"
 #include "basic_types.h"
+#include "osdep_service_linux.h"
 
 
 
@@ -42,6 +43,7 @@ typedef unsigned char   NDIS_802_11_RATES_EX[NDIS_802_11_LENGTH_RATES_EX];  // S
 
 #define  NDIS_802_11_KEY_INDEX unsigned int
 typedef unsigned long long NDIS_802_11_KEY_RSC;
+
 
 #ifndef ULONG
 typedef unsigned int ULONG;
@@ -105,8 +107,7 @@ typedef enum _NDIS_802_11_NETWORK_INFRASTRUCTURE
 
 
 
-
-
+#define USHORT unsigned short
 typedef struct _NDIS_802_11_FIXED_IEs
 {
   UCHAR  Timestamp[8];
