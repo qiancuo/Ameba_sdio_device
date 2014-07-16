@@ -21,7 +21,7 @@
 #define __OSDEP_SERVICE_H_
 
 #include "autoconf.h"
-#include "drv_types.h"
+//#include "drv_types.h"
 #include "basic_types.h"
 #define _FAIL		0
 #define _SUCCESS	1
