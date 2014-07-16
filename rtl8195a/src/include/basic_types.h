@@ -19,6 +19,9 @@
 #ifndef TRUE
 #define TRUE  1
 #endif
+
+#define _TRUE TRUE
+#define _FALSE FALSE
 #define u8 unsigned char
 #define u16 unsigned short
 #define u32 unsigned int
