@@ -284,10 +284,8 @@ struct _ADAPTER{
 	u8 fix_rate;
 
 	unsigned char     in_cta_test;
-};
-typedef struct _ADAPTER _adapter; 
-typedef struct _ADAPTER ADAPTER;
-typedef struct _ADAPTER *PADAPTER;
+}_adapter, ADAPTER, *PADAPTER;
+
 struct dvobj_priv{
 	/*-------- below is common data --------*/	
 	_adapter *if1; //PRIMARY_ADAPTER
