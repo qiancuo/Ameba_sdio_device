@@ -411,7 +411,9 @@ enum WIFI_REG_DOMAIN {
 	do	{	\
 		*(unsigned short *)(pbuf) |= cpu_to_le16( (amsdu & 1) << 7); \
 	} while(0)	
-
+typedef 	__kernel_size_t	SIZE_T;	
+typedef	__kernel_ssize_t	SSIZE_T;
+#define SIZE_PTR SIZE_T
 #define GetAid(pbuf)	(cpu_to_le16(*(unsigned short *)((SIZE_PTR)(pbuf) + 2)) & 0x3fff)
 
 #define GetTid(pbuf)	(cpu_to_le16(*(unsigned short *)((SIZE_PTR)(pbuf) + (((GetToDs(pbuf)<<1)|GetFrDs(pbuf))==3?30:24))) & 0x000f)
