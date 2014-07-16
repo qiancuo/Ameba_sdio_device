@@ -15,31 +15,7 @@ unsigned int pktsize: 16; //=tx_desc.pktsize - cmd_desc.offset
 unsigned int offset: 8; //cmd header size
 unsigned int resv: 7;
 unsigned int datatype: 1; // only one bit used, 0: data frame 1: management frame
-//DWORD 1
-//unsigned char cmdtype[2]; //to call which API
-//unsigned int resv: 16;
 }AT_CMD_DESC, *PAT_CMD_DESC;
-
-//	typedef struct _CMD_DESC{
-//	//DWORD 0
-//	unsigned int pktsize: 16; //=tx_desc.pktsize - cmd_desc.offset
-//	unsigned int offset: 8; //cmd header size
-//	unsigned int datatype: 8; // only one bit used, 0: data frame 1: management frame
-//	//DWORD 1
-//	unsigned char cmdtype[2]; //to call which API
-//	unsigned int resv: 16;
-//	}CMD_DESC, *PCMD_DESC;
-
-//	typedef struct _CMD_DESC{
-//	//DWORD 0
-//	unsigned int pktsize: 16; //=tx_desc.pktsize - cmd_desc.offset
-//	unsigned int offset: 8; //cmd header size
-//	unsigned int resv: 7;
-//	unsigned int datatype: 1; // only one bit used, 0: data frame 1: management frame
-//	//DWORD 1
-//	//unsigned char cmdtype[2]; //to call which API
-//	//unsigned int resv: 16;
-//	}CMD_DESC, *PCMD_DESC;
 
 typedef struct _AT_CMD_TYPE{
 unsigned char atcmd[2];
@@ -100,16 +76,6 @@ typedef struct _SDIO_CMDDATA{
 	unsigned char cmd_data[2040];
 }SDIO_CMDDATA, *PSDIO_CMDDATA;
 
-
-//	#define SDIO_CMD_wifi_connect 		"C0"
-//	#define SDIO_CMD_wifi_disconnect 		"CD"
-//	#define SDIO_CMD_wifi_on 			"P1"
-//	#define SDIO_CMD_wifi_off 			"P0"
-//	#define SDIO_CMD_wifi_ap 			"A0"
-//	#define SDIO_CMD_wifi_scan 			"F0"
-//	#define SDIO_CMD_wifi_get_rssi 		"CR"
-//	#define SDIO_CMD_wifi_ping 			"T0"
-//	#define SDIO_CMD_wifi_info 			"I?"
 //AT command set
 #define AT_CMD_wifi_connect 		"C0"
 #define AT_CMD_wifi_disconnect 	"CD"
@@ -315,36 +281,36 @@ static void cmd_wifi_info(int argc, char **argv)
 	        return;  
 	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
-	for(i=0;i<1000000000;i++);
-	read_bytes = read(fd, buf, sizeof(buf));
-	if(read_bytes < 0)
-	{
-		printf("read wifi_info failed!\n");
-		return;
-	}
+//		for(i=0;i<1000000000;i++);
+//		read_bytes = read(fd, buf, sizeof(buf));
+//		if(read_bytes < 0)
+//		{
+//			printf("read wifi_info failed!\n");
+//			return;
+//		}
 	close(fd);
-	printf("size of AT_CMD_DESC = %d\n\r", sizeof(AT_CMD_DESC));
-	pDesc = (PAT_CMD_DESC)buf;
-
-	printf("pDesc->datatype: %d\n\r", pDesc->datatype);
-	printf("pDesc->offset: %d\n\r", pDesc->offset);
-	printf("pDesc->pktsize: %d\n\r", pDesc->pktsize);
-	pAtCmdType = (PAT_CMD_TYPE)(buf+sizeof(AT_CMD_DESC));
-	printf("pAtCmdType: %s\n\r", (unsigned char *)pAtCmdType->atcmd);
-	
-	pWifiInfo = (AT_WIFI_INFO *)(buf+sizeof(AT_CMD_DESC)+sizeof(AT_CMD_TYPE));
-	wifi_show_setting(&(pWifiInfo->setting));
-	printf("WIFI Status (%s)\n\r", (pWifiInfo->running == 1) ? "Running" : "Stopped");
-	printf("==============================\n\r");
-	
-	printf("\n\r[rltk_wlan_statistic]min_free_heap_size=%d, current heap free size=", pWifiInfo->min_free_heap_size);
-	printf("\n\r[rltk_wlan_statistic]max_skbbuf_used_num=%d, skbbuf_used_num=%d", pWifiInfo->max_skbbuf_used_num, pWifiInfo->skbbuf_used_num);
-	printf("\n\r[rltk_wlan_statistic]max_skbdata_used_num=%d, skbdata_used_num=%d", pWifiInfo->max_skbdata_used_num, pWifiInfo->skbdata_used_num);
-	printf("\n\r[rltk_wlan_statistic]max_timer_used_num=%d", pWifiInfo->max_timer_used_num);
-	
-	printf("\n\r  MAC => %02x:%02x:%02x:%02x:%02x:%02x", pWifiInfo->mac[0], pWifiInfo->mac[1], pWifiInfo->mac[2], pWifiInfo->mac[3], pWifiInfo->mac[4], pWifiInfo->mac[5]) ;
-	printf("\n\r  IP  => %d.%d.%d.%d", pWifiInfo->ip[0], pWifiInfo->ip[1], pWifiInfo->ip[2], pWifiInfo->ip[3]);
-	printf("\n\r  GW  => %d.%d.%d.%d\n\r", pWifiInfo->gw[0], pWifiInfo->gw[1], pWifiInfo->gw[2], pWifiInfo->gw[3]);
+//		printf("size of AT_CMD_DESC = %d\n\r", sizeof(AT_CMD_DESC));
+//		pDesc = (PAT_CMD_DESC)buf;
+//	
+//		printf("pDesc->datatype: %d\n\r", pDesc->datatype);
+//		printf("pDesc->offset: %d\n\r", pDesc->offset);
+//		printf("pDesc->pktsize: %d\n\r", pDesc->pktsize);
+//		pAtCmdType = (PAT_CMD_TYPE)(buf+sizeof(AT_CMD_DESC));
+//		printf("pAtCmdType: %s\n\r", (unsigned char *)pAtCmdType->atcmd);
+//		
+//		pWifiInfo = (AT_WIFI_INFO *)(buf+sizeof(AT_CMD_DESC)+sizeof(AT_CMD_TYPE));
+//		wifi_show_setting(&(pWifiInfo->setting));
+//		printf("WIFI Status (%s)\n\r", (pWifiInfo->running == 1) ? "Running" : "Stopped");
+//		printf("==============================\n\r");
+//		
+//		printf("\n\r[rltk_wlan_statistic]min_free_heap_size=%d, current heap free size=", pWifiInfo->min_free_heap_size);
+//		printf("\n\r[rltk_wlan_statistic]max_skbbuf_used_num=%d, skbbuf_used_num=%d", pWifiInfo->max_skbbuf_used_num, pWifiInfo->skbbuf_used_num);
+//		printf("\n\r[rltk_wlan_statistic]max_skbdata_used_num=%d, skbdata_used_num=%d", pWifiInfo->max_skbdata_used_num, pWifiInfo->skbdata_used_num);
+//		printf("\n\r[rltk_wlan_statistic]max_timer_used_num=%d", pWifiInfo->max_timer_used_num);
+//		
+//		printf("\n\r  MAC => %02x:%02x:%02x:%02x:%02x:%02x", pWifiInfo->mac[0], pWifiInfo->mac[1], pWifiInfo->mac[2], pWifiInfo->mac[3], pWifiInfo->mac[4], pWifiInfo->mac[5]) ;
+//		printf("\n\r  IP  => %d.%d.%d.%d", pWifiInfo->ip[0], pWifiInfo->ip[1], pWifiInfo->ip[2], pWifiInfo->ip[3]);
+//		printf("\n\r  GW  => %d.%d.%d.%d\n\r", pWifiInfo->gw[0], pWifiInfo->gw[1], pWifiInfo->gw[2], pWifiInfo->gw[3]);
 }
 
 static void cmd_wifi_on(int argc, char **argv)
@@ -483,24 +449,24 @@ static void cmd_wifi_get_rssi(int argc, char **argv)
 	        return;  
 	}
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
-	for(i=0;i<100000;i++);
-	read_bytes = read(fd, buf, sizeof(buf));
-	if(read_bytes < 0)
-	{
-		printf("read wifi_info failed!\n");
-		return;
-	}
+//		for(i=0;i<100000;i++);
+//		read_bytes = read(fd, buf, sizeof(buf));
+//		if(read_bytes < 0)
+//		{
+//			printf("read wifi_info failed!\n");
+//			return;
+//		}
 	close(fd);
-	printf("size of CMD_DESC = %d\n\r", sizeof(AT_CMD_DESC));
-	pDesc = (PAT_CMD_DESC)buf;
-
-	printf("pDesc->datatype: %d\n\r", pDesc->datatype);
-	printf("pDesc->offset: %d\n\r", pDesc->offset);
-	printf("pDesc->pktsize: %d\n\r", pDesc->pktsize);
-	pAtCmdType = (PAT_CMD_TYPE)(buf+sizeof(AT_CMD_DESC));
-	printf("pAtCmdType: %s\n\r", (unsigned char *)pAtCmdType);
-	rssi = (int *)(buf+sizeof(AT_CMD_DESC)+sizeof(AT_CMD_TYPE));
-	printf("wifi_get_rssi: rssi = %d\n\r", *rssi);
+//		printf("size of CMD_DESC = %d\n\r", sizeof(AT_CMD_DESC));
+//		pDesc = (PAT_CMD_DESC)buf;
+//	
+//		printf("pDesc->datatype: %d\n\r", pDesc->datatype);
+//		printf("pDesc->offset: %d\n\r", pDesc->offset);
+//		printf("pDesc->pktsize: %d\n\r", pDesc->pktsize);
+//		pAtCmdType = (PAT_CMD_TYPE)(buf+sizeof(AT_CMD_DESC));
+//		printf("pAtCmdType: %s\n\r", (unsigned char *)pAtCmdType);
+//		rssi = (int *)(buf+sizeof(AT_CMD_DESC)+sizeof(AT_CMD_TYPE));
+//		printf("wifi_get_rssi: rssi = %d\n\r", *rssi);
 }
 
 static void cmd_ping(int argc, char **argv)
@@ -534,10 +500,10 @@ static void cmd_ping(int argc, char **argv)
 //		printf("sdioData.cmd.pktsize is: %d\n\r", sdioData.cmd.pktsize);
 //		
 //		printf("sdioData->cmd_data: %s\n\r", sdioData.cmd_data);
-	printf("CMD Desc: \n");
-	DumpForOneBytes ((unsigned char *)&sdioData.cmd, sizeof(AT_CMD_DESC));
-	printf("WLAN Payload: \n");
-	DumpForOneBytes ((unsigned char *)(&sdioData.cmd_data), sdioData.cmd.pktsize);
+//		printf("CMD Desc: \n");
+//		DumpForOneBytes ((unsigned char *)&sdioData.cmd, sizeof(AT_CMD_DESC));
+//		printf("WLAN Payload: \n");
+//		DumpForOneBytes ((unsigned char *)(&sdioData.cmd_data), sdioData.cmd.pktsize);
 	write(fd, &sdioData,sizeof(SDIO_CMDDATA));
 	close(fd);
 }
