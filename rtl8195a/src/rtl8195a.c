@@ -42,7 +42,10 @@
 #include "include/drv_types_sdio.h"
 
 
-
+//	MODULE_LICENSE("GPL");
+//	MODULE_DESCRIPTION("Realtek Wireless Lan Driver");
+//	MODULE_AUTHOR("Realtek Semiconductor Corp.");
+//	MODULE_VERSION(DRIVERVERSION);
 MODULE_AUTHOR("Realtek");
 MODULE_DESCRIPTION("RealTek RTL-8195a iNIC");
 MODULE_LICENSE("GPL");
