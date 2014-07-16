@@ -94,8 +94,8 @@ struct _ADAPTER{
 	void (*intf_free_irq)(struct dvobj_priv *dvobj);
 	
 
-	void (*intf_start)(_adapter * adapter);
-	void (*intf_stop)(_adapter * adapter);
+//	void (*intf_start)(_adapter *adapter);
+//	void (*intf_stop)(_adapter *adapter);
 
 #ifdef PLATFORM_WINDOWS
 	_nic_hdl		hndis_adapter;//hNdisAdapter(NDISMiniportAdapterHandle);
