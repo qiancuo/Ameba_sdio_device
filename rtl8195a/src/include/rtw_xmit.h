@@ -21,9 +21,9 @@
 #define __RTW_XMIT_H__
 #include "autoconf.h"
 //#include "basic_types.h"
-#include "drv_types.h"
-#include "rtw_security.h"
-#include "osdep_service_linux.h"
+//#include "drv_types.h"
+//#include "rtw_security.h"
+//#include "osdep_service_linux.h"
 
 #if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
 #ifdef CONFIG_TX_AGGREGATION
