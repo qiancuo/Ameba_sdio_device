@@ -3,9 +3,9 @@
 
 #include "autoconf.h"
 //#include "basic_types.h"
-#include "sta_info.h"
-#include "if_ether.h"
-#include "rtw_xmit.h"
+//#include "sta_info.h"
+//#include "if_ether.h"
+//#include "rtw_xmit.h"
 
 
 #ifdef CONFIG_SDIO_HCI
