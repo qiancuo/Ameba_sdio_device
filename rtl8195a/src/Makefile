@@ -16,11 +16,14 @@ EXTRA_CFLAGS += -Wno-unused
 
 PWD :=$(shell pwd)
 EXTRA_CFLAGS += -I$(PWD)/include/
+CFLAGS += $(EXTRA_CFLAGS)
+KERNEL_DIR := /lib/modules/$(shell uname -r)/build
 
+CC = gcc
 #ifneq ($(KERNELRELEASE),)
-	obj-m := inic_8195a.o
-	inic_8195a-objs := rtl8195a.o hal/rtl8195a/sdio/sdio_ops.o osdep/linux/osdep_service_linux.o \
-						core/rtw_debug.o
+obj-m := inic_8195a.o
+inic_8195a-objs := rtl8195a.o hal/rtl8195a/sdio/sdio_ops.o osdep/linux/osdep_service_linux.o \
+					core/rtw_debug.o
 #else
 #	BASEDIR := /lib/modules/$(shell uname -r)
 #	KERNELDIR ?= $(BASEDIR)/build
@@ -30,13 +33,13 @@ EXTRA_CFLAGS += -I$(PWD)/include/
 #		DRIVERDIR := $(BASEDIR)/kernel/drivers/net
 #		endif
 #	RTKDIR := $(subst $(BASEDIR)/,,$(DRIVERDIR))
-	KERNEL_DIR := /lib/modules/$(shell uname -r)/build
+
 .PHONY: all
 all: clean modules
 
 .PHONY:modules
 modules:
-	$(MAKE) -C $(KERNEL_DIR) SUBDIRS=$(PWD) modules
+	$(MAKE) $(CFLAGS) -C $(KERNEL_DIR) SUBDIRS=$(PWD) modules
 
 .PHONY:clean
 clean:
