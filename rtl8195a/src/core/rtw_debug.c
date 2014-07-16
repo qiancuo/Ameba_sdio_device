@@ -60,8 +60,8 @@ u32 GlobalDebugLevel = _drv_err_;
 
 #endif /* CONFIG_DEBUG_RTL871X */
 
-#include "../include/rtw_version.h"
-#include "../include/autoconf.h"
+//#include "../include/rtw_version.h"
+//#include "../include/autoconf.h"
 #define DBG_871X_SEL_NL(sel, fmt, arg...) \
 	do {\
 		if (sel == RTW_DBGDUMP)\
