@@ -62,14 +62,14 @@ u32 GlobalDebugLevel = _drv_err_;
 
 //#include "../include/rtw_version.h"
 //#include "../include/autoconf.h"
-#define DBG_871X_SEL_NL(sel, fmt, arg...) \
-	do {\
-		if (sel == RTW_DBGDUMP)\
-			DBG_871X_LEVEL(_drv_always_, fmt, ##arg); \
-		else {\
-			if(_seqdump(sel, fmt, ##arg)) /*rtw_warn_on(1)*/; \
-		} \
-	}while(0)
+//	#define DBG_871X_SEL_NL(sel, fmt, arg...) \
+//		do {\
+//			if (sel == RTW_DBGDUMP)\
+//				DBG_871X_LEVEL(_drv_always_, fmt, ##arg); \
+//			else {\
+//				if(_seqdump(sel, fmt, ##arg)) /*rtw_warn_on(1)*/; \
+//			} \
+//		}while(0)
 void dump_drv_version(void *sel)
 {
 	DBG_871X_SEL_NL(sel, "%s %s\n", DRV_NAME, DRIVERVERSION);
