@@ -180,7 +180,7 @@ struct _ADAPTER{
 
 
 #ifdef PLATFORM_LINUX
-//	_nic_hdl pnetdev;
+	_nic_hdl pnetdev;
 	char old_ifname[IFNAMSIZ];
 
 	// used by rtw_rereg_nd_name related function
