@@ -1,0 +1,1 @@
+#define DRV_NAME "rtl8195a"

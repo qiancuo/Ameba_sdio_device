@@ -61,8 +61,7 @@ u32 GlobalDebugLevel = _drv_err_;
 #endif /* CONFIG_DEBUG_RTL871X */
 
 #include "../include/rtw_version.h"
-//#include "../include/rtl8195a.h"
-
+#include "../include/autoconf.h"
 void dump_drv_version(void *sel)
 {
 	DBG_871X_SEL_NL(sel, "%s %s\n", DRV_NAME, DRIVERVERSION);
