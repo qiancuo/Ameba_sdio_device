@@ -40,7 +40,7 @@
 #include "include/8195_desc.h"
 #include "include/8195_sdio_reg.h"
 #include "include/drv_types_sdio.h"
-
+#include "include/osdep_intf.h"
 
 //	MODULE_LICENSE("GPL");
 //	MODULE_DESCRIPTION("Realtek Wireless Lan Driver");
@@ -544,34 +544,76 @@ static void sd_sync_int_hdl(struct sdio_func *func)
 	sd_int_hal(gHal_Data);
 //	rtw_sdio_set_irq_thd(psdpriv, NULL);
 }
-static int sdio_init(struct sdio_func *func)
+static int sdio_init(struct dvobj_priv *dvobj)
 {
-	int rc = 0;
+	PSDIO_DATA psdio_data;
+	struct sdio_func *func;
+	int err;
 
-	printk("%s():\n", __FUNCTION__);
+_func_enter_;
+
+	psdio_data = &dvobj->intf_data;
+	func = psdio_data->func;
+	// 1.init SDIO bus
 	sdio_claim_host(func);
-	rc = sdio_enable_func(func);
-	if(rc ){
-		printk("%s():sdio_enable_func FAIL!\n",__FUNCTION__);
+	err = sdio_enable_func(func);
+	if(err ){
+		dvobj->drv_dbg.dbg_sdio_init_error_cnt++;
+		DBG_8192C(KERN_CRIT "%s: sdio_enable_func FAIL(%d)!\n", __func__, err);
 		goto release;
 	}
-	rc = sdio_set_block_size(func, 512);
-	if(rc ){
-		printk("%s():sdio_set_block_size FAIL!\n",__FUNCTION__);
+	err = sdio_set_block_size(func, 512);
+	if(err ){
+		dvobj->drv_dbg.dbg_sdio_init_error_cnt++;
+		DBG_8192C(KERN_CRIT "%s: sdio_enable_func FAIL(%d)!\n", __func__, err);
 		goto release;
 	}
-//		rc = sdio_claim_irq(func, &sd_sync_int_hdl);
-//		if(rc){
-//			printk("%s():sdio_claim_irq FAIL!\n",__FUNCTION__);
-//			goto release;
-//		}
+	psdio_data->block_transfer_len = 512;
+	psdio_data->tx_block_mode = 1;
+	psdio_data->rx_block_mode = 1;
 	sdio_release_host(func);
 	return rc;
 release:
     sdio_release_host(func);
-    return rc;    
-}
+exit:
+_func_exit_;
 
+	if(err) return _FAIL;
+	return _SUCCESS;   
+}
+static void sdio_deinit(struct dvobj_priv *dvobj)
+{
+	struct sdio_func *func;
+	int err;
+
+
+	RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("+sdio_deinit\n"));
+
+	func = dvobj->intf_data.func;
+
+	if (func) {
+		sdio_claim_host(func);
+		err = sdio_disable_func(func);
+		if (err)
+		{
+			dvobj->drv_dbg.dbg_sdio_deinit_error_cnt++;
+			DBG_8192C(KERN_ERR "%s: sdio_disable_func(%d)\n", __func__, err);
+		}
+
+		if (dvobj->irq_alloc) {
+			err = sdio_release_irq(func);
+			if (err)
+			{
+				dvobj->drv_dbg.dbg_sdio_free_irq_error_cnt++;
+				DBG_8192C(KERN_ERR "%s: sdio_release_irq(%d)\n", __func__, err);
+			}
+			else
+				dvobj->drv_dbg.dbg_sdio_free_irq_cnt++;
+		}
+
+		sdio_release_host(func);
+	}
+}
 static int rtw_sdio_suspend(struct device *dev)
 {
 	int ret =0;
@@ -582,45 +624,45 @@ static int rtw_sdio_resume(struct device *dev)
 	int ret = 0;
 	return ret;
 }
-struct dvobj_priv *devobj_init(void)
-{
-	struct dvobj_priv *pdvobj = NULL;
-
-	if ((pdvobj = (struct dvobj_priv*)rtw_zmalloc(sizeof(*pdvobj))) == NULL) 
-	{
-		return NULL;
-	}
-
-	_rtw_mutex_init(&pdvobj->hw_init_mutex);
-	_rtw_mutex_init(&pdvobj->h2c_fwcmd_mutex);
-	_rtw_mutex_init(&pdvobj->setch_mutex);
-	_rtw_mutex_init(&pdvobj->setbw_mutex);
-
-	_rtw_spinlock_init(&pdvobj->lock);
-
-	pdvobj->macid[1] = _TRUE; //macid=1 for bc/mc stainfo
-
-	pdvobj->processing_dev_remove = _FALSE;
-
-	ATOMIC_SET(&pdvobj->disable_func, 0);
-
-	return pdvobj;
-
-}
-void devobj_deinit(struct dvobj_priv *pdvobj)
-{
-	if(!pdvobj)
-		return;
-
-	_rtw_spinlock_free(&pdvobj->lock);
-
-	_rtw_mutex_free(&pdvobj->hw_init_mutex);
-	_rtw_mutex_free(&pdvobj->h2c_fwcmd_mutex);
-	_rtw_mutex_free(&pdvobj->setch_mutex);
-	_rtw_mutex_free(&pdvobj->setbw_mutex);
-
-	rtw_mfree((u8*)pdvobj, sizeof(*pdvobj));
-}
+//	struct dvobj_priv *devobj_init(void)
+//	{
+//		struct dvobj_priv *pdvobj = NULL;
+//	
+//		if ((pdvobj = (struct dvobj_priv*)rtw_zmalloc(sizeof(*pdvobj))) == NULL) 
+//		{
+//			return NULL;
+//		}
+//	
+//		_rtw_mutex_init(&pdvobj->hw_init_mutex);
+//		_rtw_mutex_init(&pdvobj->h2c_fwcmd_mutex);
+//		_rtw_mutex_init(&pdvobj->setch_mutex);
+//		_rtw_mutex_init(&pdvobj->setbw_mutex);
+//	
+//		_rtw_spinlock_init(&pdvobj->lock);
+//	
+//		pdvobj->macid[1] = _TRUE; //macid=1 for bc/mc stainfo
+//	
+//		pdvobj->processing_dev_remove = _FALSE;
+//	
+//		ATOMIC_SET(&pdvobj->disable_func, 0);
+//	
+//		return pdvobj;
+//	
+//	}
+//	void devobj_deinit(struct dvobj_priv *pdvobj)
+//	{
+//		if(!pdvobj)
+//			return;
+//	
+//		_rtw_spinlock_free(&pdvobj->lock);
+//	
+//		_rtw_mutex_free(&pdvobj->hw_init_mutex);
+//		_rtw_mutex_free(&pdvobj->h2c_fwcmd_mutex);
+//		_rtw_mutex_free(&pdvobj->setch_mutex);
+//		_rtw_mutex_free(&pdvobj->setbw_mutex);
+//	
+//		rtw_mfree((u8*)pdvobj, sizeof(*pdvobj));
+//	}
 static struct dvobj_priv *sdio_dvobj_init(struct sdio_func *func)
 {
 	int status = _FAIL;
@@ -656,6 +698,20 @@ exit:
 _func_exit_;
 	return dvobj;
 }
+static void sdio_dvobj_deinit(struct sdio_func *func)
+{
+	struct dvobj_priv *dvobj = sdio_get_drvdata(func);
+_func_enter_;
+
+	sdio_set_drvdata(func, NULL);
+	if (dvobj) {
+		sdio_deinit(dvobj);
+		devobj_deinit(dvobj);
+	}
+
+_func_exit_;
+	return;
+}
 /*
  * drv_init() - a device potentially for us
  *
@@ -681,9 +737,10 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("initialize device object priv Failed!\n"));
 		goto exit;
 	}
-
-
-
+	if ((if1 = rtw_sdio_if1_init(dvobj, id)) == NULL) {
+		DBG_871X("rtw_init_primary_adapter Failed!\n");
+		goto free_dvobj;
+	}
 
 
 
@@ -707,7 +764,9 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 
 //    printk("%s", GPL_CLAIM);
 //	return ret;
-
+free_dvobj:
+	if (status != _SUCCESS)
+		sdio_dvobj_deinit(func);
 exit:
 	return status == _SUCCESS?0:-ENODEV;
 }
