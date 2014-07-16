@@ -22,7 +22,7 @@
 #include "autoconf.h"
 //#include "basic_types.h"
 //#include "drv_types.h"
-//#include "rtw_security.h"
+#include "rtw_security.h"
 //#include "osdep_service_linux.h"
 
 #if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
