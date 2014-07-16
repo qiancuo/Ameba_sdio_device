@@ -18,7 +18,7 @@ PWD :=$(shell pwd)
 EXTRA_CFLAGS += -I$(PWD)/include/
 #CFLAGS += $(EXTRA_CFLAGS)
 KERNEL_DIR := /lib/modules/$(shell uname -r)/build
-
+CFLAGS = -I$(PWD)/include/
 #CC = gcc
 #ifneq ($(KERNELRELEASE),)
 obj-m := inic_8195a.o
