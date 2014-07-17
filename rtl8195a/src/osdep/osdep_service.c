@@ -24,7 +24,7 @@
 #include "../include/rtw_debug.h"
 
 #include "../include/osdep_service.h"
-
+#include "../include/osdep_intf.h"
 
 #define RT_TAG	'1178'
 
