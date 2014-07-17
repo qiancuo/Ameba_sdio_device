@@ -525,6 +525,29 @@ struct dvobj_priv{
 	INTF_DATA intf_data;
 #endif
 };
+
+#ifdef PLATFORM_LINUX
+static struct device *dvobj_to_dev(struct dvobj_priv *dvobj)
+{
+	/* todo: get interface type from dvobj and the return the dev accordingly */
+#ifdef RTW_DVOBJ_CHIP_HW_TYPE
+#endif
+
+#ifdef CONFIG_USB_HCI
+	return &dvobj->pusbintf->dev;
+#endif
+#ifdef CONFIG_SDIO_HCI
+	return &dvobj->intf_data.func->dev;
+#endif
+#ifdef CONFIG_GSPI_HCI
+	return &dvobj->intf_data.func->dev;
+#endif
+#ifdef CONFIG_PCI_HCI
+	return &dvobj->ppcidev->dev;
+#endif
+}
+#endif
+//#define dvobj_to_pwrctl(dvobj) (&(dvobj->pwrctl_priv))
 enum _IFACE_TYPE {
 	IFACE_PORT0, //mapping to port0 for C/D series chips
 	IFACE_PORT1, //mapping to port1 for C/D series chip
@@ -537,4 +560,7 @@ enum _ADAPTER_TYPE {
 	MAX_ADAPTER = 0xFF,
 };
 
+#define adapter_to_dvobj(adapter) (adapter->dvobj)
+//#define adapter_to_pwrctl(adapter) (dvobj_to_pwrctl(adapter->dvobj))
+#define adapter_wdev_data(adapter) (&((adapter)->wdev_data))
 #endif
