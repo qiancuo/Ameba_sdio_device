@@ -18,13 +18,14 @@
  *
  ******************************************************************************/
 #define _OS_INTFS_C_
-
+#include "../../include/rtw_debug.h"
 #include "../../include/drv_types.h"
 #include "../../include/hal_data.h"
 #include "../../include/osdep_intf.h"
 #include "../../include/rtw_cmd.h"
 #include "../../include/rtw_pwrctrl.h"
 #include "../../include/rtw_mlme_ext.h"
+#include "../../include/osdep_service.h"
 #if defined (PLATFORM_LINUX) && defined (PLATFORM_WINDOWS)
 
 #error "Shall be Linux or Windows, but not both!\n"
@@ -209,11 +210,11 @@ int rtw_qos_opt_enable=0;//0: disable,1:enable
 #endif
 //module_param(rtw_qos_opt_enable,int,0644);
 
-//	char* ifname = "wlan%d";
+	char* ifname = "wlan%d";
 //	module_param(ifname, charp, 0644);
 //	MODULE_PARM_DESC(ifname, "The default name to allocate for first interface");
 //	
-//	char* if2name = "wlan%d";
+	char* if2name = "wlan%d";
 //	module_param(if2name, charp, 0644);
 //	MODULE_PARM_DESC(if2name, "The default name to allocate for second interface");
 
@@ -664,7 +665,7 @@ static int rtw_ndev_notifier_call(struct notifier_block * nb, unsigned long stat
 
 	switch (state) {
 	case NETDEV_CHANGENAME:
-		rtw_adapter_proc_replace(dev);
+//		rtw_adapter_proc_replace(dev);
 		break;
 	}
 
@@ -702,9 +703,20 @@ void rtw_ndev_uninit(struct net_device *dev)
 	_adapter *adapter = rtw_netdev_priv(dev);
 
 	DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT"\n", FUNC_ADPT_ARG(adapter));
-	rtw_adapter_proc_deinit(dev);
+//	rtw_adapter_proc_deinit(dev);
 }
+int rtw_xmit_entry(struct sk_buff *pkt, struct net_device *pnetdev)
+{
+	int ret = 0;
 
+	if (pkt) {
+//		rtw_mstat_update(MSTAT_TYPE_SKB, MSTAT_ALLOC_SUCCESS, pkt->truesize);
+//		ret = _rtw_xmit_entry(pkt, pnetdev);
+		printk("No xmit function yet!\n");		
+	}
+
+	return ret;
+}
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,29))
 static const struct net_device_ops rtw_netdev_ops = {
 	.ndo_init = rtw_ndev_init,

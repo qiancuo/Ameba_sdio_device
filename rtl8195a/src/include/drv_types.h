@@ -19,7 +19,9 @@
 #endif
 typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include "rtw_xmit.h"
+#include "rtw_recv.h"
 #include "rtw_eeprom.h"
+#include "rtw_mlme.h"
 #define ETH_ALEN 6 //6 octets for 
 
 #define SPEC_DEV_ID_NONE BIT(0)
@@ -260,14 +262,14 @@ struct _ADAPTER{
 	u16	interface_type;//USB,SDIO,SPI,PCI
 
 	struct dvobj_priv *dvobj;
-//		struct	mlme_priv mlmepriv;
+		struct	mlme_priv mlmepriv;
 //		struct	mlme_ext_priv mlmeextpriv;
 //		struct	cmd_priv	cmdpriv;
 //		struct	evt_priv	evtpriv;
 //		//struct	io_queue	*pio_queue;
 //		struct 	io_priv	iopriv;
-//		struct	xmit_priv	xmitpriv;
-//		struct	recv_priv	recvpriv;
+		struct	xmit_priv	xmitpriv;
+		struct	recv_priv	recvpriv;
 //		struct	sta_priv	stapriv;
 //		struct	security_priv	securitypriv;
 //		_lock   security_key_mutex; // add for CONFIG_IEEE80211W, none 11w also can use
@@ -371,7 +373,7 @@ struct _ADAPTER{
 	} rereg_nd_name_priv;
 
 	int bup;
-//		struct net_device_stats stats;
+		struct net_device_stats stats;
 //		struct iw_statistics iwstats;
 //		struct proc_dir_entry *dir_dev;// for proc directory
 //		struct proc_dir_entry *dir_odm;
