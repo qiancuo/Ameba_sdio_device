@@ -5,6 +5,61 @@
 #define IBSS_START_MAC_ID 2
 #define NUM_STA 32
 #define NUM_ACL 16
+
+//if mode ==0, then the sta is allowed once the addr is hit.
+//if mode ==1, then the sta is rejected once the addr is non-hit.
+struct rtw_wlan_acl_node {
+        _list		        list;
+        u8       addr[ETH_ALEN];
+        u8       valid;
+};
+
+//mode=0, disable
+//mode=1, accept unless in deny list
+//mode=2, deny unless in accept list
+struct wlan_acl_pool {
+	int mode;
+	int num;
+	struct rtw_wlan_acl_node aclnode[NUM_ACL];
+	_queue	acl_node_q;
+};
+
+typedef struct _RSSI_STA{
+	s32	UndecoratedSmoothedPWDB;
+	s32	UndecoratedSmoothedCCK;
+	s32	UndecoratedSmoothedOFDM;
+	u64	PacketMap;
+	u8	ValidBit;
+}RSSI_STA, *PRSSI_STA;
+
+struct	stainfo_stats	{
+
+	u64 rx_mgnt_pkts;
+		u64 rx_beacon_pkts;
+		u64 rx_probereq_pkts;
+		u64 rx_probersp_pkts;
+		u64 rx_probersp_bm_pkts;
+		u64 rx_probersp_uo_pkts;
+	u64 rx_ctrl_pkts;
+	u64 rx_data_pkts;
+
+	u64	last_rx_mgnt_pkts;
+		u64 last_rx_beacon_pkts;
+		u64 last_rx_probereq_pkts;
+		u64 last_rx_probersp_pkts;
+		u64 last_rx_probersp_bm_pkts;
+		u64 last_rx_probersp_uo_pkts;
+	u64	last_rx_ctrl_pkts;
+	u64	last_rx_data_pkts;
+	
+	u64	rx_bytes;
+	u64	rx_drops;
+
+	u64	tx_pkts;
+	u64	tx_bytes;
+	u64  tx_drops;
+};
+
 struct sta_info {
 
 	_lock	lock;
