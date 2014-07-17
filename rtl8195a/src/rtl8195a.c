@@ -932,9 +932,9 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 	gHal_Data = kmalloc(sizeof(PHAL_DATA_TYPE), GFP_KERNEL);
 //	g_SDIO_cmdData = kmalloc(2048, GFP_KERNEL);
 	// 1.init SDIO bus and read chip version	
-	ret = sdio_init(func);
-	if(ret)
-		return ret;
+//		ret = sdio_init(func);
+//		if(ret)
+//			return ret;
 	gHal_Data->func = func;
 	gHal_Data->SdioRxFIFOCnt =0;
 	mutex_init(&Recv_Xmit_mutex);
