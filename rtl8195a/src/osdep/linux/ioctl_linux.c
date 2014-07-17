@@ -20,7 +20,7 @@
 #define _IOCTL_LINUX_C_
 
 #include "../../include/drv_types.h"
-
+#include "../../include/rtw_debug.h"
 //#ifdef CONFIG_MP_INCLUDED
 //#include <rtw_mp_ioctl.h>
 //#include "../../hal/OUTSRC/odm_precomp.h"
