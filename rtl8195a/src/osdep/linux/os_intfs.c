@@ -2674,8 +2674,8 @@ void rtw_dev_unload(PADAPTER padapter)
 		
 		RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("@ rtw_dev_unload: stop intf complete!\n"));
 
-		if (!pwrctl->bInternalAutoSuspend)
-			rtw_stop_drv_threads(padapter);
+//			if (!pwrctl->bInternalAutoSuspend)
+//				rtw_stop_drv_threads(padapter);
 		
 		RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("@ %s: stop thread complete!\n",__FUNCTION__));
 
