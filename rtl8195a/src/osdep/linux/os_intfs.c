@@ -1398,9 +1398,9 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 	}
 
 	// clear pbuddy_adapter to avoid access wrong pointer.
-	if(padapter->pbuddy_adapter != NULL) {
-		padapter->pbuddy_adapter->pbuddy_adapter = NULL;
-	}
+//		if(padapter->pbuddy_adapter != NULL) {
+//			padapter->pbuddy_adapter->pbuddy_adapter = NULL;
+//		}
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("-rtw_free_drv_sw\n"));
 
@@ -2330,7 +2330,7 @@ int  ips_netdrv_open(_adapter *padapter)
 	padapter->bCardDisableWOHSM = _FALSE;
 	//padapter->bup = _TRUE;
 
-	status = rtw_hal_init(padapter);
+//	status = rtw_hal_init(padapter);
 	if (status ==_FAIL)
 	{
 		RT_TRACE(_module_os_intfs_c_,_drv_err_,("ips_netdrv_open(): Can't init h/w!\n"));
@@ -2404,7 +2404,7 @@ void rtw_ips_dev_unload(_adapter *padapter)
 {
 	struct net_device *pnetdev= (struct net_device*)padapter->pnetdev;
 	struct xmit_priv	*pxmitpriv = &(padapter->xmitpriv);
-	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
+//	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
 #ifdef DBG_CONFIG_ERROR_DETECT	
 //	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
 #endif//#ifdef DBG_CONFIG_ERROR_DETECT
@@ -2557,13 +2557,13 @@ static int netdev_close(struct net_device *pnetdev)
 //	struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(padapter);
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+871x_drv - drv_close\n"));
-
-	if(pwrctl->bInternalAutoSuspend == _TRUE)
-	{
-		//rtw_pwr_wakeup(padapter);
-		if(pwrctl->rf_pwrstate == rf_off)
-			pwrctl->ps_flag = _TRUE;
-	}
+//	
+//		if(pwrctl->bInternalAutoSuspend == _TRUE)
+//		{
+//			//rtw_pwr_wakeup(padapter);
+//			if(pwrctl->rf_pwrstate == rf_off)
+//				pwrctl->ps_flag = _TRUE;
+//		}
 	padapter->net_closed = _TRUE;
 	padapter->netif_up = _FALSE;
 
@@ -2653,7 +2653,7 @@ void rtw_ndev_destructor(struct net_device *ndev)
 void rtw_dev_unload(PADAPTER padapter)
 {
 	struct net_device *pnetdev = (struct net_device*)padapter->pnetdev;	
-	struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(padapter);
+//	struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(padapter);
 	struct dvobj_priv *pobjpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &pobjpriv->drv_dbg;
 
@@ -2699,7 +2699,7 @@ void rtw_dev_unload(PADAPTER padapter)
 #endif
 			{
 				//amy modify 20120221 for power seq is different between driver open and ips
-				rtw_hal_deinit(padapter);
+//				rtw_hal_deinit(padapter);
 			}
 			padapter->bSurpriseRemoved = _TRUE;
 		}
