@@ -7,7 +7,7 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 //#include "osdep_service_linux.h"
 #include "osdep_service.h"
 //#include "basic_types.h"
-#include "sta_info.h"
+//#include "sta_info.h"
 //#include "if_ether.h"
 
 
@@ -26,7 +26,7 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include "rtw_mlme.h"
 #include "rtw_cmd.h"
 #include "rtw_mlme_ext.h"
-
+#include "sta_info.h"
 #define ETH_ALEN 6 //6 octets for 
 
 #define SPEC_DEV_ID_NONE BIT(0)
