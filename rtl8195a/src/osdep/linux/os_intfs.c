@@ -2576,30 +2576,30 @@ static int netdev_close(struct net_device *pnetdev)
 		rtw_dev_unload(padapter);
 	}
 	else*/
-	if(pwrctl->rf_pwrstate == rf_on){
-		DBG_871X("(2)871x_drv - drv_close, bup=%d, hw_init_completed=%d\n", padapter->bup, padapter->hw_init_completed);
-
-		//s1.
-		if(pnetdev)
-		{
-			if (!rtw_netif_queue_stopped(pnetdev))
-				rtw_netif_stop_queue(pnetdev);
-		}
-
-#ifndef CONFIG_ANDROID
-		//s2.
-//		LeaveAllPowerSaveMode(padapter);
-		rtw_disassoc_cmd(padapter, 500, _FALSE);
-		//s2-2.  indicate disconnect to os
-		rtw_indicate_disconnect(padapter);
-		//s2-3.
-		rtw_free_assoc_resources(padapter, 1);
-		//s2-4.
-		rtw_free_network_queue(padapter,_TRUE);
-#endif
-		// Close LED
-//		rtw_led_control(padapter, LED_CTL_POWER_OFF);
-	}
+//		if(pwrctl->rf_pwrstate == rf_on){
+//			DBG_871X("(2)871x_drv - drv_close, bup=%d, hw_init_completed=%d\n", padapter->bup, padapter->hw_init_completed);
+//	
+//			//s1.
+//			if(pnetdev)
+//			{
+//				if (!rtw_netif_queue_stopped(pnetdev))
+//					rtw_netif_stop_queue(pnetdev);
+//			}
+//	
+//	#ifndef CONFIG_ANDROID
+//			//s2.
+//	//		LeaveAllPowerSaveMode(padapter);
+//			rtw_disassoc_cmd(padapter, 500, _FALSE);
+//			//s2-2.  indicate disconnect to os
+//			rtw_indicate_disconnect(padapter);
+//			//s2-3.
+//			rtw_free_assoc_resources(padapter, 1);
+//			//s2-4.
+//			rtw_free_network_queue(padapter,_TRUE);
+//	#endif
+//			// Close LED
+//	//		rtw_led_control(padapter, LED_CTL_POWER_OFF);
+//		}
 
 #ifdef CONFIG_BR_EXT
 	//if (OPMODE & (WIFI_STATION_STATE | WIFI_ADHOC_STATE))
