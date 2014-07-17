@@ -18,8 +18,8 @@
  *
  ******************************************************************************/
 #define _OS_INTFS_C_
-#include "../../include/rtw_debug.h"
 #include "../../include/drv_types.h"
+#include "../../include/rtw_debug.h"
 #include "../../include/hal_data.h"
 #include "../../include/osdep_intf.h"
 #include "../../include/rtw_cmd.h"
@@ -614,7 +614,7 @@ static u16 rtw_select_queue(struct net_device *dev, struct sk_buff *skb)
 
 	if(pmlmepriv->acm_mask != 0)
 	{
-		skb->priority = qos_acm(pmlmepriv->acm_mask, skb->priority);
+//		skb->priority = qos_acm(pmlmepriv->acm_mask, skb->priority);
 	}
 
 	return rtw_1d_to_queue[skb->priority];
@@ -693,7 +693,7 @@ int rtw_ndev_init(struct net_device *dev)
 
 	DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT"\n", FUNC_ADPT_ARG(adapter));
 	strncpy(adapter->old_ifname, dev->name, IFNAMSIZ);
-	rtw_adapter_proc_init(dev);
+//	rtw_adapter_proc_init(dev);
 
 	return 0;
 }
@@ -827,7 +827,7 @@ struct net_device *rtw_init_netdev(_adapter *old_padapter)
 	//pnetdev->tx_timeout = NULL;
 	pnetdev->watchdog_timeo = HZ*3; /* 3 second timeout */
 #ifdef CONFIG_WIRELESS_EXT
-	pnetdev->wireless_handlers = (struct iw_handler_def *)&rtw_handlers_def;
+//	pnetdev->wireless_handlers = (struct iw_handler_def *)&rtw_handlers_def;
 #endif
 
 #ifdef WIRELESS_SPY
@@ -913,7 +913,7 @@ u32 rtw_start_drv_threads(_adapter *padapter)
 		_status = _FAIL;
 #endif
 
-	rtw_hal_start_thread(padapter);
+//	rtw_hal_start_thread(padapter);
 	return _status;
 
 }
@@ -956,7 +956,7 @@ void rtw_stop_drv_threads (_adapter *padapter)
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("\n drv_halt:recv_thread can be terminated! \n"));
 #endif
 
-	rtw_hal_stop_thread(padapter);
+//	rtw_hal_stop_thread(padapter);
 }
 
 u8 rtw_init_default_value(_adapter *padapter);
@@ -1018,11 +1018,11 @@ u8 rtw_init_default_value(_adapter *padapter)
 
 
 	//hal_priv
-	rtw_hal_def_value_init(padapter);
+//	rtw_hal_def_value_init(padapter);
 
 	//misc.
-	RTW_ENABLE_FUNC(padapter, DF_RX_BIT);
-	RTW_ENABLE_FUNC(padapter, DF_TX_BIT);
+//	RTW_ENABLE_FUNC(padapter, DF_RX_BIT);
+//	RTW_ENABLE_FUNC(padapter, DF_TX_BIT);
 	padapter->bLinkInfoDump = 0;
 	padapter->bNotifyChannelChange = 0;
 #ifdef CONFIG_P2P
@@ -1079,14 +1079,14 @@ u8 rtw_reset_drv_sw(_adapter *padapter)
 {
 	u8	ret8=_SUCCESS;
 	struct mlme_priv *pmlmepriv= &padapter->mlmepriv;
-	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
+//	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
 
 	//hal_priv
-	if( is_primary_adapter(padapter))
-		rtw_hal_def_value_init(padapter);
+//	if( is_primary_adapter(padapter))
+//		rtw_hal_def_value_init(padapter);
 
-	RTW_ENABLE_FUNC(padapter, DF_RX_BIT);
-	RTW_ENABLE_FUNC(padapter, DF_TX_BIT);
+//	RTW_ENABLE_FUNC(padapter, DF_RX_BIT);
+//	RTW_ENABLE_FUNC(padapter, DF_TX_BIT);
 	padapter->bLinkInfoDump = 0;
 
 	padapter->xmitpriv.tx_pkts = 0;
@@ -1107,10 +1107,10 @@ u8 rtw_reset_drv_sw(_adapter *padapter)
 #endif
 
 #ifdef DBG_CONFIG_ERROR_DETECT
-	if (is_primary_adapter(padapter))
-		rtw_hal_sreset_reset_value(padapter);
+//	if (is_primary_adapter(padapter))
+//		rtw_hal_sreset_reset_value(padapter);
 #endif
-	pwrctrlpriv->pwr_state_check_cnts = 0;
+//	pwrctrlpriv->pwr_state_check_cnts = 0;
 
 	//mlmeextpriv
 	padapter->mlmeextpriv.sitesurvey_res.state= SCAN_DISABLE;
@@ -1134,7 +1134,7 @@ _func_enter_;
 
 	ret8 = rtw_init_default_value(padapter);
 
-	rtw_init_hal_com_default_value(padapter);
+//	rtw_init_hal_com_default_value(padapter);
 
 	if ((rtw_init_cmd_priv(&padapter->cmdpriv)) == _FAIL)
 	{
@@ -1161,15 +1161,15 @@ _func_enter_;
 	}
 
 #ifdef CONFIG_P2P
-	rtw_init_wifidirect_timers(padapter);
-	init_wifidirect_info(padapter, P2P_ROLE_DISABLE);
-	reset_global_wifidirect_info(padapter);
+//	rtw_init_wifidirect_timers(padapter);
+//	init_wifidirect_info(padapter, P2P_ROLE_DISABLE);
+//	reset_global_wifidirect_info(padapter);
 	#ifdef CONFIG_IOCTL_CFG80211
-	rtw_init_cfg80211_wifidirect_info(padapter);
+//	rtw_init_cfg80211_wifidirect_info(padapter);
 	#endif
 #ifdef CONFIG_WFD
-	if(rtw_init_wifi_display_info(padapter) == _FAIL)
-		RT_TRACE(_module_os_intfs_c_,_drv_err_,("\n Can't init init_wifi_display_info\n"));
+//	if(rtw_init_wifi_display_info(padapter) == _FAIL)
+//		RT_TRACE(_module_os_intfs_c_,_drv_err_,("\n Can't init init_wifi_display_info\n"));
 #endif
 #endif /* CONFIG_P2P */
 
@@ -1181,27 +1181,27 @@ _func_enter_;
 	}
 
 #ifdef CONFIG_TDLS
-	if(rtw_init_tdls_info(padapter) == _FAIL)
-	{
-		DBG_871X("Can't rtw_init_tdls_info\n");
-		ret8=_FAIL;
-		goto exit;
-	}
+//	if(rtw_init_tdls_info(padapter) == _FAIL)
+//	{
+//		DBG_871X("Can't rtw_init_tdls_info\n");
+//		ret8=_FAIL;
+//		goto exit;
+//	}
 #endif //CONFIG_TDLS
 
-	if(_rtw_init_xmit_priv(&padapter->xmitpriv, padapter) == _FAIL)
-	{
-		DBG_871X("Can't _rtw_init_xmit_priv\n");
-		ret8=_FAIL;
-		goto exit;
-	}
-
-	if(_rtw_init_recv_priv(&padapter->recvpriv, padapter) == _FAIL)
-	{
-		DBG_871X("Can't _rtw_init_recv_priv\n");
-		ret8=_FAIL;
-		goto exit;
-	}
+//		if(_rtw_init_xmit_priv(&padapter->xmitpriv, padapter) == _FAIL)
+//		{
+//			DBG_871X("Can't _rtw_init_xmit_priv\n");
+//			ret8=_FAIL;
+//			goto exit;
+//		}
+//	
+//		if(_rtw_init_recv_priv(&padapter->recvpriv, padapter) == _FAIL)
+//		{
+//			DBG_871X("Can't _rtw_init_recv_priv\n");
+//			ret8=_FAIL;
+//			goto exit;
+//		}
 	// add for CONFIG_IEEE80211W, none 11w also can use
 	_rtw_spinlock_init(&padapter->security_key_mutex);
 	
@@ -1210,47 +1210,47 @@ _func_enter_;
 
 	//_init_timer(&(padapter->securitypriv.tkip_timer), padapter->pifp, rtw_use_tkipkey_handler, padapter);
 
-	if(_rtw_init_sta_priv(&padapter->stapriv) == _FAIL)
-	{
-		DBG_871X("Can't _rtw_init_sta_priv\n");
-		ret8=_FAIL;
-		goto exit;
-	}
+//		if(_rtw_init_sta_priv(&padapter->stapriv) == _FAIL)
+//		{
+//			DBG_871X("Can't _rtw_init_sta_priv\n");
+//			ret8=_FAIL;
+//			goto exit;
+//		}
 
-	padapter->stapriv.padapter = padapter;
+//	padapter->stapriv.padapter = padapter;
 	padapter->setband = GHZ24_50;
 	padapter->fix_rate = 0xFF;
-	rtw_init_bcmc_stainfo(padapter);
+//	rtw_init_bcmc_stainfo(padapter);
 
-	rtw_init_pwrctrl_priv(padapter);
+//	rtw_init_pwrctrl_priv(padapter);
 
 	//_rtw_memset((u8 *)&padapter->qospriv, 0, sizeof (struct qos_priv));//move to mlme_priv
 
 #ifdef CONFIG_MP_INCLUDED
-	if (init_mp_priv(padapter) == _FAIL) {
-		DBG_871X("%s: initialize MP private data Fail!\n", __func__);
-	}
+//		if (init_mp_priv(padapter) == _FAIL) {
+//			DBG_871X("%s: initialize MP private data Fail!\n", __func__);
+//		}
 #endif
 
-	rtw_hal_dm_init(padapter);
-	rtw_hal_sw_led_init(padapter);
+//		rtw_hal_dm_init(padapter);
+//		rtw_hal_sw_led_init(padapter);
 
 #ifdef DBG_CONFIG_ERROR_DETECT
-	rtw_hal_sreset_init(padapter);
+//	rtw_hal_sreset_init(padapter);
 #endif
 
 #ifdef CONFIG_INTEL_WIDI
-	if(rtw_init_intel_widi(padapter) == _FAIL)
-	{
-		DBG_871X("Can't rtw_init_intel_widi\n");
-		ret8=_FAIL;
-		goto exit;
-	}
+//		if(rtw_init_intel_widi(padapter) == _FAIL)
+//		{
+//			DBG_871X("Can't rtw_init_intel_widi\n");
+//			ret8=_FAIL;
+//			goto exit;
+//		}
 #endif //CONFIG_INTEL_WIDI
 
 #ifdef CONFIG_WAPI_SUPPORT
 	padapter->WapiSupport = true; //set true temp, will revise according to Efuse or Registry value later.
-	rtw_wapi_init(padapter);
+//	rtw_wapi_init(padapter);
 #endif
 
 #ifdef CONFIG_BR_EXT
@@ -1292,10 +1292,10 @@ void rtw_cancel_all_timer(_adapter *padapter)
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("rtw_cancel_all_timer:cancel dynamic_chk_timer! \n"));
 
 	// cancel sw led timer
-	rtw_hal_sw_led_deinit(padapter);
+//	rtw_hal_sw_led_deinit(padapter);
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("rtw_cancel_all_timer:cancel DeInitSwLeds! \n"));
 
-	_cancel_timer_ex(&(adapter_to_pwrctl(padapter)->pwr_state_check_timer));
+//	_cancel_timer_ex(&(adapter_to_pwrctl(padapter)->pwr_state_check_timer));
 
 #ifdef CONFIG_IOCTL_CFG80211
 #ifdef CONFIG_P2P
@@ -1313,7 +1313,7 @@ void rtw_cancel_all_timer(_adapter *padapter)
 	_cancel_timer_ex(&padapter->recvpriv.signal_stat_timer);
 #endif
 	//cancel dm timer
-	rtw_hal_dm_deinit(padapter);
+//	rtw_hal_dm_deinit(padapter);
 
 #ifdef CONFIG_PLATFORM_FS_MX61
 	msleep(50);
@@ -1335,17 +1335,17 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 	// 2. rtw_p2p_enable is bundled with wext interface
 	#ifdef CONFIG_P2P
 	{
-		struct wifidirect_info *pwdinfo = &padapter->wdinfo;
-		if(!rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
-		{
-			_cancel_timer_ex( &pwdinfo->find_phase_timer );
-			_cancel_timer_ex( &pwdinfo->restore_p2p_state_timer );
-			_cancel_timer_ex( &pwdinfo->pre_tx_scan_timer);
-#ifdef CONFIG_CONCURRENT_MODE
-			_cancel_timer_ex( &pwdinfo->ap_p2p_switch_timer );
-#endif // CONFIG_CONCURRENT_MODE
-			rtw_p2p_set_state(pwdinfo, P2P_STATE_NONE);
-		}
+//			struct wifidirect_info *pwdinfo = &padapter->wdinfo;
+//			if(!rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
+//			{
+//				_cancel_timer_ex( &pwdinfo->find_phase_timer );
+//				_cancel_timer_ex( &pwdinfo->restore_p2p_state_timer );
+//				_cancel_timer_ex( &pwdinfo->pre_tx_scan_timer);
+//	#ifdef CONFIG_CONCURRENT_MODE
+//				_cancel_timer_ex( &pwdinfo->ap_p2p_switch_timer );
+//	#endif // CONFIG_CONCURRENT_MODE
+//				rtw_p2p_set_state(pwdinfo, P2P_STATE_NONE);
+//			}
 	}
 	#endif
 	// add for CONFIG_IEEE80211W, none 11w also can use
@@ -1373,21 +1373,21 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 
 	//free_io_queue(padapter);
 
-	_rtw_free_xmit_priv(&padapter->xmitpriv);
-
-	_rtw_free_sta_priv(&padapter->stapriv); //will free bcmc_stainfo here
-
-	_rtw_free_recv_priv(&padapter->recvpriv);
-
-	rtw_free_pwrctrl_priv(padapter);
+//		_rtw_free_xmit_priv(&padapter->xmitpriv);
+//	
+//		_rtw_free_sta_priv(&padapter->stapriv); //will free bcmc_stainfo here
+//	
+//		_rtw_free_recv_priv(&padapter->recvpriv);
+//	
+//		rtw_free_pwrctrl_priv(padapter);
 
 	//rtw_mfree((void *)padapter, sizeof (padapter));
 
 #ifdef CONFIG_DRVEXT_MODULE
-	free_drvext(&padapter->drvextpriv);
+//	free_drvext(&padapter->drvextpriv);
 #endif
 
-	rtw_hal_free_data(padapter);
+//	rtw_hal_free_data(padapter);
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("<==rtw_free_drv_sw\n"));
 
@@ -2200,17 +2200,17 @@ int _netdev_open(struct net_device *pnetdev)
 {
 	uint status;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
-	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
+//	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+871x_drv - dev_open\n"));
 	DBG_871X("+871x_drv - drv_open, bup=%d\n", padapter->bup);
 
 	padapter->netif_up = _TRUE;
 
-	if(pwrctrlpriv->ps_flag == _TRUE){
-		padapter->net_closed = _FALSE;
-		goto netdev_open_normal_process;
-	}
+//		if(pwrctrlpriv->ps_flag == _TRUE){
+//			padapter->net_closed = _FALSE;
+//			goto netdev_open_normal_process;
+//		}
 
 	if(padapter->bup == _FALSE)
 	{
@@ -2218,7 +2218,7 @@ int _netdev_open(struct net_device *pnetdev)
 	 	padapter->bSurpriseRemoved = _FALSE;
 		padapter->bCardDisableWOHSM = _FALSE;
 
-		status = rtw_hal_init(padapter);
+//		status = rtw_hal_init(padapter);
 		if (status ==_FAIL)
 		{
 			RT_TRACE(_module_os_intfs_c_,_drv_err_,("rtl871x_hal_init(): Can't init h/w!\n"));
@@ -2251,17 +2251,17 @@ int _netdev_open(struct net_device *pnetdev)
 		rtw_cfg80211_init_wiphy(padapter);
 #endif
 
-		rtw_led_control(padapter, LED_CTL_NO_LINK);
+//		rtw_led_control(padapter, LED_CTL_NO_LINK);
 
 		padapter->bup = _TRUE;
-		pwrctrlpriv->bips_processing = _FALSE;
+//		pwrctrlpriv->bips_processing = _FALSE;
 	}
 	padapter->net_closed = _FALSE;
 
 	_set_timer(&padapter->mlmepriv.dynamic_chk_timer, 2000);
 
 #ifndef CONFIG_IPS_CHECK_IN_WD
-	rtw_set_pwr_state_check_timer(pwrctrlpriv);
+//	rtw_set_pwr_state_check_timer(pwrctrlpriv);
 #endif 
 
 	//netif_carrier_on(pnetdev);//call this func when rtw_joinbss_event_callback return success
@@ -2347,7 +2347,7 @@ int  ips_netdrv_open(_adapter *padapter)
 	}
 
 #ifndef CONFIG_IPS_CHECK_IN_WD
-	rtw_set_pwr_state_check_timer(adapter_to_pwrctl(padapter));
+//	rtw_set_pwr_state_check_timer(adapter_to_pwrctl(padapter));
 #endif		
   	_set_timer(&padapter->mlmepriv.dynamic_chk_timer,2000);
 
@@ -2364,23 +2364,23 @@ netdev_open_error:
 int rtw_ips_pwr_up(_adapter *padapter)
 {
 	int result;
-	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
+//	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
 #ifdef DBG_CONFIG_ERROR_DETECT
-	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
+//	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
 #endif//#ifdef DBG_CONFIG_ERROR_DETECT
 	u32 start_time = rtw_get_current_time();
 	DBG_871X("===>  rtw_ips_pwr_up..............\n");
 
 #if defined(CONFIG_SWLPS_IN_IPS) || defined(CONFIG_FWLPS_IN_IPS)
 #ifdef DBG_CONFIG_ERROR_DETECT
-	if (psrtpriv->silent_reset_inprogress == _TRUE)
+//	if (psrtpriv->silent_reset_inprogress == _TRUE)
 #endif//#ifdef DBG_CONFIG_ERROR_DETECT		
 #endif //defined(CONFIG_SWLPS_IN_IPS) || defined(CONFIG_FWLPS_IN_IPS)
 	rtw_reset_drv_sw(padapter);
 
 	result = ips_netdrv_open(padapter);
 
-	rtw_led_control(padapter, LED_CTL_NO_LINK);
+//	rtw_led_control(padapter, LED_CTL_NO_LINK);
 
  	DBG_871X("<===  rtw_ips_pwr_up.............. in %dms\n", rtw_get_passing_time_ms(start_time));
 	return result;
@@ -2406,18 +2406,18 @@ void rtw_ips_dev_unload(_adapter *padapter)
 	struct xmit_priv	*pxmitpriv = &(padapter->xmitpriv);
 	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
 #ifdef DBG_CONFIG_ERROR_DETECT	
-	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
+//	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
 #endif//#ifdef DBG_CONFIG_ERROR_DETECT
 	DBG_871X("====> %s...\n",__FUNCTION__);
 
 
 #if defined(CONFIG_SWLPS_IN_IPS) || defined(CONFIG_FWLPS_IN_IPS)
 #ifdef DBG_CONFIG_ERROR_DETECT
-	if (psrtpriv->silent_reset_inprogress == _TRUE)
+//	if (psrtpriv->silent_reset_inprogress == _TRUE)
 #endif //#ifdef DBG_CONFIG_ERROR_DETECT		
 #endif //defined(CONFIG_SWLPS_IN_IPS) || defined(CONFIG_FWLPS_IN_IPS)
 	{
-		rtw_hal_set_hwreg(padapter, HW_VAR_FIFO_CLEARN_UP, 0);
+//			rtw_hal_set_hwreg(padapter, HW_VAR_FIFO_CLEARN_UP, 0);
 
 		if (padapter->intf_stop)
 		{
@@ -2427,7 +2427,7 @@ void rtw_ips_dev_unload(_adapter *padapter)
 
 	if(padapter->bSurpriseRemoved == _FALSE)
 	{
-		rtw_hal_deinit(padapter);
+//		rtw_hal_deinit(padapter);
 	}
 
 }
@@ -2554,7 +2554,7 @@ int pm_netdev_open(struct net_device *pnetdev,u8 bnormal)
 static int netdev_close(struct net_device *pnetdev)
 {
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
-	struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(padapter);
+//	struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(padapter);
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+871x_drv - drv_close\n"));
 
@@ -2588,7 +2588,7 @@ static int netdev_close(struct net_device *pnetdev)
 
 #ifndef CONFIG_ANDROID
 		//s2.
-		LeaveAllPowerSaveMode(padapter);
+//		LeaveAllPowerSaveMode(padapter);
 		rtw_disassoc_cmd(padapter, 500, _FALSE);
 		//s2-2.  indicate disconnect to os
 		rtw_indicate_disconnect(padapter);
@@ -2598,7 +2598,7 @@ static int netdev_close(struct net_device *pnetdev)
 		rtw_free_network_queue(padapter,_TRUE);
 #endif
 		// Close LED
-		rtw_led_control(padapter, LED_CTL_POWER_OFF);
+//		rtw_led_control(padapter, LED_CTL_POWER_OFF);
 	}
 
 #ifdef CONFIG_BR_EXT
@@ -2610,7 +2610,7 @@ static int netdev_close(struct net_device *pnetdev)
 #endif	// CONFIG_BR_EXT
 
 #ifdef CONFIG_P2P
-	rtw_p2p_enable(padapter, P2P_ROLE_DISABLE);
+//	rtw_p2p_enable(padapter, P2P_ROLE_DISABLE);
 #endif //CONFIG_P2P
 
 #ifdef CONFIG_IOCTL_CFG80211
@@ -2666,7 +2666,7 @@ void rtw_dev_unload(PADAPTER padapter)
 		padapter->bDriverStopped = _TRUE;
 		#ifdef CONFIG_XMIT_ACK
 		if (padapter->xmitpriv.ack_tx)
-			rtw_ack_tx_done(&padapter->xmitpriv, RTW_SCTX_DONE_DRV_STOP);
+//			rtw_ack_tx_done(&padapter->xmitpriv, RTW_SCTX_DONE_DRV_STOP);
 		#endif
 
 		if (padapter->intf_stop)
@@ -2680,13 +2680,13 @@ void rtw_dev_unload(PADAPTER padapter)
 		RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("@ %s: stop thread complete!\n",__FUNCTION__));
 
 		//check the status of IPS
-		if(rtw_hal_check_ips_status(padapter) == _TRUE || pwrctl->rf_pwrstate == rf_off) { //check HW status and SW state
-			DBG_871X_LEVEL(_drv_always_, "%s: driver in IPS-FWLPS\n", __func__);
-			pdbgpriv->dbg_dev_unload_inIPS_cnt++;
-			LeaveAllPowerSaveMode(padapter);
-		} else {
-			DBG_871X_LEVEL(_drv_always_, "%s: driver not in IPS\n", __func__);
-		}
+//			if(rtw_hal_check_ips_status(padapter) == _TRUE || pwrctl->rf_pwrstate == rf_off) { //check HW status and SW state
+//				DBG_871X_LEVEL(_drv_always_, "%s: driver in IPS-FWLPS\n", __func__);
+//				pdbgpriv->dbg_dev_unload_inIPS_cnt++;
+//				LeaveAllPowerSaveMode(padapter);
+//			} else {
+//				DBG_871X_LEVEL(_drv_always_, "%s: driver not in IPS\n", __func__);
+//			}
 
 		if (padapter->bSurpriseRemoved == _FALSE)
 		{

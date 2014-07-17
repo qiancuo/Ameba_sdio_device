@@ -1021,8 +1021,8 @@ struct C2HEvent_Header
 void rtw_dummy_event_callback(_adapter *adapter , u8 *pbuf);
 void rtw_fwdbg_event_callback(_adapter *adapter , u8 *pbuf);
 
-enum rtw_c2h_event
-{
+//enum rtw_c2h_event
+//{
 //		GEN_EVT_CODE(_Read_MACREG)=0, /*0*/
 //		GEN_EVT_CODE(_Read_BBREG),
 //	 	GEN_EVT_CODE(_Read_RFREG),
@@ -1050,7 +1050,7 @@ enum rtw_c2h_event
 //		GEN_EVT_CODE(_ReportPwrState),		//filen: only for PCIE, USB	
 //		GEN_EVT_CODE(_CloseRF),				//filen: only for PCIE, work around ASPM
 //	 	MAX_C2HEVT
-};
+//};
 
 
 #ifdef _RTW_MLME_EXT_C_		

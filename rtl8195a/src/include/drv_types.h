@@ -264,16 +264,16 @@ struct _ADAPTER{
 
 	struct dvobj_priv *dvobj;
 		struct	mlme_priv mlmepriv;
-//		struct	mlme_ext_priv mlmeextpriv;
-//		struct	cmd_priv	cmdpriv;
-//		struct	evt_priv	evtpriv;
+		struct	mlme_ext_priv mlmeextpriv;
+		struct	cmd_priv	cmdpriv;
+		struct	evt_priv	evtpriv;
 //		//struct	io_queue	*pio_queue;
 //		struct 	io_priv	iopriv;
 		struct	xmit_priv	xmitpriv;
 		struct	recv_priv	recvpriv;
 //		struct	sta_priv	stapriv;
-//		struct	security_priv	securitypriv;
-//		_lock   security_key_mutex; // add for CONFIG_IEEE80211W, none 11w also can use
+		struct	security_priv	securitypriv;
+		_lock   security_key_mutex; // add for CONFIG_IEEE80211W, none 11w also can use
 		struct	registry_priv	registrypriv;
 		struct 	eeprom_priv eeprompriv;
 //		struct	led_priv	ledpriv;
@@ -295,7 +295,7 @@ struct _ADAPTER{
 //		struct cfg80211_wifidirect_info	cfg80211_wdinfo;
 //	#endif //CONFIG_P2P
 //	#endif //CONFIG_IOCTL_CFG80211
-//		u32	setband;
+		u32	setband;
 //	#ifdef CONFIG_P2P
 //		struct wifidirect_info	wdinfo;
 //	#endif //CONFIG_P2P
@@ -331,7 +331,7 @@ struct _ADAPTER{
 	u8	init_adpt_in_progress;
 	u8	bHaltInProgress;
 
-//		_thread_hdl_ cmdThread;
+		_thread_hdl_ cmdThread;
 //		_thread_hdl_ evtThread;
 //		_thread_hdl_ xmitThread;
 //		_thread_hdl_ recvThread;
@@ -347,8 +347,8 @@ struct _ADAPTER{
 	void (*intf_free_irq)(struct dvobj_priv *dvobj);
 	
 
-//	void (*intf_start)(_adapter *adapter);
-//	void (*intf_stop)(_adapter *adapter);
+	void (*intf_start)(_adapter *adapter);
+	void (*intf_stop)(_adapter *adapter);
 
 #ifdef PLATFORM_WINDOWS
 	_nic_hdl		hndis_adapter;//hNdisAdapter(NDISMiniportAdapterHandle);
@@ -559,7 +559,11 @@ enum _ADAPTER_TYPE {
 	SECONDARY_ADAPTER,
 	MAX_ADAPTER = 0xFF,
 };
-
+typedef enum _DRIVER_STATE{
+	DRIVER_NORMAL = 0,
+	DRIVER_DISAPPEAR = 1,
+	DRIVER_REPLACE_DONGLE = 2,
+}DRIVER_STATE;
 #define adapter_to_dvobj(adapter) (adapter->dvobj)
 //#define adapter_to_pwrctl(adapter) (dvobj_to_pwrctl(adapter->dvobj))
 #define adapter_wdev_data(adapter) (&((adapter)->wdev_data))
