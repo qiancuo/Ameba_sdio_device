@@ -19,7 +19,186 @@
 #endif
 typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include "rtw_xmit.h"
+#include "rtw_eeprom.h"
 #define ETH_ALEN 6 //6 octets for 
+
+#define SPEC_DEV_ID_NONE BIT(0)
+#define SPEC_DEV_ID_DISABLE_HT BIT(1)
+#define SPEC_DEV_ID_ENABLE_PS BIT(2)
+#define SPEC_DEV_ID_RF_CONFIG_1T1R BIT(3)
+#define SPEC_DEV_ID_RF_CONFIG_2T2R BIT(4)
+#define SPEC_DEV_ID_ASSIGN_IFNAME BIT(5)
+
+struct specific_device_id{
+
+	u32		flags;
+
+	u16		idVendor;
+	u16		idProduct;
+
+};
+
+struct registry_priv
+{
+	u8	chip_version;
+	u8	rfintfs;
+	u8	lbkmode;
+	u8	hci;
+	NDIS_802_11_SSID	ssid;
+	u8	network_mode;	//infra, ad-hoc, auto
+	u8	channel;//ad-hoc support requirement
+	u8	wireless_mode;//A, B, G, auto
+	u8 	scan_mode;//active, passive
+	u8	radio_enable;
+	u8	preamble;//long, short, auto
+	u8	vrtl_carrier_sense;//Enable, Disable, Auto
+	u8	vcs_type;//RTS/CTS, CTS-to-self
+	u16	rts_thresh;
+	u16  frag_thresh;
+	u8	adhoc_tx_pwr;
+	u8	soft_ap;
+	u8	power_mgnt;
+	u8	ips_mode;
+	u8	smart_ps;
+	u8   usb_rxagg_mode;
+	u8	long_retry_lmt;
+	u8	short_retry_lmt;
+	u16	busy_thresh;
+	u8	ack_policy;
+	u8	mp_mode;
+	u8  mp_dm;
+	u8	software_encrypt;
+	u8	software_decrypt;
+	#ifdef CONFIG_TX_EARLY_MODE
+	u8   early_mode;
+	#endif
+	u8	acm_method;
+	  //UAPSD
+	u8	wmm_enable;
+	u8	uapsd_enable;
+	u8	uapsd_max_sp;
+	u8	uapsd_acbk_en;
+	u8	uapsd_acbe_en;
+	u8	uapsd_acvi_en;
+	u8	uapsd_acvo_en;
+
+	WLAN_BSSID_EX    dev_network;
+
+#ifdef CONFIG_80211N_HT
+	u8	ht_enable;
+	// 0: 20 MHz, 1: 40 MHz, 2: 80 MHz, 3: 160MHz
+	// 2.4G use bit 0 ~ 3, 5G use bit 4 ~ 7
+	// 0x21 means enable 2.4G 40MHz & 5G 80MHz
+	u8	bw_mode;
+	u8	ampdu_enable;//for tx
+	u8 	rx_stbc;
+	u8	ampdu_amsdu;//A-MPDU Supports A-MSDU is permitted
+	// Short GI support Bit Map
+	// BIT0 - 20MHz, 1: support, 0: non-support
+	// BIT1 - 40MHz, 1: support, 0: non-support
+	// BIT2 - 80MHz, 1: support, 0: non-support
+	// BIT3 - 160MHz, 1: support, 0: non-support
+	u8	short_gi;
+	// BIT0: Enable VHT LDPC Rx, BIT1: Enable VHT LDPC Tx, BIT4: Enable HT LDPC Rx, BIT5: Enable HT LDPC Tx
+	u8	ldpc_cap;
+	// BIT0: Enable VHT STBC Rx, BIT1: Enable VHT STBC Tx, BIT4: Enable HT STBC Rx, BIT5: Enable HT STBC Tx
+	u8	stbc_cap;
+	// BIT0: Enable VHT Beamformer, BIT1: Enable VHT Beamformee, BIT4: Enable HT Beamformer, BIT5: Enable HT Beamformee
+	u8	beamform_cap;
+#endif //CONFIG_80211N_HT
+
+#ifdef CONFIG_80211AC_VHT
+	u8	vht_enable; //0:disable, 1:enable, 2:auto
+	u8	ampdu_factor;
+	u8	vht_rate_sel;
+#endif //CONFIG_80211AC_VHT
+
+	u8	lowrate_two_xmit;
+
+	u8	rf_config ;
+	u8	low_power ;
+
+	u8	wifi_spec;// !turbo_mode
+
+	u8	channel_plan;
+#ifdef CONFIG_BT_COEXIST
+	u8	btcoex;
+	u8	bt_iso;
+	u8	bt_sco;
+	u8	bt_ampdu;
+	s8	ant_num;
+#endif
+	BOOLEAN	bAcceptAddbaReq;
+
+	u8	antdiv_cfg;
+	u8	antdiv_type;
+
+	u8	usbss_enable;//0:disable,1:enable
+	u8	hwpdn_mode;//0:disable,1:enable,2:decide by EFUSE config
+	u8	hwpwrp_detect;//0:disable,1:enable
+
+	u8	hw_wps_pbc;//0:disable,1:enable
+
+#ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
+	char	adaptor_info_caching_file_path[PATH_LENGTH_MAX];
+#endif
+
+#ifdef CONFIG_LAYER2_ROAMING
+	u8	max_roaming_times; // the max number driver will try to roaming
+#endif
+
+#ifdef CONFIG_IOL
+	u8 fw_iol; //enable iol without other concern
+#endif
+
+#ifdef CONFIG_DUALMAC_CONCURRENT
+	u8	dmsp;//0:disable,1:enable
+#endif
+
+#ifdef CONFIG_80211D
+	u8 enable80211d;
+#endif
+
+	u8 ifname[16];
+	u8 if2name[16];
+
+	u8 notch_filter;
+
+#ifdef CONFIG_SPECIAL_SETTING_FOR_FUNAI_TV
+	u8 force_ant;//0 normal,1 main,2 aux
+	u8 force_igi;//0 normal
+#endif
+
+	//define for tx power adjust
+	u8	RegEnableTxPowerLimit;
+	u8	RegEnableTxPowerByRate;
+	u8	RegPowerBase;
+	u8	RegPwrTblSel;
+	s8	TxBBSwing_2G;
+	s8	TxBBSwing_5G;
+	u8	AmplifierType_2G;
+	u8	AmplifierType_5G;
+	u8	bEn_RFE;
+	u8	RFE_Type;
+	u8  check_fw_ps;
+
+#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+	u8	load_phy_file;
+	u8	RegDecryptCustomFile;
+#endif
+
+#ifdef CONFIG_MULTI_VIR_IFACES
+	u8 ext_iface_num;//primary/secondary iface is excluded
+#endif
+	u8 qos_opt_enable;
+};
+
+
+//For registry parameters
+#define RGTRY_OFT(field) ((ULONG)FIELD_OFFSET(struct registry_priv,field))
+#define RGTRY_SZ(field)   sizeof(((struct registry_priv*) 0)->field)
+#define BSSID_OFT(field) ((ULONG)FIELD_OFFSET(WLAN_BSSID_EX,field))
+#define BSSID_SZ(field)   sizeof(((PWLAN_BSSID_EX) 0)->field)
 struct cam_entry_cache {
 	u16 ctrl;
 	u8 mac[ETH_ALEN];
@@ -92,8 +271,8 @@ struct _ADAPTER{
 //		struct	sta_priv	stapriv;
 //		struct	security_priv	securitypriv;
 //		_lock   security_key_mutex; // add for CONFIG_IEEE80211W, none 11w also can use
-//		struct	registry_priv	registrypriv;
-//		struct 	eeprom_priv eeprompriv;
+		struct	registry_priv	registrypriv;
+		struct 	eeprom_priv eeprompriv;
 //		struct	led_priv	ledpriv;
 //	
 //	#ifdef CONFIG_MP_INCLUDED

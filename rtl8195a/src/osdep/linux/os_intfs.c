@@ -23,7 +23,7 @@
 #include "../../include/hal_data.h"
 #include "../../include/osdep_intf.h"
 #include "../../include/rtw_cmd.h"
-
+#include "../../include/rtw_pwrctrl.h"
 #if defined (PLATFORM_LINUX) && defined (PLATFORM_WINDOWS)
 
 #error "Shall be Linux or Windows, but not both!\n"
@@ -197,8 +197,8 @@ int rtw_80211d = 0;
 #ifdef CONFIG_SPECIAL_SETTING_FOR_FUNAI_TV
 int rtw_force_ant = 2;//0 :normal, 1:Main ant, 2:Aux ant
 int rtw_force_igi =0;//0 :normal
-module_param(rtw_force_ant, int, 0644);
-module_param(rtw_force_igi, int, 0644);
+//	module_param(rtw_force_ant, int, 0644);
+//	module_param(rtw_force_igi, int, 0644);
 #endif
 
 #ifdef CONFIG_QOS_OPTIMIZATION
@@ -206,117 +206,117 @@ int rtw_qos_opt_enable=1;//0: disable,1:enable
 #else
 int rtw_qos_opt_enable=0;//0: disable,1:enable
 #endif
-module_param(rtw_qos_opt_enable,int,0644);
+//module_param(rtw_qos_opt_enable,int,0644);
 
-char* ifname = "wlan%d";
-module_param(ifname, charp, 0644);
-MODULE_PARM_DESC(ifname, "The default name to allocate for first interface");
-
-char* if2name = "wlan%d";
-module_param(if2name, charp, 0644);
-MODULE_PARM_DESC(if2name, "The default name to allocate for second interface");
+//	char* ifname = "wlan%d";
+//	module_param(ifname, charp, 0644);
+//	MODULE_PARM_DESC(ifname, "The default name to allocate for first interface");
+//	
+//	char* if2name = "wlan%d";
+//	module_param(if2name, charp, 0644);
+//	MODULE_PARM_DESC(if2name, "The default name to allocate for second interface");
 
 char* rtw_initmac = 0;  // temp mac address if users want to use instead of the mac address in Efuse
 
 #ifdef CONFIG_MULTI_VIR_IFACES
 int rtw_ext_iface_num  = 1;//primary/secondary iface is excluded
-module_param(rtw_ext_iface_num, int, 0644);
+//module_param(rtw_ext_iface_num, int, 0644);
 #endif //CONFIG_MULTI_VIR_IFACES
 
-module_param(rtw_initmac, charp, 0644);
-module_param(rtw_channel_plan, int, 0644);
-module_param(rtw_chip_version, int, 0644);
-module_param(rtw_rfintfs, int, 0644);
-module_param(rtw_lbkmode, int, 0644);
-module_param(rtw_network_mode, int, 0644);
-module_param(rtw_channel, int, 0644);
-module_param(rtw_mp_mode, int, 0644);
-module_param(rtw_wmm_enable, int, 0644);
-module_param(rtw_vrtl_carrier_sense, int, 0644);
-module_param(rtw_vcs_type, int, 0644);
-module_param(rtw_busy_thresh, int, 0644);
+//	module_param(rtw_initmac, charp, 0644);
+//	module_param(rtw_channel_plan, int, 0644);
+//	module_param(rtw_chip_version, int, 0644);
+//	module_param(rtw_rfintfs, int, 0644);
+//	module_param(rtw_lbkmode, int, 0644);
+//	module_param(rtw_network_mode, int, 0644);
+//	module_param(rtw_channel, int, 0644);
+//	module_param(rtw_mp_mode, int, 0644);
+//	module_param(rtw_wmm_enable, int, 0644);
+//	module_param(rtw_vrtl_carrier_sense, int, 0644);
+//	module_param(rtw_vcs_type, int, 0644);
+//	module_param(rtw_busy_thresh, int, 0644);
 
 #ifdef CONFIG_80211N_HT
-module_param(rtw_ht_enable, int, 0644);
-module_param(rtw_bw_mode, int, 0644);
-module_param(rtw_ampdu_enable, int, 0644);
-module_param(rtw_rx_stbc, int, 0644);
-module_param(rtw_ampdu_amsdu, int, 0644);
+//	module_param(rtw_ht_enable, int, 0644);
+//	module_param(rtw_bw_mode, int, 0644);
+//	module_param(rtw_ampdu_enable, int, 0644);
+//	module_param(rtw_rx_stbc, int, 0644);
+//	module_param(rtw_ampdu_amsdu, int, 0644);
 #endif //CONFIG_80211N_HT
 #ifdef CONFIG_80211AC_VHT
-module_param(rtw_vht_enable, int, 0644);
+//module_param(rtw_vht_enable, int, 0644);
 #endif //CONFIG_80211AC_VHT
 
-module_param(rtw_lowrate_two_xmit, int, 0644);
-
-module_param(rtw_rf_config, int, 0644);
-module_param(rtw_power_mgnt, int, 0644);
-module_param(rtw_smart_ps, int, 0644);
-module_param(rtw_low_power, int, 0644);
-module_param(rtw_wifi_spec, int, 0644);
-
-module_param(rtw_antdiv_cfg, int, 0644);
-module_param(rtw_antdiv_type, int, 0644);
-
-module_param(rtw_enusbss, int, 0644);
-module_param(rtw_hwpdn_mode, int, 0644);
-module_param(rtw_hwpwrp_detect, int, 0644);
-
-module_param(rtw_hw_wps_pbc, int, 0644);
+//	module_param(rtw_lowrate_two_xmit, int, 0644);
+//	
+//	module_param(rtw_rf_config, int, 0644);
+//	module_param(rtw_power_mgnt, int, 0644);
+//	module_param(rtw_smart_ps, int, 0644);
+//	module_param(rtw_low_power, int, 0644);
+//	module_param(rtw_wifi_spec, int, 0644);
+//	
+//	module_param(rtw_antdiv_cfg, int, 0644);
+//	module_param(rtw_antdiv_type, int, 0644);
+//	
+//	module_param(rtw_enusbss, int, 0644);
+//	module_param(rtw_hwpdn_mode, int, 0644);
+//	module_param(rtw_hwpwrp_detect, int, 0644);
+//	
+//	module_param(rtw_hw_wps_pbc, int, 0644);
 
 #ifdef CONFIG_TX_EARLY_MODE
-module_param(rtw_early_mode, int, 0644);
+//module_param(rtw_early_mode, int, 0644);
 #endif
 #ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
 char *rtw_adaptor_info_caching_file_path= "/data/misc/wifi/rtw_cache";
-module_param(rtw_adaptor_info_caching_file_path, charp, 0644);
-MODULE_PARM_DESC(rtw_adaptor_info_caching_file_path, "The path of adapter info cache file");
+//module_param(rtw_adaptor_info_caching_file_path, charp, 0644);
+//MODULE_PARM_DESC(rtw_adaptor_info_caching_file_path, "The path of adapter info cache file");
 #endif //CONFIG_ADAPTOR_INFO_CACHING_FILE
 
 #ifdef CONFIG_LAYER2_ROAMING
 uint rtw_max_roaming_times=2;
-module_param(rtw_max_roaming_times, uint, 0644);
-MODULE_PARM_DESC(rtw_max_roaming_times,"The max roaming times to try");
+//module_param(rtw_max_roaming_times, uint, 0644);
+//MODULE_PARM_DESC(rtw_max_roaming_times,"The max roaming times to try");
 #endif //CONFIG_LAYER2_ROAMING
 
 #ifdef CONFIG_IOL
 int rtw_fw_iol=1;// 0:Disable, 1:enable, 2:by usb speed
-module_param(rtw_fw_iol, int, 0644);
-MODULE_PARM_DESC(rtw_fw_iol,"FW IOL");
+//module_param(rtw_fw_iol, int, 0644);
+//MODULE_PARM_DESC(rtw_fw_iol,"FW IOL");
 #endif //CONFIG_IOL
 
 #ifdef CONFIG_FILE_FWIMG
 char *rtw_fw_file_path = "/system/etc/firmware/rtlwifi/FW_NIC.BIN";
-module_param(rtw_fw_file_path, charp, 0644);
-MODULE_PARM_DESC(rtw_fw_file_path, "The path of fw image");
+//module_param(rtw_fw_file_path, charp, 0644);
+//MODULE_PARM_DESC(rtw_fw_file_path, "The path of fw image");
 
 char *rtw_fw_wow_file_path = "/system/etc/firmware/rtlwifi/FW_WoWLAN.BIN";
-module_param(rtw_fw_wow_file_path, charp, 0644);
-MODULE_PARM_DESC(rtw_fw_wow_file_path, "The path of fw for Wake on Wireless image");
+//module_param(rtw_fw_wow_file_path, charp, 0644);
+//MODULE_PARM_DESC(rtw_fw_wow_file_path, "The path of fw for Wake on Wireless image");
 
 #ifdef CONFIG_MP_INCLUDED
 char *rtw_fw_mp_bt_file_path = "";
-module_param(rtw_fw_mp_bt_file_path, charp, 0644);
-MODULE_PARM_DESC(rtw_fw_mp_bt_file_path, "The path of fw for MP-BT image");
+//module_param(rtw_fw_mp_bt_file_path, charp, 0644);
+//MODULE_PARM_DESC(rtw_fw_mp_bt_file_path, "The path of fw for MP-BT image");
 #endif // CONFIG_MP_INCLUDED
 #endif // CONFIG_FILE_FWIMG
 
 #ifdef CONFIG_TX_MCAST2UNI
-module_param(rtw_mc2u_disable, int, 0644);
+//module_param(rtw_mc2u_disable, int, 0644);
 #endif	// CONFIG_TX_MCAST2UNI
 
 #ifdef CONFIG_DUALMAC_CONCURRENT
-module_param(rtw_dmsp, int, 0644);
+//module_param(rtw_dmsp, int, 0644);
 #endif	// CONFIG_DUALMAC_CONCURRENT
 
 #ifdef CONFIG_80211D
-module_param(rtw_80211d, int, 0644);
-MODULE_PARM_DESC(rtw_80211d, "Enable 802.11d mechanism");
+//module_param(rtw_80211d, int, 0644);
+//MODULE_PARM_DESC(rtw_80211d, "Enable 802.11d mechanism");
 #endif
 
 uint rtw_notch_filter = RTW_NOTCH_FILTER;
-module_param(rtw_notch_filter, uint, 0644);
-MODULE_PARM_DESC(rtw_notch_filter, "0:Disable, 1:Enable, 2:Enable only for P2P");
+//module_param(rtw_notch_filter, uint, 0644);
+//MODULE_PARM_DESC(rtw_notch_filter, "0:Disable, 1:Enable, 2:Enable only for P2P");
 
 #if defined(CONFIG_CALIBRATE_TX_POWER_BY_REGULATORY) //eFuse: Regulatory selection=1
 int rtw_tx_pwr_lmt_enable = 1;
@@ -329,16 +329,16 @@ int rtw_tx_pwr_lmt_enable = 0;
 int rtw_tx_pwr_by_rate = 0;
 #endif
 
-module_param(rtw_tx_pwr_lmt_enable, int, 0644);
-MODULE_PARM_DESC(rtw_tx_pwr_lmt_enable,"0:Disable, 1:Enable, 2: Depend on efuse");
-
-module_param(rtw_tx_pwr_by_rate, int, 0644);
-MODULE_PARM_DESC(rtw_tx_pwr_by_rate,"0:Disable, 1:Enable, 2: Depend on efuse");
+//	module_param(rtw_tx_pwr_lmt_enable, int, 0644);
+//	MODULE_PARM_DESC(rtw_tx_pwr_lmt_enable,"0:Disable, 1:Enable, 2: Depend on efuse");
+//	
+//	module_param(rtw_tx_pwr_by_rate, int, 0644);
+//	MODULE_PARM_DESC(rtw_tx_pwr_by_rate,"0:Disable, 1:Enable, 2: Depend on efuse");
 
 #ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
 char *rtw_phy_file_path = "";
-module_param(rtw_phy_file_path, charp, 0644);
-MODULE_PARM_DESC(rtw_phy_file_path, "The path of phy parameter");
+//	module_param(rtw_phy_file_path, charp, 0644);
+//	MODULE_PARM_DESC(rtw_phy_file_path, "The path of phy parameter");
 // PHY FILE Bit Map
 // BIT0 - MAC,				0: non-support, 1: support
 // BIT1 - BB,					0: non-support, 1: support
@@ -348,11 +348,11 @@ MODULE_PARM_DESC(rtw_phy_file_path, "The path of phy parameter");
 // BIT5 - RF_TXPWR_TRACK,	0: non-support, 1: support
 // BIT6 - RF_TXPWR_LMT,		0: non-support, 1: support
 int rtw_load_phy_file = (BIT2|BIT6);
-module_param(rtw_load_phy_file, int, 0644);
-MODULE_PARM_DESC(rtw_load_phy_file,"PHY File Bit Map");
+//	module_param(rtw_load_phy_file, int, 0644);
+//	MODULE_PARM_DESC(rtw_load_phy_file,"PHY File Bit Map");
 int rtw_decrypt_phy_file = 0;
-module_param(rtw_decrypt_phy_file, int, 0644);
-MODULE_PARM_DESC(rtw_decrypt_phy_file,"Enable Decrypt PHY File");
+//	module_param(rtw_decrypt_phy_file, int, 0644);
+//	MODULE_PARM_DESC(rtw_decrypt_phy_file,"Enable Decrypt PHY File");
 #endif
 
 static uint loadparam(PADAPTER padapter, _nic_hdl pnetdev);
