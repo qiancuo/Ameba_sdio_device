@@ -509,7 +509,7 @@ int proc_get_odm_dbg_comp(struct seq_file *m, void *v)
 	struct net_device *dev = m->private;
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
 
-	rtw_odm_dbg_comp_msg(m, adapter);
+//	rtw_odm_dbg_comp_msg(m, adapter);
 
 	return 0;
 }
@@ -532,7 +532,7 @@ ssize_t proc_set_odm_dbg_comp(struct file *file, const char __user *buffer, size
 		if (num != 1)
 			return count;
 
-		rtw_odm_dbg_comp_set(adapter, dbg_comp);
+//		rtw_odm_dbg_comp_set(adapter, dbg_comp);
 	}
 
 	return count;
@@ -543,7 +543,7 @@ int proc_get_odm_dbg_level(struct seq_file *m, void *v)
 	struct net_device *dev = m->private;
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
 
-	rtw_odm_dbg_level_msg(m, adapter);
+//	rtw_odm_dbg_level_msg(m, adapter);
 
 	return 0;
 }
@@ -566,7 +566,7 @@ ssize_t proc_set_odm_dbg_level(struct file *file, const char __user *buffer, siz
 		if (num != 1)
 			return count;
 
-		rtw_odm_dbg_level_set(adapter, dbg_level);
+//		rtw_odm_dbg_level_set(adapter, dbg_level);
 	}
 
 	return count;
@@ -577,7 +577,7 @@ int proc_get_odm_ability(struct seq_file *m, void *v)
 	struct net_device *dev = m->private;
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
 
-	rtw_odm_ability_msg(m, adapter);
+//	rtw_odm_ability_msg(m, adapter);
 
 	return 0;
 }
@@ -600,7 +600,7 @@ ssize_t proc_set_odm_ability(struct file *file, const char __user *buffer, size_
 		if (num != 1)
 			return count;
 
-		rtw_odm_ability_set(adapter, ability);
+//		rtw_odm_ability_set(adapter, ability);
 	}
 
 	return count;
@@ -611,7 +611,7 @@ int proc_get_odm_adaptivity(struct seq_file *m, void *v)
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 
-	rtw_odm_adaptivity_parm_msg(m, padapter);
+//	rtw_odm_adaptivity_parm_msg(m, padapter);
 
 	return 0;
 }
@@ -639,7 +639,7 @@ ssize_t proc_set_odm_adaptivity(struct file *file, const char __user *buffer, si
 		if (num != 6)
 			return count;
 
-		rtw_odm_adaptivity_parm_set(padapter, (s8)TH_L2H_ini, TH_EDCCA_HL_diff, (s8)IGI_Base, (bool)ForceEDCCA, AdapEn_RSSI, IGI_LowerBound);
+//		rtw_odm_adaptivity_parm_set(padapter, (s8)TH_L2H_ini, TH_EDCCA_HL_diff, (s8)IGI_Base, (bool)ForceEDCCA, AdapEn_RSSI, IGI_LowerBound);
 	}
 	
 	return count;
