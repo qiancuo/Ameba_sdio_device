@@ -322,32 +322,32 @@ static char *translate_scan(_adapter *padapter,
 		      ( SCAN_RESULT_WFD_TYPE == pwdinfo->wfd_info->scan_result_type ) )
 #endif // CONFIG_WFD
 	{
-		if(!rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
-		{
-			u32	blnGotP2PIE = _FALSE;
-			
-			//	User is doing the P2P device discovery
-			//	The prefix of SSID should be "DIRECT-" and the IE should contains the P2P IE.
-			//	If not, the driver should ignore this AP and go to the next AP.
-
-			//	Verifying the SSID
-			if ( _rtw_memcmp( pnetwork->network.Ssid.Ssid, pwdinfo->p2p_wildcard_ssid, P2P_WILDCARD_SSID_LEN ) )
-			{
-				u32	p2pielen = 0;
-
-				//	Verifying the P2P IE
-				if (rtw_get_p2p_ie_from_scan_queue(&pnetwork->network.IEs[0], pnetwork->network.IELength, NULL, &p2pielen, pnetwork->network.Reserved[0])) 
-				{
-					blnGotP2PIE = _TRUE;
-				}
-			}
-
-			if ( blnGotP2PIE == _FALSE )
-			{
-				return start;
-			}
-			
-		}
+//			if(!rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
+//			{
+//				u32	blnGotP2PIE = _FALSE;
+//				
+//				//	User is doing the P2P device discovery
+//				//	The prefix of SSID should be "DIRECT-" and the IE should contains the P2P IE.
+//				//	If not, the driver should ignore this AP and go to the next AP.
+//	
+//				//	Verifying the SSID
+//				if ( _rtw_memcmp( pnetwork->network.Ssid.Ssid, pwdinfo->p2p_wildcard_ssid, P2P_WILDCARD_SSID_LEN ) )
+//				{
+//					u32	p2pielen = 0;
+//	
+//					//	Verifying the P2P IE
+//					if (rtw_get_p2p_ie_from_scan_queue(&pnetwork->network.IEs[0], pnetwork->network.IELength, NULL, &p2pielen, pnetwork->network.Reserved[0])) 
+//					{
+//						blnGotP2PIE = _TRUE;
+//					}
+//				}
+//	
+//				if ( blnGotP2PIE == _FALSE )
+//				{
+//					return start;
+//				}
+//				
+//			}
 	}
 
 #ifdef CONFIG_WFD

@@ -2,6 +2,8 @@
 #define __DRV_TYPE_H__
 
 #include "autoconf.h"
+
+typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 //#include "osdep_service_linux.h"
 #include "osdep_service.h"
 //#include "basic_types.h"
@@ -18,7 +20,6 @@
 #elif defined(CONFIG_PCI_HCI)
 #include <drv_types_pci.h>
 #endif
-typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include "rtw_xmit.h"
 #include "rtw_recv.h"
 #include "rtw_eeprom.h"
@@ -274,7 +275,7 @@ struct _ADAPTER{
 //		struct 	io_priv	iopriv;
 		struct	xmit_priv	xmitpriv;
 		struct	recv_priv	recvpriv;
-//		struct	sta_priv	stapriv;
+		struct	sta_priv	stapriv;
 		struct	security_priv	securitypriv;
 		_lock   security_key_mutex; // add for CONFIG_IEEE80211W, none 11w also can use
 		struct	registry_priv	registrypriv;
@@ -299,9 +300,9 @@ struct _ADAPTER{
 //	#endif //CONFIG_P2P
 //	#endif //CONFIG_IOCTL_CFG80211
 		u32	setband;
-//	#ifdef CONFIG_P2P
-//		struct wifidirect_info	wdinfo;
-//	#endif //CONFIG_P2P
+	#ifdef CONFIG_P2P
+		struct wifidirect_info	wdinfo;
+	#endif //CONFIG_P2P
 //	
 //	#ifdef CONFIG_TDLS
 //		struct tdls_info	tdlsinfo;
