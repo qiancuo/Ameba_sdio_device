@@ -20,8 +20,9 @@
 
 
 #define _OSDEP_SERVICE_C_
+#include "../include/drv_types.h"
 #include "../include/rtw_debug.h"
-//#include "../include/drv_types.h"
+
 #include "../include/osdep_service.h"
 
 
