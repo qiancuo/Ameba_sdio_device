@@ -23,8 +23,9 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include "rtw_recv.h"
 #include "rtw_eeprom.h"
 #include "rtw_mlme.h"
-#include "rtw_mlme_ext.h"
 #include "rtw_cmd.h"
+#include "rtw_mlme_ext.h"
+
 #define ETH_ALEN 6 //6 octets for 
 
 #define SPEC_DEV_ID_NONE BIT(0)
