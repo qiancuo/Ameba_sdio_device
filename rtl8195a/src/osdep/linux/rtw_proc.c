@@ -19,6 +19,7 @@
  ******************************************************************************/
 
 #include "../../include/drv_types.h"
+#include "../../include/rtw_debug.h"
 #include "../../include/rtw_proc.h"
 
 #ifdef CONFIG_PROC_DEBUG
@@ -291,7 +292,7 @@ static ssize_t proc_set_linked_info_dump(struct file *file, const char __user *b
 		{
 			//padapter->bLinkInfoDump = mode;
 			//DBG_871X("linked_info_dump =%s \n", (padapter->bLinkInfoDump)?"enable":"disable");
-			 linked_info_dump(padapter,mode);		
+//			 linked_info_dump(padapter,mode);		
 		}
 
 	}

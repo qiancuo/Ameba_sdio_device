@@ -378,9 +378,9 @@ struct _ADAPTER{
 
 	int bup;
 		struct net_device_stats stats;
-//		struct iw_statistics iwstats;
-//		struct proc_dir_entry *dir_dev;// for proc directory
-//		struct proc_dir_entry *dir_odm;
+		struct iw_statistics iwstats;
+		struct proc_dir_entry *dir_dev;// for proc directory
+		struct proc_dir_entry *dir_odm;
 
 #ifdef CONFIG_IOCTL_CFG80211
 	struct wireless_dev *rtw_wdev;
@@ -471,7 +471,10 @@ struct _ADAPTER{
 
 	unsigned char     in_cta_test;
 };
-
+#define KEY_FMT "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"
+#define KEY_ARG(x) ((u8*)(x))[0],((u8*)(x))[1],((u8*)(x))[2],((u8*)(x))[3],((u8*)(x))[4],((u8*)(x))[5], \
+	((u8*)(x))[6],((u8*)(x))[7],((u8*)(x))[8],((u8*)(x))[9],((u8*)(x))[10],((u8*)(x))[11], \
+	((u8*)(x))[12],((u8*)(x))[13],((u8*)(x))[14],((u8*)(x))[15]
 struct dvobj_priv{
 	/*-------- below is common data --------*/	
 	_adapter *if1; //PRIMARY_ADAPTER
