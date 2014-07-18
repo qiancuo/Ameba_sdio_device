@@ -831,7 +831,7 @@ struct net_device *rtw_init_netdev(_adapter *old_padapter)
 #endif
 
 	//step 2.
-//   	loadparam(padapter, pnetdev);
+   	loadparam(padapter, pnetdev);
 
 	return pnetdev;
 

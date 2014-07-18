@@ -753,6 +753,8 @@ _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_i
 	SET_NETDEV_DEV(pnetdev, dvobj_to_dev(dvobj));
 	
 	padapter = rtw_netdev_priv(pnetdev);
+	if(!padapter)
+		printk("%s()==>padapter is null\n", __FUNCTION__);
 	
 	//3 3. init driver special setting, interface, OS and hardware relative
 	
@@ -964,7 +966,7 @@ static void __devexit rtw_dev_remove(struct sdio_func *func)
 	rtw_unregister_netdevs(dvobj);
 	rtw_sdio_if1_deinit(padapter);
 	sdio_dvobj_deinit(func);
-
+	rtw_ndev_notifier_unregister();
 	printk("%s():++\n", __FUNCTION__);
 
 	if(Xmit_Thread)
@@ -1072,6 +1074,7 @@ static int __init rtl8195a_init_module(void)
 	}
 	
 	sdio_drvpriv.drv_registered = _TRUE;
+	rtw_ndev_notifier_register();
 	ret = sdio_register_driver(&sdio_drvpriv.r8195a_drv);
 	if(ret!=0)
 	{	
