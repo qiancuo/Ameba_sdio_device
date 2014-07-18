@@ -1,5 +1,5 @@
 #include "../../../include/drv_types.h"
-#include "../../../include/rtw_bebug.h"
+#include "../../../include/rtw_debug.h"
 #include "../../../include/sdio_ops.h"
 #include "../../../include/sdio_ops_linux.h"
 #include "../../../include/8195_sdio_reg.h"
