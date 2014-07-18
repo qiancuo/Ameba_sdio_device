@@ -967,7 +967,7 @@ static void __devexit rtw_dev_remove(struct sdio_func *func)
 	rtw_unregister_netdevs(dvobj);
 	rtw_sdio_if1_deinit(padapter);
 	sdio_dvobj_deinit(func);
-	rtw_ndev_notifier_unregister();
+
 	printk("%s():++\n", __FUNCTION__);
 
 	if(Xmit_Thread)
@@ -1075,7 +1075,9 @@ static int __init rtl8195a_init_module(void)
 	}
 	
 	sdio_drvpriv.drv_registered = _TRUE;
-	rtw_ndev_notifier_register();
+	rtw_suspend_lock_init();
+	rtw_drv_proc_init();
+//	rtw_ndev_notifier_register();
 	ret = sdio_register_driver(&sdio_drvpriv.r8195a_drv);
 	if(ret!=0)
 	{	
@@ -1098,6 +1100,8 @@ static void __exit rtl8195a_cleanup_module(void)
 	sdio_drvpriv.drv_registered = _FALSE;
 	unregister_chrdev(major, "inic_8195a");
 	sdio_unregister_driver(&sdio_drvpriv.r8195a_drv);
+	rtw_suspend_lock_uninit();
+	rtw_drv_proc_deinit();
 	platform_wifi_power_off();
 	DBG_871X_LEVEL(_drv_always_, "module exit success\n");
 }
