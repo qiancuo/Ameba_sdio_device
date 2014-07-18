@@ -705,18 +705,7 @@ void rtw_ndev_uninit(struct net_device *dev)
 	DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT"\n", FUNC_ADPT_ARG(adapter));
 //	rtw_adapter_proc_deinit(dev);
 }
-int rtw_xmit_entry(struct sk_buff *pkt, struct net_device *pnetdev)
-{
-	int ret = 0;
 
-	if (pkt) {
-//		rtw_mstat_update(MSTAT_TYPE_SKB, MSTAT_ALLOC_SUCCESS, pkt->truesize);
-//		ret = _rtw_xmit_entry(pkt, pnetdev);
-		printk("No xmit function yet!\n");		
-	}
-
-	return ret;
-}
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,29))
 static const struct net_device_ops rtw_netdev_ops = {
 	.ndo_init = rtw_ndev_init,
@@ -2309,7 +2298,8 @@ int netdev_open(struct net_device *pnetdev)
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
 
 	_enter_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
-	ret = _netdev_open(pnetdev);
+//	ret = _netdev_open(pnetdev);
+	ret = 0;
 	_exit_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
 
 	return ret;

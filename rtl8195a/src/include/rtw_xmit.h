@@ -779,7 +779,7 @@ struct	xmit_priv	{
 //	void rtw_free_hwxmits(_adapter *padapter);
 //	
 //	
-//	s32 rtw_xmit(_adapter *padapter, _pkt **pkt);
+	s32 rtw_xmit(_adapter *padapter, _pkt **pkt);
 //	
 //	#if defined(CONFIG_AP_MODE) || defined(CONFIG_TDLS)
 //	sint xmitframe_enqueue_for_sleeping_sta(_adapter *padapter, struct xmit_frame *pxmitframe);

@@ -243,7 +243,7 @@ static int RecvWlanCmdPkt(PAT_CMD_DESC pWlan_cmd, u16 *pLen)
 	pfunc = gHal_Data->func;
 	memset(g_SDIO_cmdData, 0, sizeof(g_SDIO_cmdData)); 
 	do{
-	len = sdio_local_read(gHal_Data, SDIO_RX0_REQ_LEN, 4, (u8 *)&tmp);
+//	len = sdio_local_read(gHal_Data, SDIO_RX0_REQ_LEN, 4, (u8 *)&tmp);
 	len = le16_to_cpu(tmp);
 	if((++i)>1000)
 		break;
@@ -253,7 +253,7 @@ static int RecvWlanCmdPkt(PAT_CMD_DESC pWlan_cmd, u16 *pLen)
 	{
 		pBuf = kmalloc(len, GFP_KERNEL);
 	sdio_claim_host(pfunc);
-		res = sdio_read_port(gHal_Data, WLAN_RX0FF_DEVICE_ID, len, pBuf);
+//		res = sdio_read_port(gHal_Data, WLAN_RX0FF_DEVICE_ID, len, pBuf);
 	sdio_release_host(pfunc);
 		if (res == _FAIL)
 		{	
@@ -392,7 +392,7 @@ static int RecvOnePkt(struct sdio_func *func)
 	{
 		pBuf = kmalloc(len, GFP_KERNEL);
 	sdio_claim_host(pfunc);
-		res = sdio_read_port(gHal_Data, WLAN_RX0FF_DEVICE_ID, len, pBuf);
+//		res = sdio_read_port(gHal_Data, WLAN_RX0FF_DEVICE_ID, len, pBuf);
 	sdio_release_host(pfunc);
 		if (res == _FAIL)
 			printk("sdio read port failed!\n");
@@ -516,7 +516,7 @@ static int SendOnePkt(struct sdio_func *func)
 
 	pfunc = func;
 //	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, TxPktSize, data);
-	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, strlen(data), data);
+//	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, strlen(data), data);
 /*
 	for(i=0; i<10;i++)
 	{
@@ -624,45 +624,6 @@ static int rtw_sdio_resume(struct device *dev)
 	int ret = 0;
 	return ret;
 }
-//	struct dvobj_priv *devobj_init(void)
-//	{
-//		struct dvobj_priv *pdvobj = NULL;
-//	
-//		if ((pdvobj = (struct dvobj_priv*)rtw_zmalloc(sizeof(*pdvobj))) == NULL) 
-//		{
-//			return NULL;
-//		}
-//	
-//		_rtw_mutex_init(&pdvobj->hw_init_mutex);
-//		_rtw_mutex_init(&pdvobj->h2c_fwcmd_mutex);
-//		_rtw_mutex_init(&pdvobj->setch_mutex);
-//		_rtw_mutex_init(&pdvobj->setbw_mutex);
-//	
-//		_rtw_spinlock_init(&pdvobj->lock);
-//	
-//		pdvobj->macid[1] = _TRUE; //macid=1 for bc/mc stainfo
-//	
-//		pdvobj->processing_dev_remove = _FALSE;
-//	
-//		ATOMIC_SET(&pdvobj->disable_func, 0);
-//	
-//		return pdvobj;
-//	
-//	}
-//	void devobj_deinit(struct dvobj_priv *pdvobj)
-//	{
-//		if(!pdvobj)
-//			return;
-//	
-//		_rtw_spinlock_free(&pdvobj->lock);
-//	
-//		_rtw_mutex_free(&pdvobj->hw_init_mutex);
-//		_rtw_mutex_free(&pdvobj->h2c_fwcmd_mutex);
-//		_rtw_mutex_free(&pdvobj->setch_mutex);
-//		_rtw_mutex_free(&pdvobj->setbw_mutex);
-//	
-//		rtw_mfree((u8*)pdvobj, sizeof(*pdvobj));
-//	}
 static struct dvobj_priv *sdio_dvobj_init(struct sdio_func *func)
 {
 	int status = _FAIL;
@@ -752,18 +713,14 @@ _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_i
 	if (!pnetdev)
 		goto free_adapter;
 	
-//		SET_NETDEV_DEV(pnetdev, dvobj_to_dev(dvobj));
-//	
-//		padapter = rtw_netdev_priv(pnetdev);
-//	
-//	#ifdef CONFIG_IOCTL_CFG80211
-//		rtw_wdev_alloc(padapter, dvobj_to_dev(dvobj));
-//	#endif
-//	
-//		//3 3. init driver special setting, interface, OS and hardware relative
-//	
-//		//4 3.1 set hardware operation functions
-//		rtw_set_hal_ops(padapter);
+	SET_NETDEV_DEV(pnetdev, dvobj_to_dev(dvobj));
+	
+	padapter = rtw_netdev_priv(pnetdev);
+	
+	//3 3. init driver special setting, interface, OS and hardware relative
+	
+	//4 3.1 set hardware operation functions
+//	rtw_set_hal_ops(padapter);
 //	
 //	
 //		//3 5. initialize Chip version

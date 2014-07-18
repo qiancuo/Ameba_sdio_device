@@ -920,10 +920,10 @@ _func_enter_;
 		{
 			DBG_871X("wep, set_tx=1\n");
 
-			if(rtw_set_802_11_add_wep(padapter, pwep) == (u8)_FAIL)
-			{
-				ret = -EOPNOTSUPP ;
-			}
+//			if(rtw_set_802_11_add_wep(padapter, pwep) == (u8)_FAIL)
+//			{
+//				ret = -EOPNOTSUPP ;
+//			}
 		}
 		else
 		{
@@ -1024,16 +1024,16 @@ _func_enter_;
 #endif //CONFIG_IEEE80211W
 					
 #ifdef CONFIG_P2P
-					if(rtw_p2p_chk_state(pwdinfo, P2P_STATE_PROVISIONING_ING))
-					{
-						rtw_p2p_set_state(pwdinfo, P2P_STATE_PROVISIONING_DONE);
-					}
+//					if(rtw_p2p_chk_state(pwdinfo, P2P_STATE_PROVISIONING_ING))
+//					{
+//						rtw_p2p_set_state(pwdinfo, P2P_STATE_PROVISIONING_DONE);
+//					}
 #endif //CONFIG_P2P
 					
 				}						
 			}
 
-			pbcmc_sta=rtw_get_bcmc_stainfo(padapter);
+//			pbcmc_sta=rtw_get_bcmc_stainfo(padapter);
 			if(pbcmc_sta==NULL)
 			{
 				//DEBUG_ERR( ("Set OID_802_11_ADD_KEY: bcmc stainfo is null \n"));
@@ -1304,7 +1304,7 @@ static int rtw_set_wpa_ie(_adapter *padapter, char *pie, unsigned short ielen)
                 || padapter->securitypriv.dot11PrivacyAlgrthm == _AES_)
                 //WPS open need to enable multicast
                 //|| check_fwstate(&padapter->mlmepriv, WIFI_UNDER_WPS) == _TRUE)
-                rtw_hal_set_hwreg(padapter, HW_VAR_OFF_RCR_AM, null_addr);
+//                rtw_hal_set_hwreg(padapter, HW_VAR_OFF_RCR_AM, null_addr);
 	
 	RT_TRACE(_module_rtl871x_ioctl_os_c, _drv_info_,
 		 ("rtw_set_wpa_ie: pairwise_cipher=0x%08x padapter->securitypriv.ndisencryptstatus=%d padapter->securitypriv.ndisauthtype=%d\n",
@@ -1443,10 +1443,10 @@ static int rtw_wx_set_mode(struct net_device *dev, struct iw_request_info *a,
 	
 	_func_enter_;
 	
-	if(_FAIL == rtw_pwr_wakeup(padapter)) {
-		ret= -EPERM;
-		goto exit;
-	}
+//		if(_FAIL == rtw_pwr_wakeup(padapter)) {
+//			ret= -EPERM;
+//			goto exit;
+//		}
 
 	if (padapter->hw_init_completed==_FALSE){
 		ret = -EPERM;
@@ -1490,12 +1490,12 @@ static int rtw_wx_set_mode(struct net_device *dev, struct iw_request_info *a,
 	}
 */
 	
-	if (rtw_set_802_11_infrastructure_mode(padapter, networkType) ==_FALSE){
-
-		ret = -EPERM;
-		goto exit;
-
-	}
+//		if (rtw_set_802_11_infrastructure_mode(padapter, networkType) ==_FALSE){
+//	
+//			ret = -EPERM;
+//			goto exit;
+//	
+//		}
 
 	rtw_setopmode_cmd(padapter, networkType,_TRUE);
 
@@ -1846,12 +1846,12 @@ static int rtw_wx_set_wap(struct net_device *dev,
 	}
 #endif
 
-	rtw_ps_deny(padapter, PS_DENY_JOIN);
-	if(_FAIL == rtw_pwr_wakeup(padapter))
-	{
-		ret= -1;
-		goto exit;
-	}
+//		rtw_ps_deny(padapter, PS_DENY_JOIN);
+//		if(_FAIL == rtw_pwr_wakeup(padapter))
+//		{
+//			ret= -1;
+//			goto exit;
+//		}
 	
 	if(!padapter->bup){
 		ret = -1;
@@ -1916,16 +1916,16 @@ static int rtw_wx_set_wap(struct net_device *dev,
 	}		
 	_exit_critical_bh(&queue->lock, &irqL);
 	
-	rtw_set_802_11_authentication_mode(padapter, authmode);
-	//set_802_11_encryption_mode(padapter, padapter->securitypriv.ndisencryptstatus);
-	if (rtw_set_802_11_bssid(padapter, temp->sa_data) == _FALSE) {
-		ret = -1;
-		goto exit;		
-	}	
+//		rtw_set_802_11_authentication_mode(padapter, authmode);
+//		//set_802_11_encryption_mode(padapter, padapter->securitypriv.ndisencryptstatus);
+//		if (rtw_set_802_11_bssid(padapter, temp->sa_data) == _FALSE) {
+//			ret = -1;
+//			goto exit;		
+//		}	
 	
 exit:
 	
-	rtw_ps_deny_cancel(padapter, PS_DENY_JOIN);
+//	rtw_ps_deny_cancel(padapter, PS_DENY_JOIN);
 
 	_func_exit_;
 	
@@ -2000,16 +2000,16 @@ struct	iw_mlme
 
 	switch (mlme->cmd) 
 	{
-		case IW_MLME_DEAUTH:
-				if(!rtw_set_802_11_disassociate(padapter))
-				ret = -1;
-				break;
-
-		case IW_MLME_DISASSOC:
-				if(!rtw_set_802_11_disassociate(padapter))
-						ret = -1;
-
-				break;
+//			case IW_MLME_DEAUTH:
+//					if(!rtw_set_802_11_disassociate(padapter))
+//					ret = -1;
+//					break;
+//	
+//			case IW_MLME_DISASSOC:
+//					if(!rtw_set_802_11_disassociate(padapter))
+//							ret = -1;
+//	
+//					break;
 
 		default:
 			return -EOPNOTSUPP;
@@ -2065,12 +2065,12 @@ _func_enter_;
 #endif //CONFIG_CONCURRENT_MODE
 #endif
 
-	rtw_ps_deny(padapter, PS_DENY_SCAN);
-	if(_FAIL == rtw_pwr_wakeup(padapter))
-	{
-		ret= -1;
-		goto exit;
-	}
+//		rtw_ps_deny(padapter, PS_DENY_SCAN);
+//		if(_FAIL == rtw_pwr_wakeup(padapter))
+//		{
+//			ret= -1;
+//			goto exit;
+//		}
 
 	if(padapter->bDriverStopped){
            DBG_871X("bDriverStopped=%d\n", padapter->bDriverStopped);
@@ -2127,9 +2127,9 @@ _func_enter_;
 #ifdef CONFIG_P2P
 	if ( pwdinfo->p2p_state != P2P_STATE_NONE )
 	{
-		rtw_p2p_set_pre_state( pwdinfo, rtw_p2p_state( pwdinfo ) );
-		rtw_p2p_set_state(pwdinfo, P2P_STATE_FIND_PHASE_SEARCH);
-		rtw_p2p_findphase_ex_set(pwdinfo, P2P_FINDPHASE_EX_FULL);
+//			rtw_p2p_set_pre_state( pwdinfo, rtw_p2p_state( pwdinfo ) );
+//			rtw_p2p_set_state(pwdinfo, P2P_STATE_FIND_PHASE_SEARCH);
+//			rtw_p2p_findphase_ex_set(pwdinfo, P2P_FINDPHASE_EX_FULL);
 		rtw_free_network_queue(padapter, _TRUE);
 	}
 #endif //CONFIG_P2P
@@ -2238,12 +2238,12 @@ _func_enter_;
 		}
 		
 		//jeff: it has still some scan paramater to parse, we only do this now...
-		_status = rtw_set_802_11_bssid_list_scan(padapter, ssid, RTW_SSID_SCAN_AMOUNT);
+//		_status = rtw_set_802_11_bssid_list_scan(padapter, ssid, RTW_SSID_SCAN_AMOUNT);
 		
 	} else
 	
 	{
-		_status = rtw_set_802_11_bssid_list_scan(padapter, NULL, 0);
+//		_status = rtw_set_802_11_bssid_list_scan(padapter, NULL, 0);
 	}
 
 	if(_status == _FALSE)
@@ -2251,7 +2251,7 @@ _func_enter_;
 
 exit:
 
-	rtw_ps_deny_cancel(padapter, PS_DENY_SCAN);
+//	rtw_ps_deny_cancel(padapter, PS_DENY_SCAN);
 
 	#ifdef DBG_IOCTL
 	DBG_871X("DBG_IOCTL %s:%d return %d\n",__FUNCTION__, __LINE__, ret);
@@ -2301,26 +2301,26 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 	}
 #endif
 */	
-	if(adapter_to_pwrctl(padapter)->brfoffbyhw && padapter->bDriverStopped)
-	{
-		ret = -EINVAL;
-		goto exit;
-	}
+//		if(adapter_to_pwrctl(padapter)->brfoffbyhw && padapter->bDriverStopped)
+//		{
+//			ret = -EINVAL;
+//			goto exit;
+//		}
   
 #ifdef CONFIG_P2P
-	if(!rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
-	{
-		//	P2P is enabled
-		if ( padapter->chip_type == RTL8192D )
-			wait_for_surveydone = 300;	//	Because the 8192du supports more channels.
-		else
-			wait_for_surveydone = 200;
-	}
-	else
-	{
-		//	P2P is disabled
-		wait_for_surveydone = 100;
-	}
+//		if(!rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
+//		{
+//			//	P2P is enabled
+//			if ( padapter->chip_type == RTL8192D )
+//				wait_for_surveydone = 300;	//	Because the 8192du supports more channels.
+//			else
+//				wait_for_surveydone = 200;
+//		}
+//		else
+//		{
+//			//	P2P is disabled
+//			wait_for_surveydone = 100;
+//		}
 #else
 	{
 		wait_for_surveydone = 100;
@@ -2589,15 +2589,15 @@ static int rtw_wx_set_essid(struct net_device *dev,
 			 ("set ssid: set_802_11_auth. mode=%d\n", authmode));
 		rtw_set_802_11_authentication_mode(padapter, authmode);
 		//set_802_11_encryption_mode(padapter, padapter->securitypriv.ndisencryptstatus);
-		if (rtw_set_802_11_ssid(padapter, &ndis_ssid) == _FALSE) {
-			ret = -1;
-			goto exit;
-		}	
+//			if (rtw_set_802_11_ssid(padapter, &ndis_ssid) == _FALSE) {
+//				ret = -1;
+//				goto exit;
+//			}	
 	}			
 	
 exit:
 
-	rtw_ps_deny_cancel(padapter, PS_DENY_JOIN);
+//	rtw_ps_deny_cancel(padapter, PS_DENY_JOIN);
 
 	DBG_871X("<=%s, ret %d\n",__FUNCTION__, ret);
 	
