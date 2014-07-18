@@ -600,7 +600,7 @@ struct mlme_ext_priv
 	
 };
 
-int init_mlme_ext_priv(_adapter* padapter);
+//int init_mlme_ext_priv(_adapter* padapter);
 int init_hw_mlme_ext(_adapter *padapter);
 void free_mlme_ext_priv (struct mlme_ext_priv *pmlmeext);
 extern void init_mlme_ext_timer(_adapter *padapter);

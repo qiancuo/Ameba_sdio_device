@@ -663,7 +663,7 @@ extern void _rtw_scan_timeout_handler(RTW_TIMER_HDL_ARGS);
 thread_return event_thread(thread_context context);
 
 extern void rtw_free_network_queue(_adapter *adapter,u8 isfreeall);
-extern int rtw_init_mlme_priv(_adapter *adapter);// (struct mlme_priv *pmlmepriv);
+//extern int rtw_init_mlme_priv(_adapter *adapter);// (struct mlme_priv *pmlmepriv);
 
 extern void rtw_free_mlme_priv (struct mlme_priv *pmlmepriv);
 
@@ -789,9 +789,9 @@ void rtw_scan_abort(_adapter *adapter);
 
 extern int rtw_restruct_sec_ie(_adapter *adapter,u8 *in_ie,u8 *out_ie,uint in_len);
 extern int rtw_restruct_wmm_ie(_adapter *adapter, u8 *in_ie, u8 *out_ie, uint in_len, uint initial_out_len);
-extern void rtw_init_registrypriv_dev_network(_adapter *adapter);
+//extern void rtw_init_registrypriv_dev_network(_adapter *adapter);
 
-extern void rtw_update_registrypriv_dev_network(_adapter *adapter);
+//extern void rtw_update_registrypriv_dev_network(_adapter *adapter);
 
 extern void rtw_get_encrypt_decrypt_from_registrypriv(_adapter *adapter);
 

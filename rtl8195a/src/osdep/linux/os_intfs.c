@@ -870,7 +870,7 @@ u32 rtw_start_drv_threads(_adapter *padapter)
 #if defined(CONFIG_SDIO_HCI) && defined(CONFIG_CONCURRENT_MODE)
 	if(padapter->adapter_type == PRIMARY_ADAPTER){
 #endif
-	padapter->xmitThread = kthread_run(rtw_xmit_thread, padapter, "RTW_XMIT_THREAD");
+//	padapter->xmitThread = kthread_run(rtw_xmit_thread, padapter, "RTW_XMIT_THREAD");
 	if(IS_ERR(padapter->xmitThread))
 		_status = _FAIL;
 #if defined(CONFIG_SDIO_HCI) && defined(CONFIG_CONCURRENT_MODE)
@@ -1003,8 +1003,8 @@ u8 rtw_init_default_value(_adapter *padapter)
 
 
 	//registry_priv
-	rtw_init_registrypriv_dev_network(padapter);
-	rtw_update_registrypriv_dev_network(padapter);
+//	rtw_init_registrypriv_dev_network(padapter);
+//	rtw_update_registrypriv_dev_network(padapter);
 
 
 	//hal_priv
@@ -1126,29 +1126,29 @@ _func_enter_;
 
 //	rtw_init_hal_com_default_value(padapter);
 
-	if ((rtw_init_cmd_priv(&padapter->cmdpriv)) == _FAIL)
-	{
-		RT_TRACE(_module_os_intfs_c_,_drv_err_,("\n Can't init cmd_priv\n"));
-		ret8=_FAIL;
-		goto exit;
-	}
+//		if ((rtw_init_cmd_priv(&padapter->cmdpriv)) == _FAIL)
+//		{
+//			RT_TRACE(_module_os_intfs_c_,_drv_err_,("\n Can't init cmd_priv\n"));
+//			ret8=_FAIL;
+//			goto exit;
+//		}
 
-	padapter->cmdpriv.padapter=padapter;
+//	padapter->cmdpriv.padapter=padapter;
 
-	if ((rtw_init_evt_priv(&padapter->evtpriv)) == _FAIL)
-	{
-		RT_TRACE(_module_os_intfs_c_,_drv_err_,("\n Can't init evt_priv\n"));
-		ret8=_FAIL;
-		goto exit;
-	}
+//		if ((rtw_init_evt_priv(&padapter->evtpriv)) == _FAIL)
+//		{
+//			RT_TRACE(_module_os_intfs_c_,_drv_err_,("\n Can't init evt_priv\n"));
+//			ret8=_FAIL;
+//			goto exit;
+//		}
 
 
-	if (rtw_init_mlme_priv(padapter) == _FAIL)
-	{
-		RT_TRACE(_module_os_intfs_c_,_drv_err_,("\n Can't init mlme_priv\n"));
-		ret8=_FAIL;
-		goto exit;
-	}
+//		if (rtw_init_mlme_priv(padapter) == _FAIL)
+//		{
+//			RT_TRACE(_module_os_intfs_c_,_drv_err_,("\n Can't init mlme_priv\n"));
+//			ret8=_FAIL;
+//			goto exit;
+//		}
 
 #ifdef CONFIG_P2P
 //	rtw_init_wifidirect_timers(padapter);
@@ -1162,14 +1162,14 @@ _func_enter_;
 //		RT_TRACE(_module_os_intfs_c_,_drv_err_,("\n Can't init init_wifi_display_info\n"));
 #endif
 #endif /* CONFIG_P2P */
-
-	if(init_mlme_ext_priv(padapter) == _FAIL)
-	{
-		RT_TRACE(_module_os_intfs_c_,_drv_err_,("\n Can't init mlme_ext_priv\n"));
-		ret8=_FAIL;
-		goto exit;
-	}
-
+//	
+//		if(init_mlme_ext_priv(padapter) == _FAIL)
+//		{
+//			RT_TRACE(_module_os_intfs_c_,_drv_err_,("\n Can't init mlme_ext_priv\n"));
+//			ret8=_FAIL;
+//			goto exit;
+//		}
+//	
 #ifdef CONFIG_TDLS
 //	if(rtw_init_tdls_info(padapter) == _FAIL)
 //	{

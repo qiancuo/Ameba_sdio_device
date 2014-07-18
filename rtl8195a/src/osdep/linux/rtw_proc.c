@@ -376,20 +376,20 @@ static int proc_get_cam_cache(struct seq_file *m, void *v)
 		//, "DK", "GK"
 	);
 
-	for (i=0;i<32;i++) {
-		if (dvobj->cam_cache[i].ctrl != 0)
-			DBG_871X_SEL_NL(m, "%2u 0x%04x "MAC_FMT" "KEY_FMT" %-7s %3u"
-				//" %2u %2u"
-				"\n", i
-				, dvobj->cam_cache[i].ctrl
-				, MAC_ARG(dvobj->cam_cache[i].mac)
-				, KEY_ARG(dvobj->cam_cache[i].key)
-				, security_type_str(((dvobj->cam_cache[i].ctrl)>>2)&0x07)
-				, (dvobj->cam_cache[i].ctrl)&0x03
-				//, ((dvobj->cam_cache[i].ctrl)>>5)&0x01
-				//, ((dvobj->cam_cache[i].ctrl)>>6)&0x01
-			);
-	}
+//		for (i=0;i<32;i++) {
+//			if (dvobj->cam_cache[i].ctrl != 0)
+//				DBG_871X_SEL_NL(m, "%2u 0x%04x "MAC_FMT" "KEY_FMT" %-7s %3u"
+//					//" %2u %2u"
+//					"\n", i
+//					, dvobj->cam_cache[i].ctrl
+//					, MAC_ARG(dvobj->cam_cache[i].mac)
+//					, KEY_ARG(dvobj->cam_cache[i].key)
+//					, security_type_str(((dvobj->cam_cache[i].ctrl)>>2)&0x07)
+//					, (dvobj->cam_cache[i].ctrl)&0x03
+//					//, ((dvobj->cam_cache[i].ctrl)>>5)&0x01
+//					//, ((dvobj->cam_cache[i].ctrl)>>6)&0x01
+//				);
+//		}
 
 	return 0;
 }
