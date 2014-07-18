@@ -6253,7 +6253,7 @@ static int rtw_p2p_set_op_ch(struct net_device *dev,
 //			
 //	}
 //	
-//	#endif //CONFIG_P2P
+#endif //CONFIG_P2P
 //	
 //	static int rtw_p2p_set(struct net_device *dev,
 //	                               struct iw_request_info *info,
