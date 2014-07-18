@@ -178,7 +178,7 @@ s32 rtw_xmit(_adapter *padapter, _pkt **ppkt)
 	struct xmit_buf *pxmitbuf;
 	s32 res;
 	struct intf_hdl *pintfhdl;
-	
+	_pkt *skb;	
 		_rtw_init_listhead(&pxmitbuf->list);
 
 		pxmitbuf->priv_data = NULL;
@@ -221,9 +221,10 @@ s32 rtw_xmit(_adapter *padapter, _pkt **ppkt)
 	TxDescGen(&txdesc, txdesc.txpktsize, 1);
 	pxmitframe->pxmitbuf = pxmitbuf;
 	pxmitframe->pkt = *ppkt;
-	
-	_rtw_memcpy(pxmitbuf->pdata, *ppkt->data, *ppkt->len);
-	sdio_write_port(pintfhdl, WLAN_TX_HIQ_DEVICE_ID, txdesc.txpktsize, pxmitbuf);
+
+	skb = *ppkt;	
+	_rtw_memcpy(pxmitbuf->pdata, skb->data, skb->len);
+//	sdio_write_port(pintfhdl, WLAN_TX_HIQ_DEVICE_ID, txdesc.txpktsize, pxmitbuf);
 //		if (rtw_hal_xmit(padapter, pxmitframe) == _FALSE)
 //			return 1;
 
