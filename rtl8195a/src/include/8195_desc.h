@@ -7,7 +7,7 @@ unsigned int pktsize: 16; //=tx_desc.pktsize - cmd_desc.offset
 unsigned int offset: 8; //cmd header size
 unsigned int resv: 7;
 unsigned int datatype: 1; // only one bit used, 0: data frame 1: management frame
-}RTL8195A_ATCMD_DESC, *RTL8195A_ATCMD_DESC;
+}RTL8195A_ATCMD_DESC, *PRTL8195A_ATCMD_DESC;
 
 typedef struct _TX_DESC{
 	// DWORD 0
