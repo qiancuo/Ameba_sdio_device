@@ -846,6 +846,8 @@ static void rtw_sdio_if1_deinit(_adapter *if1)
 //	
 		if(pnetdev)
 			rtw_free_netdev(pnetdev);
+		else
+			rtw_vmfree((u8*)if1, sizeof(*if1));
 //	
 //	#ifdef CONFIG_PLATFORM_RTD2880B
 //		DBG_871X("wlan link down\n");
@@ -924,8 +926,10 @@ static void __devexit rtw_dev_remove(struct sdio_func *func)
 
 	dvobj->processing_dev_remove = _TRUE;
 
-	rtw_unregister_netdevs(dvobj);
 
+	rtw_unregister_netdevs(dvobj);
+	rtw_sdio_if1_deinit(padapter);
+	sdio_dvobj_deinit(func);
 
 	printk("%s():++\n", __FUNCTION__);
 
@@ -942,16 +946,16 @@ static void __devexit rtw_dev_remove(struct sdio_func *func)
 	mutex_destroy(&Recv_Xmit_mutex);
 	kfree(gHal_Data);
 //	kfree(g_SDIO_cmdData);
-	sdio_claim_host(func);
-	rc = sdio_disable_func(func);
-	if(rc){
-		printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
-	}
-//	rc = sdio_release_irq(func);
-//	if(rc){
-//		printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
-//	}	
-	sdio_release_host(func);
+//		sdio_claim_host(func);
+//		rc = sdio_disable_func(func);
+//		if(rc){
+//			printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
+//		}
+//	//	rc = sdio_release_irq(func);
+//	//	if(rc){
+//	//		printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
+//	//	}	
+//		sdio_release_host(func);
 }
 
 static struct file_operations fops = 
