@@ -713,7 +713,7 @@ _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_i
 	pnetdev = rtw_init_netdev(padapter);
 	if (!pnetdev)
 	{
-		printk("rtw_init_netdev Failed\n"):
+		printk("rtw_init_netdev Failed\n");
 		goto free_adapter;
 	}
 	SET_NETDEV_DEV(pnetdev, dvobj_to_dev(dvobj));
