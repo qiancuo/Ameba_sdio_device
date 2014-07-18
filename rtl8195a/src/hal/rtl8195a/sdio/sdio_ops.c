@@ -1466,7 +1466,7 @@ void sd_int_hdl(PADAPTER padapter)
 	    (padapter->bSurpriseRemoved == _TRUE))
 		return;
 
-	_sdio_local_read(padapter, SDIO_REG_HISR, 6, data);
+	_sdio_local_read(padapter, SDIO_HISR, 6, data);
 	pHalData->sdio_hisr = le32_to_cpu(*(u32*)data);
 	pHalData->SdioRxFIFOSize = le16_to_cpu(*(u16*)&data[4]);
 
@@ -1480,7 +1480,7 @@ void sd_int_hdl(PADAPTER padapter)
 		v32 = pHalData->sdio_hisr & MASK_SDIO_HISR_CLEAR;
 		if (v32) {
 			v32 = cpu_to_le32(v32);
-			_sdio_local_write(padapter, SDIO_REG_HISR, 4, (u8*)&v32);
+			_sdio_local_write(padapter, SDIO_HISR, 4, (u8*)&v32);
 		}
 
 //		sd_int_dpc(padapter);
