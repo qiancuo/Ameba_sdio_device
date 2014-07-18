@@ -916,7 +916,7 @@ void rtw_stop_drv_threads (_adapter *padapter)
 	if(padapter->isprimary == _TRUE)
 #endif //CONFIG_CONCURRENT_MODE
 	{
-		rtw_stop_cmd_thread(padapter);
+//		rtw_stop_cmd_thread(padapter);
 	}
 
 #ifdef CONFIG_EVENT_THREAD_MODE
@@ -1349,17 +1349,17 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 	rtw_free_intel_widi(padapter);
 #endif //CONFIG_INTEL_WIDI
 
-	free_mlme_ext_priv(&padapter->mlmeextpriv);
+//	free_mlme_ext_priv(&padapter->mlmeextpriv);
 
 #ifdef CONFIG_TDLS
 	//rtw_free_tdls_info(&padapter->tdlsinfo);
 #endif //CONFIG_TDLS
 
-	rtw_free_cmd_priv(&padapter->cmdpriv);
+//	rtw_free_cmd_priv(&padapter->cmdpriv);
 
-	rtw_free_evt_priv(&padapter->evtpriv);
+//	rtw_free_evt_priv(&padapter->evtpriv);
 
-	rtw_free_mlme_priv(&padapter->mlmepriv);
+//	rtw_free_mlme_priv(&padapter->mlmepriv);
 
 	//free_io_queue(padapter);
 
@@ -3145,9 +3145,9 @@ int rtw_suspend_common(_adapter *padapter)
 	}
 #endif // CONFIG_CONCURRENT_MODE
 
-	LeaveAllPowerSaveModeDirect(padapter);
+//	LeaveAllPowerSaveModeDirect(padapter);
 
-	rtw_stop_cmd_thread(padapter);
+//	rtw_stop_cmd_thread(padapter);
 	
 #ifdef CONFIG_BT_COEXIST
 	// wait for the latest FW to remove this condition.

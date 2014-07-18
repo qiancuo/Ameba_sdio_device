@@ -1166,8 +1166,8 @@ static u32 sdio_write_port(
 
 	err = sd_write(pintfhdl, addr, cnt, xmitbuf->pdata);
 
-	rtw_sctx_done_err(&xmitbuf->sctx,
-		err ? RTW_SCTX_DONE_WRITE_PORT_ERR : RTW_SCTX_DONE_SUCCESS);
+//	rtw_sctx_done_err(&xmitbuf->sctx,
+//		err ? RTW_SCTX_DONE_WRITE_PORT_ERR : RTW_SCTX_DONE_SUCCESS);
 	
 	if (err)
 	{

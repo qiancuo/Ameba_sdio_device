@@ -66,14 +66,14 @@ void dump_drv_version(void *sel)
 	DBG_871X_SEL_NL(sel, "build time: %s %s\n", __DATE__, __TIME__);
 }
 	
-//	void dump_log_level(void *sel)
-//	{
+void dump_log_level(void *sel)
+{
 //		DBG_871X_SEL_NL(sel, "log_level:%d\n", GlobalDebugLevel);
-//	}
+}
 //	
 //	#ifdef CONFIG_SDIO_HCI
-//	void sd_f0_reg_dump(void *sel, _adapter *adapter)
-//	{
+void sd_f0_reg_dump(void *sel, _adapter *adapter)
+{
 //		int i;
 //	
 //		for(i=0x0;i<=0xff;i++)
@@ -88,11 +88,11 @@ void dump_drv_version(void *sel)
 //			else if(i%8==7)
 //				DBG_871X_SEL(sel, "\t");
 //		}
-//	}
+}
 //	#endif /* CONFIG_SDIO_HCI */
 //	
-//	void mac_reg_dump(void *sel, _adapter *adapter)
-//	{
+void mac_reg_dump(void *sel, _adapter *adapter)
+{
 //		int i, j = 1;
 //	
 //		DBG_871X_SEL_NL(sel, "======= MAC REG =======\n");
@@ -105,10 +105,10 @@ void dump_drv_version(void *sel)
 //			if((j++)%4 == 0)
 //				DBG_871X_SEL(sel, "\n");
 //		}
-//	}
+}
 //	
-//	void bb_reg_dump(void *sel, _adapter *adapter)
-//	{
+void bb_reg_dump(void *sel, _adapter *adapter)
+{
 //		int i, j = 1;
 //	
 //		DBG_871X_SEL_NL(sel, "======= BB REG =======\n");
@@ -120,10 +120,10 @@ void dump_drv_version(void *sel)
 //			if((j++)%4 == 0)
 //				DBG_871X_SEL(sel, "\n");
 //		}
-//	}
+}
 //	
-//	void rf_reg_dump(void *sel, _adapter *adapter)
-//	{
+void rf_reg_dump(void *sel, _adapter *adapter)
+{
 //		int i, j = 1, path;
 //		u32 value;
 //		u8 rf_type = 0;
@@ -149,11 +149,11 @@ void dump_drv_version(void *sel)
 //					DBG_871X_SEL(sel, "\n");
 //			}
 //		}
-//	}
+}
 //	
 //	#ifdef CONFIG_PROC_DEBUG
-//	ssize_t proc_set_write_reg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_write_reg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		char tmp[32];
@@ -194,13 +194,13 @@ void dump_drv_version(void *sel)
 //		
 //		return count;
 //		
-//	}
+}
 //	
 //	static u32 proc_get_read_addr=0xeeeeeeee;
 //	static u32 proc_get_read_len=0x4;
 //	
-//	int proc_get_read_reg(struct seq_file *m, void *v)
-//	{
+int proc_get_read_reg(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //	
@@ -226,10 +226,10 @@ void dump_drv_version(void *sel)
 //		}
 //	
 //		return 0;
-//	}
+}
 //	
-//	ssize_t proc_set_read_reg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_read_reg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		char tmp[16];
 //		u32 addr, len;
@@ -256,10 +256,10 @@ void dump_drv_version(void *sel)
 //		
 //		return count;
 //	
-//	}
+}
 //	
-//	int proc_get_fwstate(struct seq_file *m, void *v)
-//	{
+int proc_get_fwstate(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
@@ -267,10 +267,10 @@ void dump_drv_version(void *sel)
 //		DBG_871X_SEL_NL(m, "fwstate=0x%x\n", get_fwstate(pmlmepriv));
 //	
 //		return 0;
-//	}
+}
 //	
-//	int proc_get_sec_info(struct seq_file *m, void *v)
-//	{
+int proc_get_sec_info(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);	
 //		struct security_priv *sec = &padapter->securitypriv;
@@ -282,10 +282,10 @@ void dump_drv_version(void *sel)
 //		DBG_871X_SEL_NL(m, "hw_decrypted=%d\n", sec->hw_decrypted);
 //	
 //		return 0;
-//	}
+}
 //	
-//	int proc_get_mlmext_state(struct seq_file *m, void *v)
-//	{
+int proc_get_mlmext_state(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);	
 //		struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
@@ -294,21 +294,21 @@ void dump_drv_version(void *sel)
 //		DBG_871X_SEL_NL(m, "pmlmeinfo->state=0x%x\n", pmlmeinfo->state);
 //	
 //		return 0;
-//	}
+}
 //	
 //	#ifdef CONFIG_LAYER2_ROAMING
-//	int proc_get_roam_flags(struct seq_file *m, void *v)
-//	{
+int proc_get_roam_flags(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
 //	
 //		DBG_871X_SEL_NL(m, "0x%02x\n", rtw_roam_flags(adapter));
 //	
 //		return 0;
-//	}
+}
 //	
-//	ssize_t proc_set_roam_flags(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_roam_flags(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
 //	
@@ -328,10 +328,10 @@ void dump_drv_version(void *sel)
 //		
 //		return count;
 //		
-//	}
+}
 //	
-//	int proc_get_roam_param(struct seq_file *m, void *v)
-//	{
+int proc_get_roam_param(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct mlme_priv *mlme = &adapter->mlmepriv;
@@ -344,10 +344,10 @@ void dump_drv_version(void *sel)
 //		);
 //	
 //		return 0;
-//	}
+}
 //	
-//	ssize_t proc_set_roam_param(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_roam_param(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct mlme_priv *mlme = &adapter->mlmepriv;
@@ -374,10 +374,10 @@ void dump_drv_version(void *sel)
 //		
 //		return count;
 //		
-//	}
+}
 //	
-//	ssize_t proc_set_roam_tgt_addr(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_roam_tgt_addr(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
 //	
@@ -397,11 +397,11 @@ void dump_drv_version(void *sel)
 //		}
 //	
 //		return count;
-//	}
+}
 //	#endif /* CONFIG_LAYER2_ROAMING */
 //	
-//	int proc_get_qos_option(struct seq_file *m, void *v)
-//	{
+int proc_get_qos_option(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
@@ -409,7 +409,7 @@ void dump_drv_version(void *sel)
 //		DBG_871X_SEL_NL(m, "qos_option=%d\n", pmlmepriv->qospriv.qos_option);
 //	
 //		return 0;
-//	}
+}
 //	
 int proc_get_ht_option(struct seq_file *m, void *v)
 {
@@ -1158,18 +1158,18 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 //	extern atomic_t _malloc_cnt;;
 //	extern atomic_t _malloc_size;;
 //	
-//	int proc_get_malloc_cnt(struct seq_file *m, void *v)
-//	{
+int proc_get_malloc_cnt(struct seq_file *m, void *v)
+{
 //		DBG_871X_SEL_NL(m, "_malloc_cnt=%d\n", atomic_read(&_malloc_cnt));
 //		DBG_871X_SEL_NL(m, "_malloc_size=%d\n", atomic_read(&_malloc_size));
 //	
 //		return 0;
-//	}
+}
 //	#endif /* DBG_MEMORY_LEAK */
 //	
 //	#ifdef CONFIG_FIND_BEST_CHANNEL
-//	int proc_get_best_channel(struct seq_file *m, void *v)
-//	{
+int proc_get_best_channel(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
@@ -1221,10 +1221,10 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 //		DBG_871X_SEL_NL(m, "best_channel_24G = %d\n", best_channel_24G);
 //	
 //		return 0;
-//	}
+}
 //	
-//	ssize_t proc_set_best_channel(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_best_channel(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
@@ -1245,12 +1245,12 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 //		}
 //	
 //		return count;
-//	}
+}
 //	#endif /* CONFIG_FIND_BEST_CHANNEL */
 //	
 //	#ifdef CONFIG_BT_COEXIST
-//	int proc_get_btcoex_dbg(struct seq_file *m, void *v)
-//	{
+int proc_get_btcoex_dbg(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		PADAPTER padapter;
 //		char buf[512] = {0};
@@ -1261,10 +1261,10 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 //		DBG_871X_SEL(m, "%s", buf);
 //	
 //		return 0;
-//	}
+}
 //	
-//	ssize_t proc_set_btcoex_dbg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_btcoex_dbg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		PADAPTER padapter;
 //		u8 tmp[80] = {0};
@@ -1325,10 +1325,10 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 //		rtw_btcoex_SetDBG(padapter, module);
 //	
 //		return count;
-//	}
+}
 //	
-//	int proc_get_btcoex_info(struct seq_file *m, void *v)
-//	{
+int proc_get_btcoex_info(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		PADAPTER padapter;
 //		const u32 bufsize = 30*100;
@@ -1348,21 +1348,21 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 //		rtw_mfree(pbuf, bufsize);
 //	
 //		return 0;
-//	}
+}
 //	#endif /* CONFIG_BT_COEXIST */
 //	
 //	#if defined(DBG_CONFIG_ERROR_DETECT)
-//	int proc_get_sreset(struct seq_file *m, void *v)
-//	{
+int proc_get_sreset(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 //	
 //		return 0;
-//	}
+}
 //	
-//	ssize_t proc_set_sreset(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_sreset(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		char tmp[32];
@@ -1383,7 +1383,7 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 //		
 //		return count;
 //		
-//	}
+}
 //	#endif /* DBG_CONFIG_ERROR_DETECT */
 //	
 //	#endif
