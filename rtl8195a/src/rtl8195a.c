@@ -825,16 +825,16 @@ _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_i
 //			#endif
 //		}
 //	
-//	free_adapter:
-//		if (status != _SUCCESS) {
-//			if (pnetdev)
-//				rtw_free_netdev(pnetdev);
-//			else
-//				rtw_vmfree((u8*)padapter, sizeof(*padapter));
-//			padapter = NULL;
-//		}
-//	exit:
-//		return padapter;
+free_adapter:
+	if (status != _SUCCESS) {
+		if (pnetdev)
+			rtw_free_netdev(pnetdev);
+		else
+			rtw_vmfree((u8*)padapter, sizeof(*padapter));
+		padapter = NULL;
+	}
+exit:
+	return padapter;
 }
 
 static void rtw_sdio_if1_deinit(_adapter *if1)
