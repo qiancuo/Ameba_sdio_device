@@ -779,10 +779,9 @@ struct net_device *rtw_init_netdev(_adapter *old_padapter)
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+init_net_dev\n"));
 
-//	if(old_padapter != NULL)
-//		printk("old padapter isn't null\n");
-//		pnetdev = rtw_alloc_etherdev_with_old_priv(sizeof(_adapter), (void *)old_padapter);
-//	else
+	if(old_padapter != NULL)
+		pnetdev = rtw_alloc_etherdev_with_old_priv(sizeof(_adapter), (void *)old_padapter);
+	else
 		pnetdev = rtw_alloc_etherdev(sizeof(_adapter));
 
 	if (!pnetdev)
@@ -790,7 +789,10 @@ struct net_device *rtw_init_netdev(_adapter *old_padapter)
 
 	padapter = rtw_netdev_priv(pnetdev);
 	if(!padapter)
+	{	
 		printk("%s()=======>padapter is null\n", __FUNCTION__);
+		return NULL;
+	}
 	padapter->pnetdev = pnetdev;
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,24)
