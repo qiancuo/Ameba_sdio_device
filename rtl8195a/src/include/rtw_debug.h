@@ -194,7 +194,7 @@ extern void rtl871x_cedbg(const char *fmt, ...);
 	#define _seqdump(sel, fmt, arg...) _dbgdump(fmt, ##arg)
 #endif
 
-#define DRIVER_PREFIX "RTL871X: "
+#define DRIVER_PREFIX "RTL8195A: "
 
 #if defined(_dbgdump)
 
