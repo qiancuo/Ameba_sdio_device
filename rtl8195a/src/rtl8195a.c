@@ -799,7 +799,7 @@ exit:
 
 static void rtw_sdio_if1_deinit(_adapter *if1)
 {
-//		struct net_device *pnetdev = if1->pnetdev;
+		struct net_device *pnetdev = if1->pnetdev;
 //		struct mlme_priv *pmlmepriv= &if1->mlmepriv;
 //	
 //		if(check_fwstate(pmlmepriv, _FW_LINKED))
@@ -839,10 +839,10 @@ static void rtw_sdio_if1_deinit(_adapter *if1)
 //		}
 //	#endif
 //	
-//		rtw_free_drv_sw(if1);
+		rtw_free_drv_sw(if1);
 //	
-//		if(pnetdev)
-//			rtw_free_netdev(pnetdev);
+		if(pnetdev)
+			rtw_free_netdev(pnetdev);
 //	
 //	#ifdef CONFIG_PLATFORM_RTD2880B
 //		DBG_871X("wlan link down\n");
@@ -915,7 +915,17 @@ static void __devexit rtw_dev_remove(struct sdio_func *func)
 {
 
 	int rc = 0;
+	struct dvobj_priv *dvobj = sdio_get_drvdata(func);
+//	struct pwrctrl_priv *pwrctl = dvobj_to_pwrctl(dvobj);
+	PADAPTER padapter = dvobj->if1;
+
+	dvobj->processing_dev_remove = _TRUE;
+
+	rtw_unregister_netdevs(dvobj);
+
+
 	printk("%s():++\n", __FUNCTION__);
+
 	if(Xmit_Thread)
 	{
 		printk("stop Xmit_Thread\n");
@@ -1019,6 +1029,7 @@ static int __init rtl8195a_init_module(void)
 		printk(KERN_WARNING "%s(): function error!\n", __FUNCTION__);
 		return ret;
 	}
+	
 	sdio_drvpriv.drv_registered = _TRUE;
 	ret = sdio_register_driver(&sdio_drvpriv.r8195a_drv);
 	if(ret!=0)

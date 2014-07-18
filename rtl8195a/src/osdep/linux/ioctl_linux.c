@@ -14472,6 +14472,8 @@ int rtw_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 //		}
 //	
 //		return ret;
+	printk("%s==============================>\n", __FUNCTION__);
+	return 0;
 }
 
 
