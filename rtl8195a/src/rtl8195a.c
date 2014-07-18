@@ -228,7 +228,7 @@ static int SendWlanCmdPkt(PAT_CMD_DESC pWlan_cmd)
 //			printk("data[%d] = 0x%02x\n", i, data[i]);
 //		}
 
-	sdio_write_port(gHal_Data->func, WLAN_TX_HIQ_DEVICE_ID, totlen, data);
+//	sdio_write_port(gHal_Data->func, WLAN_TX_HIQ_DEVICE_ID, totlen, data);
 	return 0;	
 }
 
