@@ -575,4 +575,26 @@ typedef enum _DRIVER_STATE{
 #define adapter_to_dvobj(adapter) (adapter->dvobj)
 //#define adapter_to_pwrctl(adapter) (dvobj_to_pwrctl(adapter->dvobj))
 #define adapter_wdev_data(adapter) (&((adapter)->wdev_data))
+
+
+//
+// Function disabled.
+//
+#define DF_TX_BIT		BIT0
+#define DF_RX_BIT		BIT1
+#define DF_IO_BIT		BIT2
+__inline static void RTW_DISABLE_FUNC(_adapter*padapter, int func_bit)
+{
+	int	df = ATOMIC_READ(&adapter_to_dvobj(padapter)->disable_func);
+	df |= func_bit;
+	ATOMIC_SET(&adapter_to_dvobj(padapter)->disable_func, df);
+}
+
+__inline static void RTW_ENABLE_FUNC(_adapter*padapter, int func_bit)
+{
+	int	df = ATOMIC_READ(&adapter_to_dvobj(padapter)->disable_func);
+	df &= ~(func_bit);
+	ATOMIC_SET(&adapter_to_dvobj(padapter)->disable_func, df);
+}
+
 #endif

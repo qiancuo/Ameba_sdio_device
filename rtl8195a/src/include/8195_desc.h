@@ -1,6 +1,14 @@
 #ifndef __8195_DESC_H__
 #define __8195_DESC_H__
 
+typedef struct _RTL8195A_ATCMD_DESC{
+//DWORD 0
+unsigned int pktsize: 16; //=tx_desc.pktsize - cmd_desc.offset
+unsigned int offset: 8; //cmd header size
+unsigned int resv: 7;
+unsigned int datatype: 1; // only one bit used, 0: data frame 1: management frame
+}RTL8195A_ATCMD_DESC, *RTL8195A_ATCMD_DESC;
+
 typedef struct _TX_DESC{
 	// DWORD 0
 	unsigned int	txpktsize:16;
@@ -115,7 +123,7 @@ unsigned int	mcsg6_max_len:4;
 unsigned int	mcsg15_max_len:4;
 }TX_DESC, *PTX_DESC;
 #define	SIZE_TX_DESC_8195a	(sizeof(TX_DESC))
-
+typedef struct _TX_DESC TXDESC_8195A, *PTXDESC_8195A;
 typedef struct _TX_EXTEND_DESC{
 	unsigned int       Pkt_num:4;
 	unsigned int       Len0:12;
