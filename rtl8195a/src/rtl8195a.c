@@ -680,6 +680,7 @@ _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_i
 	PADAPTER padapter = NULL;
 	
 	if ((padapter = (_adapter *)rtw_zvmalloc(sizeof(*padapter))) == NULL) {
+		printk("%s()===>padapter is null\n");
 		goto exit;
 	}
 
@@ -711,8 +712,10 @@ _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_i
 	//3 1. init network device data
 	pnetdev = rtw_init_netdev(padapter);
 	if (!pnetdev)
+	{
+		printk("rtw_init_netdev Failed\n"):
 		goto free_adapter;
-	
+	}
 	SET_NETDEV_DEV(pnetdev, dvobj_to_dev(dvobj));
 	
 	padapter = rtw_netdev_priv(pnetdev);
