@@ -26,6 +26,7 @@
 #include "../../include/rtw_pwrctrl.h"
 #include "../../include/rtw_mlme_ext.h"
 #include "../../include/osdep_service.h"
+#include "../../include/xmit_osdep.h"
 #if defined (PLATFORM_LINUX) && defined (PLATFORM_WINDOWS)
 
 #error "Shall be Linux or Windows, but not both!\n"
