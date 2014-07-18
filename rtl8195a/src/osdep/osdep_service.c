@@ -2108,8 +2108,10 @@ struct net_device *rtw_alloc_etherdev(int sizeof_priv)
 	pnetdev = alloc_etherdev(sizeof(struct rtw_netdev_priv_indicator));
 #endif
 	if (!pnetdev)
-		goto RETURN;
-	
+		{
+			printk("pnetdev is null\n");
+			goto RETURN;
+		}
 	pnpi = netdev_priv(pnetdev);
 	
 	pnpi->priv = rtw_zvmalloc(sizeof_priv);

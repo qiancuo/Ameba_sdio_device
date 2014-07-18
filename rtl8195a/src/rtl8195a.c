@@ -684,40 +684,41 @@ _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_i
 		goto exit;
 	}
 
-#ifdef RTW_SUPPORT_PLATFORM_SHUTDOWN
-	g_test_adapter = padapter;
-#endif // RTW_SUPPORT_PLATFORM_SHUTDOWN
-	padapter->dvobj = dvobj;
-	dvobj->if1 = padapter;
-
-	padapter->bDriverStopped=_TRUE;
-
-	dvobj->padapters[dvobj->iface_nums++] = padapter;
-	padapter->iface_id = IFACE_ID0;
-
-#if defined(CONFIG_CONCURRENT_MODE) || defined(CONFIG_DUALMAC_CONCURRENT)
-	//set adapter_type/iface type for primary padapter
-	padapter->isprimary = _TRUE;
-	padapter->adapter_type = PRIMARY_ADAPTER;	
-	#ifndef CONFIG_HWPORT_SWAP
-	padapter->iface_type = IFACE_PORT0;
-	#else
-	padapter->iface_type = IFACE_PORT1;
-	#endif
-#endif
-
-	padapter->interface_type = RTW_SDIO;
+//	#ifdef RTW_SUPPORT_PLATFORM_SHUTDOWN
+//		g_test_adapter = padapter;
+//	#endif // RTW_SUPPORT_PLATFORM_SHUTDOWN
+//		padapter->dvobj = dvobj;
+//		dvobj->if1 = padapter;
+//	
+//		padapter->bDriverStopped=_TRUE;
+//	
+//		dvobj->padapters[dvobj->iface_nums++] = padapter;
+//		padapter->iface_id = IFACE_ID0;
+//	
+//	#if defined(CONFIG_CONCURRENT_MODE) || defined(CONFIG_DUALMAC_CONCURRENT)
+//		//set adapter_type/iface type for primary padapter
+//		padapter->isprimary = _TRUE;
+//		padapter->adapter_type = PRIMARY_ADAPTER;	
+//		#ifndef CONFIG_HWPORT_SWAP
+//		padapter->iface_type = IFACE_PORT0;
+//		#else
+//		padapter->iface_type = IFACE_PORT1;
+//		#endif
+//	#endif
+//	
+//		padapter->interface_type = RTW_SDIO;
 //	rtw_decide_chip_type_by_device_id(padapter, pdid);
 	
 	//3 1. init network device data
 	pnetdev = rtw_init_netdev(padapter);
+//	pnetdev = alloc_etherdev(sizeof(padapter));
 	if (!pnetdev)
 	{
 		printk("rtw_init_netdev Failed\n");
 		goto free_adapter;
 	}
 	SET_NETDEV_DEV(pnetdev, dvobj_to_dev(dvobj));
-	
+	goto exit;	
 //	padapter = rtw_netdev_priv(pnetdev);
 	
 	//3 3. init driver special setting, interface, OS and hardware relative
