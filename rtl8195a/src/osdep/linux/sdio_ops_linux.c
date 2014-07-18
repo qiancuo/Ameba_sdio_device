@@ -19,6 +19,7 @@
 #define _SDIO_OPS_LINUX_C_
 
 #include "../../include/drv_types.h"
+#include "../../include/rtw_io.h"
 
 static bool rtw_sdio_claim_host_needed(struct sdio_func *func)
 {
