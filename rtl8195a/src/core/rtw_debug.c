@@ -411,8 +411,8 @@ void dump_drv_version(void *sel)
 //		return 0;
 //	}
 //	
-//	int proc_get_ht_option(struct seq_file *m, void *v)
-//	{
+int proc_get_ht_option(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
@@ -422,10 +422,10 @@ void dump_drv_version(void *sel)
 //	#endif //CONFIG_80211N_HT
 //	
 //		return 0;
-//	}
+}
 //	
-//	int proc_get_rf_info(struct seq_file *m, void *v)
-//	{
+int proc_get_rf_info(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);	
 //		struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;	
@@ -437,10 +437,10 @@ void dump_drv_version(void *sel)
 //						rtw_get_oper_ch(padapter), rtw_get_oper_bw(padapter),  rtw_get_oper_choffset(padapter));
 //	
 //		return 0;
-//	}
+}
 //	
-//	int proc_get_survey_info(struct seq_file *m, void *v)
-//	{
+int proc_get_survey_info(struct seq_file *m, void *v)
+{
 //		_irqL irqL;
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -488,10 +488,10 @@ void dump_drv_version(void *sel)
 //		_exit_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
 //	
 //		return 0;
-//	}
+}
 //	
-//	int proc_get_ap_info(struct seq_file *m, void *v)
-//	{
+int proc_get_ap_info(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		struct sta_info *psta;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -540,10 +540,10 @@ void dump_drv_version(void *sel)
 //		}
 //	
 //		return 0;
-//	}
+}
 //	
-//	int proc_get_adapter_state(struct seq_file *m, void *v)
-//	{
+int proc_get_adapter_state(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //	
@@ -551,10 +551,10 @@ void dump_drv_version(void *sel)
 //							padapter->bSurpriseRemoved, padapter->bDriverStopped);
 //	
 //		return 0;
-//	}
+}
 //		
-//	int proc_get_trx_info(struct seq_file *m, void *v)
-//	{
+int proc_get_trx_info(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		int i;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -580,10 +580,10 @@ void dump_drv_version(void *sel)
 //	#endif
 //	
 //		return 0;
-//	}
+}
 //	
-//	int proc_get_rate_ctl(struct seq_file *m, void *v)
-//	{
+int proc_get_rate_ctl(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		int i;
 //		_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
@@ -596,10 +596,10 @@ void dump_drv_version(void *sel)
 //		}
 //	
 //		return 0;
-//	}
+}
 //	
-//	ssize_t proc_set_rate_ctl(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_rate_ctl(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
 //		char tmp[32];
@@ -617,13 +617,13 @@ void dump_drv_version(void *sel)
 //		}
 //	
 //		return count;
-//	}
+}
 //	
 //	u8 g_fwdl_chksum_fail = 0;
 //	u8 g_fwdl_wintint_rdy_fail = 0;
 //	
-//	ssize_t proc_set_fwdl_test_case(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_fwdl_test_case(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		char tmp[32];
@@ -636,12 +636,12 @@ void dump_drv_version(void *sel)
 //		}
 //	
 //		return count;
-//	}
+}
 //	
 //	u32 g_wait_hiq_empty = 0;
 //	
-//	ssize_t proc_set_wait_hiq_empty(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_wait_hiq_empty(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		char tmp[32];
@@ -654,10 +654,10 @@ void dump_drv_version(void *sel)
 //		}
 //	
 //		return count;
-//	}
+}
 //	
-//	int proc_get_suspend_resume_info(struct seq_file *m, void *v)
-//	{
+int proc_get_suspend_resume_info(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct dvobj_priv *dvobj = padapter->dvobj;
@@ -693,10 +693,10 @@ void dump_drv_version(void *sel)
 //		DBG_871X_SEL_NL(m, "dbg_sreset_cnt=%d\n", pdbgpriv->dbg_sreset_cnt);
 //	
 //		return 0;
-//	}
+}
 //	
-//	int proc_get_rx_signal(struct seq_file *m, void *v)
-//	{
+int proc_get_rx_signal(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
@@ -711,11 +711,11 @@ void dump_drv_version(void *sel)
 //		rtw_get_raw_rssi_info(m,padapter);
 //		#endif
 //		return 0;
-//	}
+}
 //	
 //	
-//	int proc_get_hw_status(struct seq_file *m, void *v)
-//	{
+int proc_get_hw_status(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct dvobj_priv *dvobj = padapter->dvobj;
@@ -725,10 +725,10 @@ void dump_drv_version(void *sel)
 //		, pdbgpriv->dbg_rx_fifo_last_overflow, pdbgpriv->dbg_rx_fifo_curr_overflow, pdbgpriv->dbg_rx_fifo_diff_overflow);
 //	
 //		return 0;
-//	}
+}
 //	
-//	ssize_t proc_set_rx_signal(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_rx_signal(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		char tmp[32];
@@ -760,11 +760,11 @@ void dump_drv_version(void *sel)
 //		
 //		return count;
 //		
-//	}
+}
 //	#ifdef CONFIG_80211N_HT
 //	
-//	int proc_get_ht_enable(struct seq_file *m, void *v)
-//	{
+int proc_get_ht_enable(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct registry_priv	*pregpriv = &padapter->registrypriv;
@@ -773,10 +773,10 @@ void dump_drv_version(void *sel)
 //			DBG_871X_SEL_NL(m, "%d\n", pregpriv->ht_enable);
 //	
 //		return 0;
-//	}
+}
 //	
-//	ssize_t proc_set_ht_enable(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_ht_enable(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct registry_priv	*pregpriv = &padapter->registrypriv;
@@ -799,10 +799,10 @@ void dump_drv_version(void *sel)
 //		
 //		return count;
 //		
-//	}
+}
 //	
-//	int proc_get_bw_mode(struct seq_file *m, void *v)
-//	{
+int proc_get_bw_mode(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct registry_priv	*pregpriv = &padapter->registrypriv;
@@ -811,10 +811,10 @@ void dump_drv_version(void *sel)
 //			DBG_871X_SEL_NL(m, "0x%02x\n", pregpriv->bw_mode);
 //	
 //		return 0;
-//	}
+}
 //	
-//	ssize_t proc_set_bw_mode(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_bw_mode(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct registry_priv	*pregpriv = &padapter->registrypriv;
@@ -839,10 +839,10 @@ void dump_drv_version(void *sel)
 //		
 //		return count;
 //		
-//	}
+}
 //	
-//	int proc_get_ampdu_enable(struct seq_file *m, void *v)
-//	{
+int proc_get_ampdu_enable(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct registry_priv	*pregpriv = &padapter->registrypriv;
@@ -851,10 +851,10 @@ void dump_drv_version(void *sel)
 //			DBG_871X_SEL_NL(m, "%d\n", pregpriv->ampdu_enable);
 //	
 //		return 0;
-//	}
+}
 //	
-//	ssize_t proc_set_ampdu_enable(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_ampdu_enable(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct registry_priv	*pregpriv = &padapter->registrypriv;
@@ -878,10 +878,10 @@ void dump_drv_version(void *sel)
 //		
 //		return count;
 //		
-//	}
+}
 //	
-//	int proc_get_rx_ampdu(struct seq_file *m, void *v)
-//	{
+int proc_get_rx_ampdu(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct registry_priv	*pregpriv = &padapter->registrypriv;
@@ -894,10 +894,10 @@ void dump_drv_version(void *sel)
 //				);
 //	
 //		return 0;
-//	}
+}
 //	
-//	ssize_t proc_set_rx_ampdu(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_rx_ampdu(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct registry_priv	*pregpriv = &padapter->registrypriv;
@@ -927,12 +927,12 @@ void dump_drv_version(void *sel)
 //		}
 //	
 //		return count;
-//	}
+}
 //	
 //	#endif //CONFIG_80211N_HT
 //	
-//	int proc_get_en_fwps(struct seq_file *m, void *v)
-//	{
+int proc_get_en_fwps(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct registry_priv	*pregpriv = &padapter->registrypriv;
@@ -944,10 +944,10 @@ void dump_drv_version(void *sel)
 //				, pregpriv->check_fw_ps);
 //	
 //		return 0;
-//	}
+}
 //	
-//	ssize_t proc_set_en_fwps(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_en_fwps(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct registry_priv	*pregpriv = &padapter->registrypriv;
@@ -972,7 +972,7 @@ void dump_drv_version(void *sel)
 //		}
 //	
 //		return count;
-//	}
+}
 //	
 //	/*
 //	int proc_get_two_path_rssi(struct seq_file *m, void *v)
@@ -988,8 +988,8 @@ void dump_drv_version(void *sel)
 //	}
 //	*/
 //	#ifdef CONFIG_80211N_HT
-//	int proc_get_rx_stbc(struct seq_file *m, void *v)
-//	{
+int proc_get_rx_stbc(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct registry_priv	*pregpriv = &padapter->registrypriv;
@@ -998,10 +998,10 @@ void dump_drv_version(void *sel)
 //			DBG_871X_SEL_NL(m, "%d\n", pregpriv->rx_stbc);
 //	
 //		return 0;
-//	}
+}
 //	
-//	ssize_t proc_set_rx_stbc(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_rx_stbc(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		struct registry_priv	*pregpriv = &padapter->registrypriv;
@@ -1024,17 +1024,17 @@ void dump_drv_version(void *sel)
 //		
 //		return count;
 //		
-//	}
+}
 //	#endif //CONFIG_80211N_HT
 //	
-//	int proc_get_rssi_disp(struct seq_file *m, void *v)
-//	{
+int proc_get_rssi_disp(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		return 0;
-//	}
+}
 //	
-//	ssize_t proc_set_rssi_disp(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
-//	{
+ssize_t proc_set_rssi_disp(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+{
 //		struct net_device *dev = data;
 //		_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 //		char tmp[32];
@@ -1070,13 +1070,13 @@ void dump_drv_version(void *sel)
 //		
 //		return count;
 //		
-//	}	
+}	
 //	
 //			
 //	#ifdef CONFIG_AP_MODE
 //	
-//	int proc_get_all_sta_info(struct seq_file *m, void *v)
-//	{
+int proc_get_all_sta_info(struct seq_file *m, void *v)
+{
 //		struct net_device *dev = m->private;
 //		_irqL irqL;
 //		struct sta_info *psta;
@@ -1149,7 +1149,7 @@ void dump_drv_version(void *sel)
 //		_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
 //	
 //		return 0;
-//	}
+}
 //		
 //	#endif		
 //	
