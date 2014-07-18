@@ -50,6 +50,7 @@ jackson@realtek.com.tw
 #define _RTW_IO_C_
 
 #include "../include/drv_types.h"
+#include "../include/rtw_debug.h"
 
 #if defined (PLATFORM_LINUX) && defined (PLATFORM_WINDOWS)
 #error "Shall be Linux or Windows, but not both!\n"
