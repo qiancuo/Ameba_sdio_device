@@ -85,8 +85,8 @@ extern int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev);
 //	extern void rtw_set_tx_chksum_offload(_pkt *pkt, struct pkt_attrib *pattrib);
 //	
 //	extern uint rtw_remainder_len(struct pkt_file *pfile);
-//	extern void _rtw_open_pktfile(_pkt *pkt, struct pkt_file *pfile);
-//	extern uint _rtw_pktfile_read (struct pkt_file *pfile, u8 *rmem, uint rlen);
+	extern void _rtw_open_pktfile(_pkt *pkt, struct pkt_file *pfile);
+	extern uint _rtw_pktfile_read (struct pkt_file *pfile, u8 *rmem, uint rlen);
 //	extern sint rtw_endofpktfile (struct pkt_file *pfile);
 //	
 //	extern void rtw_os_pkt_complete(_adapter *padapter, _pkt *pkt);
