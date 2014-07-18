@@ -2574,7 +2574,7 @@ static int rtw_wx_set_essid(struct net_device *dev,
 						continue;
 				}	
 					
-				if (rtw_set_802_11_infrastructure_mode(padapter, pnetwork->network.InfrastructureMode) == _FALSE)
+//				if (rtw_set_802_11_infrastructure_mode(padapter, pnetwork->network.InfrastructureMode) == _FALSE)
 				{
 					ret = -1;
 					_exit_critical_bh(&queue->lock, &irqL);
@@ -2587,7 +2587,7 @@ static int rtw_wx_set_essid(struct net_device *dev,
 		_exit_critical_bh(&queue->lock, &irqL);
 		RT_TRACE(_module_rtl871x_ioctl_os_c, _drv_info_,
 			 ("set ssid: set_802_11_auth. mode=%d\n", authmode));
-		rtw_set_802_11_authentication_mode(padapter, authmode);
+//		rtw_set_802_11_authentication_mode(padapter, authmode);
 		//set_802_11_encryption_mode(padapter, padapter->securitypriv.ndisencryptstatus);
 //			if (rtw_set_802_11_ssid(padapter, &ndis_ssid) == _FALSE) {
 //				ret = -1;
@@ -2746,7 +2746,7 @@ static int rtw_wx_get_rate(struct net_device *dev,
 {	
 	u16 max_rate = 0;
 
-	max_rate = rtw_get_cur_max_rate((_adapter *)rtw_netdev_priv(dev));
+//	max_rate = rtw_get_cur_max_rate((_adapter *)rtw_netdev_priv(dev));
 
 	if(max_rate == 0)
 		return -EPERM;

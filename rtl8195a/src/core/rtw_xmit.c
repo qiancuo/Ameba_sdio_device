@@ -195,7 +195,7 @@ s32 rtw_xmit(_adapter *padapter, _pkt **ppkt)
 	pxmitframe->pkt = *ppkt;
 	
 	_rtw_memcpy(pxmitbuf->pdata, ppkt->data, ppkt->len);
-	sdio_write_port(struct intf_hdl * pintfhdl, WLAN_TX_HIQ_DEVICE_ID, txdesc.txpktsize, pxmitbuf);
+	sdio_write_port(pintfhdl, WLAN_TX_HIQ_DEVICE_ID, txdesc.txpktsize, pxmitbuf);
 //		if (rtw_hal_xmit(padapter, pxmitframe) == _FALSE)
 //			return 1;
 
