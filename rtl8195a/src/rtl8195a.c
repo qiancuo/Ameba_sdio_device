@@ -680,7 +680,6 @@ _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_i
 	PADAPTER padapter = NULL;
 	
 	if ((padapter = (_adapter *)rtw_zvmalloc(sizeof(*padapter))) == NULL) {
-		printk("%s()===>padapter is null\n");
 		goto exit;
 	}
 
@@ -711,7 +710,6 @@ _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_i
 	
 	//3 1. init network device data
 	pnetdev = rtw_init_netdev(padapter);
-//	pnetdev = alloc_etherdev(sizeof(padapter));
 	if (!pnetdev)
 	{
 		printk("rtw_init_netdev Failed\n");
@@ -882,7 +880,8 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 		func->vendor, func->device, func->class));
 
 	if ((dvobj = sdio_dvobj_init(func)) == NULL) {
-		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("initialize device object priv Failed!\n"));
+//		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("initialize device object priv Failed!\n"));
+		printk("%s() Failed\n", __FUNCTION__);
 		goto exit;
 	}
 	if ((if1 = rtw_sdio_if1_init(dvobj, id)) == NULL) {
