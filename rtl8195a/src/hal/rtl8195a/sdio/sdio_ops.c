@@ -1,3 +1,4 @@
+#include "../../../include/drv_types.h"
 #include "../../../include/sdio_ops.h"
 #include "../../../include/8195_sdio_reg.h"
 #include "../../../include/osdep_service_linux.h"
