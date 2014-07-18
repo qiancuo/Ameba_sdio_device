@@ -183,7 +183,7 @@ s32 rtw_xmit(_adapter *padapter, _pkt **ppkt)
 		pxmitbuf->priv_data = NULL;
 		pxmitbuf->padapter = padapter;
 		pxmitbuf->buf_tag = XMITBUF_DATA;
-		pxmitbuf->pallocated_buf = rtw_zmalloc(MAX_XMITBUF_SZ + XMITBUF_ALIGN_SZ), _TRUE);
+		pxmitbuf->pallocated_buf = rtw_zmalloc(MAX_XMITBUF_SZ + XMITBUF_ALIGN_SZ);
 		if (pxmitbuf->pallocated_buf == NULL)
 		{
 			return _FAIL;
