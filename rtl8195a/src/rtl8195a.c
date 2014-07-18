@@ -382,7 +382,7 @@ static int RecvOnePkt(struct sdio_func *func)
 	struct sdio_func *pfunc;
 	pfunc = (struct sdio_func *)func;
 	do{
-		len = sdio_read32(pfunc, SDIO_RX0_REQ_LEN);
+//		len = sdio_read32(pfunc, SDIO_RX0_REQ_LEN);
 		len &= 0x0fffffff;
 		printk("Rx len is %d\n", len);
 		if((++i)>1000)
@@ -541,7 +541,7 @@ static void sd_sync_int_hdl(struct sdio_func *func)
 								SDIO_HIMR_RX_REQUEST_MSK | 
 								SDIO_HIMR_AVAL_MSK	|	
 								0);
-	sd_int_hal(gHal_Data);
+//	sd_int_hal(gHal_Data);
 //	rtw_sdio_set_irq_thd(psdpriv, NULL);
 }
 static int sdio_init(struct dvobj_priv *dvobj)
