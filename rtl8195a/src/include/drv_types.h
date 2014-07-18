@@ -545,6 +545,7 @@ static struct device *dvobj_to_dev(struct dvobj_priv *dvobj)
 	return &dvobj->pusbintf->dev;
 #endif
 #ifdef CONFIG_SDIO_HCI
+	printk("%s(): SDIO device type\n", __FUNCTION__);
 	return &dvobj->intf_data.func->dev;
 #endif
 #ifdef CONFIG_GSPI_HCI

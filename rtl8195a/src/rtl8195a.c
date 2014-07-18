@@ -673,6 +673,41 @@ _func_enter_;
 _func_exit_;
 	return;
 }
+static void rtw_decide_chip_type_by_device_id(PADAPTER padapter, const struct sdio_device_id  *pdid)
+{
+	padapter->chip_type = pdid->driver_data;
+
+#if defined(CONFIG_RTL8723A)
+	if( padapter->chip_type == RTL8723A){
+		padapter->HardwareType = HARDWARE_TYPE_RTL8723AS;
+		DBG_871X("CHIP TYPE: RTL8723A\n");
+	}
+#endif
+
+#if defined(CONFIG_RTL8188E)
+	if(padapter->chip_type == RTL8188E){
+		padapter->HardwareType = HARDWARE_TYPE_RTL8188ES;
+		DBG_871X("CHIP TYPE: RTL8188E\n");
+	}
+#endif
+
+#if defined(CONFIG_RTL8723B)
+	padapter->chip_type = RTL8723B;
+	padapter->HardwareType = HARDWARE_TYPE_RTL8723BS;
+#endif
+
+#if defined(CONFIG_RTL8821A)
+	if (padapter->chip_type == RTL8821) {
+		padapter->HardwareType = HARDWARE_TYPE_RTL8821S;
+		DBG_871X("CHIP TYPE: RTL8821A\n");
+	}
+#endif
+	if (padapter->chip_type == RTL8195A) {
+		padapter->HardwareType = HARDWARE_TYPE_RTL8195A;
+		DBG_871X("CHIP TYPE: RTL8195A\n");
+	}
+}
+
 _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_id  *pdid)
 {
 	int status = _FAIL;
@@ -686,14 +721,14 @@ _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_i
 //	#ifdef RTW_SUPPORT_PLATFORM_SHUTDOWN
 //		g_test_adapter = padapter;
 //	#endif // RTW_SUPPORT_PLATFORM_SHUTDOWN
-//		padapter->dvobj = dvobj;
-//		dvobj->if1 = padapter;
-//	
-//		padapter->bDriverStopped=_TRUE;
-//	
-//		dvobj->padapters[dvobj->iface_nums++] = padapter;
-//		padapter->iface_id = IFACE_ID0;
-//	
+	padapter->dvobj = dvobj;
+	dvobj->if1 = padapter;
+
+	padapter->bDriverStopped=_TRUE;
+	
+	dvobj->padapters[dvobj->iface_nums++] = padapter;
+	padapter->iface_id = IFACE_ID0;
+	
 //	#if defined(CONFIG_CONCURRENT_MODE) || defined(CONFIG_DUALMAC_CONCURRENT)
 //		//set adapter_type/iface type for primary padapter
 //		padapter->isprimary = _TRUE;
@@ -705,8 +740,8 @@ _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_i
 //		#endif
 //	#endif
 //	
-//		padapter->interface_type = RTW_SDIO;
-//	rtw_decide_chip_type_by_device_id(padapter, pdid);
+	padapter->interface_type = RTW_SDIO;
+	rtw_decide_chip_type_by_device_id(padapter, pdid);
 	
 	//3 1. init network device data
 	pnetdev = rtw_init_netdev(padapter);
@@ -880,8 +915,7 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 		func->vendor, func->device, func->class));
 
 	if ((dvobj = sdio_dvobj_init(func)) == NULL) {
-//		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("initialize device object priv Failed!\n"));
-		printk("%s() Failed\n", __FUNCTION__);
+		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("initialize device object priv Failed!\n"));
 		goto exit;
 	}
 	if ((if1 = rtw_sdio_if1_init(dvobj, id)) == NULL) {
