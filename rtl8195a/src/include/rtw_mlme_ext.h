@@ -649,8 +649,8 @@ void read_cam(_adapter *padapter ,u8 entry, u8 *get_key);
 
 /* modify HW only */
 void _write_cam(_adapter *padapter, u8 entry, u16 ctrl, u8 *mac, u8 *key);
-void _clear_cam_entry(_adapter *padapter, u8 entry);
-void write_cam_from_cache(_adapter *adapter, u8 id);
+//void _clear_cam_entry(_adapter *padapter, u8 entry);
+//void write_cam_from_cache(_adapter *adapter, u8 id);
 
 /* modify both HW and cache */
 void write_cam(_adapter *padapter, u8 id, u16 ctrl, u8 *mac, u8 *key);
