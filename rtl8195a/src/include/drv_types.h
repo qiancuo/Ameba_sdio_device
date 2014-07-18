@@ -27,7 +27,7 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include "rtw_cmd.h"
 #include "sta_info.h"
 #include "rtw_mlme_ext.h"
-
+#include "rtw_io.h"
 #define ETH_ALEN 6 //6 octets for 
 
 #define SPEC_DEV_ID_NONE BIT(0)
@@ -273,7 +273,7 @@ struct _ADAPTER{
 		struct	cmd_priv	cmdpriv;
 		struct	evt_priv	evtpriv;
 //		//struct	io_queue	*pio_queue;
-//		struct 	io_priv	iopriv;
+		struct 	io_priv	iopriv;
 		struct	xmit_priv	xmitpriv;
 		struct	recv_priv	recvpriv;
 		struct	sta_priv	stapriv;
