@@ -927,7 +927,10 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 		goto free_dvobj;
 	}
 
-
+	//dev_alloc_name && register_netdev
+	if((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
+		goto free_if1;
+	}
 
 	gHal_Data = kmalloc(sizeof(PHAL_DATA_TYPE), GFP_KERNEL);
 //	g_SDIO_cmdData = kmalloc(2048, GFP_KERNEL);
@@ -946,6 +949,10 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 
 //    printk("%s", GPL_CLAIM);
 //	return ret;
+free_if1:
+	if (status != _SUCCESS && if1) {
+		rtw_sdio_if1_deinit(if1);
+	}
 free_dvobj:
 	if (status != _SUCCESS)
 		sdio_dvobj_deinit(func);
