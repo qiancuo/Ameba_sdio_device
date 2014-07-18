@@ -41,7 +41,7 @@
 #include "include/8195_sdio_reg.h"
 #include "include/drv_types_sdio.h"
 #include "include/osdep_intf.h"
-
+#include "include/xmit_osdep.h"
 //	MODULE_LICENSE("GPL");
 //	MODULE_DESCRIPTION("Realtek Wireless Lan Driver");
 //	MODULE_AUTHOR("Realtek Semiconductor Corp.");
