@@ -25,6 +25,7 @@
 #include "../include/8195_sdio_reg.h"
 #include "../include/xmit_osdep.h"
 #include "../include/osdep_service.h"
+#include "../include/rtw_xmit.h"
 static s32 update_txdesc(_adapter *padapter, _pkt *pkt, TXDESC_8195A *ptxdesc)
 {
 	sint res = _SUCCESS;
