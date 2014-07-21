@@ -275,7 +275,7 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 		TxDescGen(&txdesc, txdesc.txpktsize, 1);
 		_rtw_memcpy(pxmitbuf->pdata, &txdesc, txdesc.offset);
 		_rtw_memcpy((pxmitbuf->pdata+txdesc.offset), pkt->data, pkt->len);
-//		sdio_write_port(pintfhdl, WLAN_TX_HIQ_DEVICE_ID, txdesc.txpktsize, pxmitbuf);
+		sdio_write_port(pintfhdl, WLAN_TX_HIQ_DEVICE_ID, txdesc.txpktsize, pxmitbuf);
 	}
 	rtw_mfree(padapter->hw_init_completed, sizeof(u8));
 	rtw_mfree(pxmitbuf, sizeof(*pxmitbuf));
