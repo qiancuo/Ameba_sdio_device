@@ -410,7 +410,7 @@ static int RecvOnePkt(struct sdio_func *func)
 	return _SUCCESS;
 }
 
-#define TxPktSize (2048+32) //for test
+#define TxPktSize (318) //for test
 static int SendOnePkt(struct sdio_func *func)
 {
 	int i;
@@ -418,7 +418,7 @@ static int SendOnePkt(struct sdio_func *func)
 	u8 data[TxPktSize];
 
 //Tx descriptor(32bytes)
-	data[0] = 0x22;
+	data[0] = 0x1e;
 	data[1] = 0x01;//290
 	data[2] = 0x20;
 	data[3] = 0x8d;
@@ -450,64 +450,64 @@ static int SendOnePkt(struct sdio_func *func)
 	data[29] = 0x7d;
 	data[30] = 0x00;
 	data[31] = 0x00;
-//at cmd descriptor(8bytes)
-//		data[32] = 0x1a; //pktsize0
-//		data[33] = 0x01; //pktsize1
-//		data[34] = 0x08; //offset
-//		data[35] = 0x00; //frame type
+//at cmd descriptor(4bytes)
+		data[32] = 0x1a; //pktsize0
+		data[33] = 0x01; //pktsize1
+		data[34] = 0x04; //offset
+		data[35] = 0x80; //frame type
 //		data[36] = 0x00; 
 //		data[37] = 0x00; 
 //		data[38] = 0x00; //resv
 //		data[39] = 0x00; //resv
 //	
-//	//wlan pkt		
-//		data[40] = 0x88;
-//		data[41] = 0x01;
-//		data[42] = 0x00;
-//		data[43] = 0x00;
-//		
-//		data[44] = 0xff;	
-//		data[45] = 0xff;	
-//		data[46] = 0xff;	
-//		data[47] = 0xff;	
-//		data[48] = 0xff;	
-//		data[49] = 0xff;	
-//		
-//		data[50] = 0x00;	
-//		data[51] = 0x00;
-//		data[52] = 0x00;
-//		data[53] = 0x00;
-//		data[54] = 0x00;
-//		data[55] = 0x02;
-//		
-//		data[56] = 0x00;	
-//		data[57] = 0x00;
-//		data[58] = 0x00;
-//		data[59] = 0x00;
-//		data[60] = 0x00;
-//		data[61] = 0x01;
-//		
-//		data[62] = 0x10;
-//		
-//		data[63] = 0x00;
-//		data[64] = 0x06;
-//		data[65] = 0x00;
-//		data[66] = 0x01;
-//		data[67] = 0x00;
-//		data[68] = 0x00;
-//		
-//		
-//		data[69] = 0x04;	
-//		data[70] = 0x06;
-//		data[71] = 0x99;
-//		data[72] = 0x99;
-//		data[73] = 0x99;
-//		data[74] = 0x3e;
-//		for (i=0;i<TxPktSize-75;i++)
-//		{
-//			data[i+75] = 0x3e;
-//		}
-	memcpy(data+32, g_SDIO_cmdData, strlen(g_SDIO_cmdData));
+//wlan pkt		
+	data[36] = 0x88;
+	data[37] = 0x01;
+	data[38] = 0x00;
+	data[39] = 0x00;
+	
+	data[40] = 0xff;	
+	data[41] = 0xff;	
+	data[42] = 0xff;	
+	data[43] = 0xff;	
+	data[44] = 0xff;	
+	data[45] = 0xff;	
+	
+	data[46] = 0x00;	
+	data[47] = 0x00;
+	data[48] = 0x00;
+	data[49] = 0x00;
+	data[50] = 0x00;
+	data[51] = 0x02;
+	
+	data[52] = 0x00;	
+	data[53] = 0x00;
+	data[54] = 0x00;
+	data[55] = 0x00;
+	data[56] = 0x00;
+	data[57] = 0x01;
+	
+	data[58] = 0x10;
+	
+	data[59] = 0x00;
+	data[60] = 0x06;
+	data[61] = 0x00;
+	data[62] = 0x01;
+	data[63] = 0x00;
+	data[64] = 0x00;
+	
+	
+	data[65] = 0x04;	
+	data[66] = 0x06;
+	data[67] = 0x99;
+	data[68] = 0x99;
+	data[69] = 0x99;
+	data[70] = 0x3e;
+	for (i=0;i<TxPktSize-71;i++)
+	{
+		data[i+75] = 0x3e;
+	}
+//	memcpy(data+32, g_SDIO_cmdData, strlen(g_SDIO_cmdData));
 	printk("tx packet length is %d\n", strlen(data));
 
 	for(i=0;i<strlen(data);i++)
@@ -516,7 +516,7 @@ static int SendOnePkt(struct sdio_func *func)
 	}
 
 	pfunc = func;
-//	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, TxPktSize, data);
+	chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, TxPktSize, data);
 //	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, strlen(data), data);
 /*
 	for(i=0; i<10;i++)
@@ -914,37 +914,37 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 //	board_idx++;
 //	printk("%s():++\n",__FUNCTION__);
 
-	RT_TRACE(_module_hci_intfs_c_, _drv_info_,
-		("+rtw_drv_init: vendor=0x%04x device=0x%04x class=0x%02x\n",
-		func->vendor, func->device, func->class));
-
-	if ((dvobj = sdio_dvobj_init(func)) == NULL) {
-		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("initialize device object priv Failed!\n"));
-		goto exit;
-	}
-	if ((if1 = rtw_sdio_if1_init(dvobj, id)) == NULL) {
-		DBG_871X("rtw_init_primary_adapter Failed!\n");
-		goto free_dvobj;
-	}
-
-	//dev_alloc_name && register_netdev
-	if((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
-		DBG_871X("drv_register_netdev Failed!\n");
-		goto free_if1;
-	}
+//		RT_TRACE(_module_hci_intfs_c_, _drv_info_,
+//			("+rtw_drv_init: vendor=0x%04x device=0x%04x class=0x%02x\n",
+//			func->vendor, func->device, func->class));
+//	
+//		if ((dvobj = sdio_dvobj_init(func)) == NULL) {
+//			RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("initialize device object priv Failed!\n"));
+//			goto exit;
+//		}
+//		if ((if1 = rtw_sdio_if1_init(dvobj, id)) == NULL) {
+//			DBG_871X("rtw_init_primary_adapter Failed!\n");
+//			goto free_dvobj;
+//		}
+//	
+//		//dev_alloc_name && register_netdev
+//		if((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
+//			DBG_871X("drv_register_netdev Failed!\n");
+//			goto free_if1;
+//		}
 
 
 	gHal_Data = kmalloc(sizeof(PHAL_DATA_TYPE), GFP_KERNEL);
 //	g_SDIO_cmdData = kmalloc(2048, GFP_KERNEL);
 	// 1.init SDIO bus and read chip version	
-//		ret = sdio_init(func);
-//		if(ret)
-//			return ret;
+	ret = sdio_init(func);
+	if(ret)
+		return ret;
 	gHal_Data->func = func;
 	gHal_Data->SdioRxFIFOCnt =0;
 	mutex_init(&Recv_Xmit_mutex);
 //	RecvOnePKt(func);
-//	SendOnePkt(func);
+	SendOnePkt(func);
 //	Xmit_Thread = kthread_run(SendOnePkt_Thread, (void *)gHal_Data, "xmit_thread");
 //	Recv_Thread = kthread_run(RecvOnePkt_Thread, (void *)gHal_Data, "recv_thread");
 //    printk(KERN_INFO "%s: This product is covered by one or more of the following patents: US6,570,884, US6,115,776, and US6,327,625.\n", MODULENAME);
@@ -967,16 +967,16 @@ static void __devexit rtw_dev_remove(struct sdio_func *func)
 {
 
 	int rc = 0;
-	struct dvobj_priv *dvobj = sdio_get_drvdata(func);
-//	struct pwrctrl_priv *pwrctl = dvobj_to_pwrctl(dvobj);
-	PADAPTER padapter = dvobj->if1;
-
-	dvobj->processing_dev_remove = _TRUE;
-
-
-	rtw_unregister_netdevs(dvobj);
-	rtw_sdio_if1_deinit(padapter);
-	sdio_dvobj_deinit(func);
+//		struct dvobj_priv *dvobj = sdio_get_drvdata(func);
+//		//	struct pwrctrl_priv *pwrctl = dvobj_to_pwrctl(dvobj);
+//		PADAPTER padapter = dvobj->if1;
+//	
+//		dvobj->processing_dev_remove = _TRUE;
+//	
+//	
+//		rtw_unregister_netdevs(dvobj);
+//		rtw_sdio_if1_deinit(padapter);
+//		sdio_dvobj_deinit(func);
 
 	printk("%s():++\n", __FUNCTION__);
 
@@ -993,16 +993,16 @@ static void __devexit rtw_dev_remove(struct sdio_func *func)
 	mutex_destroy(&Recv_Xmit_mutex);
 	kfree(gHal_Data);
 //	kfree(g_SDIO_cmdData);
-//		sdio_claim_host(func);
-//		rc = sdio_disable_func(func);
-//		if(rc){
-//			printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
-//		}
-//	//	rc = sdio_release_irq(func);
-//	//	if(rc){
-//	//		printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
-//	//	}	
-//		sdio_release_host(func);
+	sdio_claim_host(func);
+	rc = sdio_disable_func(func);
+	if(rc){
+		printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
+	}
+//	rc = sdio_release_irq(func);
+//	if(rc){
+//		printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
+//	}	
+	sdio_release_host(func);
 }
 
 static struct file_operations fops = 
