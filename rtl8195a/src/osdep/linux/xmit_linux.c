@@ -120,21 +120,154 @@ _func_exit_;
 
 	return 0;
 }
+static void TxDescGen(PTXDESC_8195A ptxdesc, u16 pktsize, u16 seqNum)
+{
+	
+//DWORD 0
+	ptxdesc->txpktsize = pktsize;
+	
+	ptxdesc->offset = 0x20;
+	
+	ptxdesc->bmc = 1;
+	ptxdesc->htc = 0;
+	ptxdesc->ls = 1;
+	ptxdesc->fs = 1;
+	ptxdesc->linip = 0;
+	ptxdesc->noacm = 0;
+	ptxdesc->gf = 0;
+	ptxdesc->own = 1;
+	
+//DWORD 1
+	ptxdesc->macid = 0;
+	ptxdesc->agg_en = 0;
+	ptxdesc->bk = 0;
+	ptxdesc->rdg_en = 0;
+	
+	ptxdesc->qsel = 6;
+	ptxdesc->rdg_nav_ext = 0;
+	ptxdesc->lsig_txop_en = 0;
+	ptxdesc->pifs = 0;
+	
+	ptxdesc->rate_id = 0;
+	ptxdesc->navusehdr = 0;
+	ptxdesc->en_desc_id = 1;
+	ptxdesc->sectype = 0;
+	
+	ptxdesc->rsvd2 = 0;
+	ptxdesc->pkt_offset = 0;
+	ptxdesc->rsvd3 = 0;
+	
+//DWORD 2
+	ptxdesc->rts_rc = 0;
+	ptxdesc->data_rc = 0;
+	ptxdesc->rsvd8 = 0;
+	ptxdesc->bar_rty_th = 0;
+	
+	ptxdesc->rsvd4 = 0;
+	ptxdesc->morefrag = 0;
+	ptxdesc->raw = 0;
+	ptxdesc->ccx = 0;
+	ptxdesc->ampdu_density = 7;
+	ptxdesc->rsvd5 = 0;
+	
+	ptxdesc->antsel_a = 0;
+	ptxdesc->antsel_b =0;
+	ptxdesc->tx_ant_cck = 0;
+	ptxdesc->tx_antl = 0;
+	ptxdesc->tx_antht = 0;
+	
+//DWORD 3
+	ptxdesc->nextheadpage = 0;
+	ptxdesc->tailpage = 0;
+	ptxdesc->seq = seqNum;
+	ptxdesc->pkt_id = 0;
+	
+//DWORD 4
+	ptxdesc->rtsrate = 3;
+	ptxdesc->ap_dcfe = 0;
+	ptxdesc->qos =1;
+	ptxdesc->hwseq_en =0;
+	
+	ptxdesc->userate = 1;
+	ptxdesc->disrtsfb =1;
+	ptxdesc->disdatafb =1;
+	ptxdesc->cts2self =0;
+	ptxdesc->rtsen =0;
+	ptxdesc->hw_rts_en = 0;
+	ptxdesc->port_toggle =0;
+	ptxdesc->rsvd6 =0;
+	
+	ptxdesc->rsvd7 =0;
+	ptxdesc->wait_dcts =0;
+	ptxdesc->cts2ap_en=0;
+	ptxdesc->data_txsc=0;
+	
+	ptxdesc->data_short =0;
+	ptxdesc->databw =0;
+	ptxdesc->rts_short =0;
+	ptxdesc->rtsbw =0;
+	ptxdesc->rts_sc =0;
+	ptxdesc->vcs_stbc=0;
+	
+//DWORD 5
+	ptxdesc->datarate = 0;
+	
+	ptxdesc->data_ratefb_lmt =0;
+	ptxdesc->rts_ratefb_lmt =0;
+	ptxdesc->rty_en =0;
+	ptxdesc->data_rt_lmt =0;
+	
+	ptxdesc->usb_txagg_num=0;
+	
+//DWORD 6
+	ptxdesc->txagc_a = 0;
+	ptxdesc->txagc_b =0;
+	ptxdesc->use_max_len =0;
+	ptxdesc->max_agg_num = 0xf;
+	
+	ptxdesc->mcsg1_max_len = 8;
+	ptxdesc->mcsg2_max_len =8;
+	
+	ptxdesc->mcsg3_max_len = 8;
+	ptxdesc->mcsg7_max_len =8;
+	
+//DWORD 7
+	ptxdesc->txbuffsize = 0x7da0;
+	
+	ptxdesc->mcsg4_max_len =0;
+	ptxdesc->mcsg5_max_len =0;
+	ptxdesc->mcsg6_max_len =0;
+	ptxdesc->mcsg15_max_len =0;
+	
+}
 
 int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 {
 	int ret = 0;
 	struct pkt_file pfile;
+	struct intf_hdl *pintfhdl;
+	struct xmit_buf *pxmitbuf;
+	TXDESC_8195A txdesc;
 	DBG_871X("%s(): ==> xmit wanted!\n", __FUNCTION__);
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
-	if(padapter == NULL)
-		DBG_871X("%s(): ==> padapter is null\n", __FUNCTION__);
+	padapter->hw_init_completed = _TRUE;
+	pintfhdl->padapter = padapter;
+	pintfhdl->pintf_dev = padapter->dvobj;
+	pxmitbuf = (struct xmit_buf *)rtw_zmalloc(sizeof(*pxmitbuf));
+	pxmitbuf->pdata = (u8 *)rtw_zmalloc(2048);
+	if((padapter == NULL)||(pxmitbuf == NULL))
+		DBG_871X("%s(): ==> padapter or pxmitbuf is null\n", __FUNCTION__);
 	if (pkt) {
 //		rtw_mstat_update(MSTAT_TYPE_SKB, MSTAT_ALLOC_SUCCESS, pkt->truesize);
 //		ret = _rtw_xmit_entry(pkt, pnetdev);
 		pfile.pkt = pkt;
 		pfile.cur_addr = pfile.buf_start = pkt->data;
 		pfile.pkt_len = pfile.buf_len = pkt->len;
+		txdesc.txpktsize = pkt->len;
+		TxDescGen(&txdesc, txdesc.txpktsize, 1);
+		_rtw_memcpy(pxmitbuf->pdata, &txdesc, txdesc.offset);
+		_rtw_memcpy((pxmitbuf->pdata+txdesc.offset), pkt->data, pkt->len);
+		sdio_write_port(pintfhdl, WLAN_TX_HIQ_DEVICE_ID, txdesc.txpktsize, pxmitbuf);
 	}
 
 	return ret;
