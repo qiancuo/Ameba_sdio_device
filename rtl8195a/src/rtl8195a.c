@@ -929,10 +929,11 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 
 	//dev_alloc_name && register_netdev
 	if((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
+		DBG_871X("drv_register_netdev Failed!\n");
 		goto free_if1;
 	}
 
-	netif_carrier_off(if1->pnetdev);
+
 	gHal_Data = kmalloc(sizeof(PHAL_DATA_TYPE), GFP_KERNEL);
 //	g_SDIO_cmdData = kmalloc(2048, GFP_KERNEL);
 	// 1.init SDIO bus and read chip version	

@@ -14442,38 +14442,48 @@ static int rtw_p2p_set_op_ch(struct net_device *dev,
 
 int rtw_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 {
-//		struct iwreq *wrq = (struct iwreq *)rq;
-//		int ret=0;
-//	
-//		switch (cmd)
-//		{
-//			case RTL_IOCTL_WPA_SUPPLICANT:
-//				ret = wpa_supplicant_ioctl(dev, &wrq->u.data);
-//				break;
-//	#ifdef CONFIG_AP_MODE
-//			case RTL_IOCTL_HOSTAPD:
-//				ret = rtw_hostapd_ioctl(dev, &wrq->u.data);
-//				break;
-//	#ifdef CONFIG_NO_WIRELESS_HANDLERS
-//			case SIOCSIWMODE:
-//				ret = rtw_wx_set_mode(dev, NULL, &wrq->u, NULL);
-//				break;
-//	#endif
-//	#endif // CONFIG_AP_MODE
-//			case SIOCDEVPRIVATE:
-//				ret = rtw_ioctl_wext_private(dev, &wrq->u);
-//				break;
-//			case (SIOCDEVPRIVATE+1):
-//				ret = rtw_android_priv_cmd(dev, rq, cmd);
-//				break;
-//			default:
-//				ret = -EOPNOTSUPP;
-//				break;
-//		}
-//	
-//		return ret;
-	printk("%s==============================>\n", __FUNCTION__);
-	return 0;
+	struct iwreq *wrq = (struct iwreq *)rq;
+	int ret=0;
+	
+	switch (cmd)
+	{
+		case RTL_IOCTL_WPA_SUPPLICANT:
+			DBG_871X("RTL_IOCTL_WPA_SUPPLICANT\n");
+			ret = 0;
+//			ret = wpa_supplicant_ioctl(dev, &wrq->u.data);
+			break;
+#ifdef CONFIG_AP_MODE
+		case RTL_IOCTL_HOSTAPD:
+			DBG_871X("RTL_IOCTL_WPA_SUPPLICANT\n");
+			ret = 0;
+//			ret = rtw_hostapd_ioctl(dev, &wrq->u.data);
+			break;
+#ifdef CONFIG_NO_WIRELESS_HANDLERS
+		case SIOCSIWMODE:
+//			ret = rtw_wx_set_mode(dev, NULL, &wrq->u, NULL);
+			DBG_871X("RTL_IOCTL_WPA_SUPPLICANT\n");
+			ret = 0;
+			break;
+#endif
+#endif // CONFIG_AP_MODE
+		case SIOCDEVPRIVATE:
+//			ret = rtw_ioctl_wext_private(dev, &wrq->u);
+			DBG_871X("RTL_IOCTL_WPA_SUPPLICANT\n");
+			ret = 0;
+			break;
+		case (SIOCDEVPRIVATE+1):
+//			ret = rtw_android_priv_cmd(dev, rq, cmd);
+			DBG_871X("RTL_IOCTL_WPA_SUPPLICANT\n");
+			ret = 0;
+			break;
+		default:
+			ret = -EOPNOTSUPP;
+			break;
+	}
+	
+	return ret;
+//	printk("%s==============================>\n", __FUNCTION__);
+//	return 0;
 }
 
 
