@@ -257,9 +257,9 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 
 	pxmitbuf = (struct xmit_buf *)rtw_zmalloc(sizeof(*pxmitbuf));
 	pxmitbuf->pdata = (u8 *)rtw_zmalloc(2048);
-	if(/*(padapter == NULL)||(pxmitbuf == NULL)||(padapter->hw_init_completed == NULL)||*/(padapter->dvobj==NULL))
+	if((padapter->hw_init_completed == NULL))
 	{	
-		DBG_871X("%s(): ==> padapter or pxmitbuf is null\n", __FUNCTION__);
+		DBG_871X("%s(): ==> padapter->hw_init_completed is null\n", __FUNCTION__);
 		return ret;
 	}
 //	padapter->hw_init_completed = _TRUE;
