@@ -2220,7 +2220,7 @@ int _netdev_open(struct net_device *pnetdev)
 		padapter->bDriverStopped = _FALSE;
 	 	padapter->bSurpriseRemoved = _FALSE;
 		padapter->bCardDisableWOHSM = _FALSE;
-
+		status = _SUCCESS;
 //		status = rtw_hal_init(padapter);
 		if (status ==_FAIL)
 		{
@@ -2234,21 +2234,21 @@ int _netdev_open(struct net_device *pnetdev)
 		rtw_bb_rf_gain_offset(padapter);
 #endif //CONFIG_RF_GAIN_OFFSET
 
-		status=rtw_start_drv_threads(padapter);
-		if(status ==_FAIL)
-		{
-			DBG_871X("Initialize driver software resource Failed!\n");
-			goto netdev_open_error;
-		}
+//			status=rtw_start_drv_threads(padapter);
+//			if(status ==_FAIL)
+//			{
+//				DBG_871X("Initialize driver software resource Failed!\n");
+//				goto netdev_open_error;
+//			}
 
 #ifdef CONFIG_DRVEXT_MODULE
 		init_drvext(padapter);
 #endif
 
-		if (padapter->intf_start)
-		{
-			padapter->intf_start(padapter);
-		}
+//			if (padapter->intf_start)
+//			{
+//				padapter->intf_start(padapter);
+//			}
 
 #ifdef CONFIG_IOCTL_CFG80211
 		rtw_cfg80211_init_wiphy(padapter);
@@ -2267,7 +2267,7 @@ int _netdev_open(struct net_device *pnetdev)
 //	rtw_set_pwr_state_check_timer(pwrctrlpriv);
 #endif 
 
-	//netif_carrier_on(pnetdev);//call this func when rtw_joinbss_event_callback return success
+netif_carrier_on(pnetdev);//call this func when rtw_joinbss_event_callback return success
 	if(!rtw_netif_queue_stopped(pnetdev))
 		rtw_netif_start_queue(pnetdev);
 	else
@@ -2312,7 +2312,7 @@ int netdev_open(struct net_device *pnetdev)
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
 
 	_enter_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
-//	ret = _netdev_open(pnetdev);
+	ret = _netdev_open(pnetdev);
 	ret = 0;
 	_exit_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
 

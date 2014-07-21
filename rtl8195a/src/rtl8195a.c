@@ -1108,9 +1108,10 @@ static void __exit rtl8195a_cleanup_module(void)
 	sdio_drvpriv.drv_registered = _FALSE;
 	unregister_chrdev(major, "inic_8195a");
 	sdio_unregister_driver(&sdio_drvpriv.r8195a_drv);
+	platform_wifi_power_off();
 	rtw_suspend_lock_uninit();
 	rtw_drv_proc_deinit();
-	platform_wifi_power_off();
+//	rtw_ndev_notifier_unregister();
 	DBG_871X_LEVEL(_drv_always_, "module exit success\n");
 }
 
