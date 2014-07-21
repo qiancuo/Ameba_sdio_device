@@ -180,26 +180,26 @@ s32 rtw_xmit(_adapter *padapter, _pkt **ppkt)
 	struct intf_hdl *pintfhdl;
 	_pkt *skb;
 	DBG_871X("%s(): ==> xmit wanted!\n");
-		_rtw_init_listhead(&pxmitbuf->list);
-
-		pxmitbuf->priv_data = NULL;
-		pxmitbuf->padapter = padapter;
-		pxmitbuf->buf_tag = XMITBUF_DATA;
-		pxmitbuf->pallocated_buf = rtw_zmalloc(MAX_XMITBUF_SZ + XMITBUF_ALIGN_SZ);
-		if (pxmitbuf->pallocated_buf == NULL)
-		{
-			return _FAIL;
-		}
-
-		pxmitbuf->pbuf = (u8 *)N_BYTE_ALIGMENT((SIZE_PTR)(pxmitbuf->pallocated_buf), XMITBUF_ALIGN_SZ);
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
-		pxmitbuf->phead = pxmitbuf->pbuf;
-		pxmitbuf->pend = pxmitbuf->pbuf + MAX_XMITBUF_SZ;
-		pxmitbuf->len = 0;
-		pxmitbuf->pdata = pxmitbuf->ptail = pxmitbuf->phead;
-#endif
-
-		pxmitbuf->flags = XMIT_VO_QUEUE;
+//			_rtw_init_listhead(&pxmitbuf->list);
+//	
+//			pxmitbuf->priv_data = NULL;
+//			pxmitbuf->padapter = padapter;
+//			pxmitbuf->buf_tag = XMITBUF_DATA;
+//			pxmitbuf->pallocated_buf = rtw_zmalloc(MAX_XMITBUF_SZ + XMITBUF_ALIGN_SZ);
+//			if (pxmitbuf->pallocated_buf == NULL)
+//			{
+//				return _FAIL;
+//			}
+//	
+//			pxmitbuf->pbuf = (u8 *)N_BYTE_ALIGMENT((SIZE_PTR)(pxmitbuf->pallocated_buf), XMITBUF_ALIGN_SZ);
+//	#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+//			pxmitbuf->phead = pxmitbuf->pbuf;
+//			pxmitbuf->pend = pxmitbuf->pbuf + MAX_XMITBUF_SZ;
+//			pxmitbuf->len = 0;
+//			pxmitbuf->pdata = pxmitbuf->ptail = pxmitbuf->phead;
+//	#endif
+//	
+//			pxmitbuf->flags = XMIT_VO_QUEUE;
 //		if (start == 0)
 //			start = rtw_get_current_time();
 
@@ -218,13 +218,13 @@ s32 rtw_xmit(_adapter *padapter, _pkt **ppkt)
 //			return -1;
 //		}
 
-	res = update_txdesc(padapter, *ppkt, &txdesc);
-	TxDescGen(&txdesc, txdesc.txpktsize, 1);
-	pxmitframe->pxmitbuf = pxmitbuf;
-	pxmitframe->pkt = *ppkt;
-
-	skb = *ppkt;	
-	_rtw_memcpy(pxmitbuf->pdata, skb->data, skb->len);
+//		res = update_txdesc(padapter, *ppkt, &txdesc);
+//		TxDescGen(&txdesc, txdesc.txpktsize, 1);
+//		pxmitframe->pxmitbuf = pxmitbuf;
+//		pxmitframe->pkt = *ppkt;
+//	
+//		skb = *ppkt;	
+//		_rtw_memcpy(pxmitbuf->pdata, skb->data, skb->len);
 //	sdio_write_port(pintfhdl, WLAN_TX_HIQ_DEVICE_ID, txdesc.txpktsize, pxmitbuf);
 //		if (rtw_hal_xmit(padapter, pxmitframe) == _FALSE)
 //			return 1;
