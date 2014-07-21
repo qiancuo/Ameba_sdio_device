@@ -22,6 +22,8 @@
 #include "../../include/drv_types.h"
 #include "../../include/rtw_debug.h"
 #include "../../include/xmit_osdep.h"
+#include "../../include/8195_desc.h"
+
 uint rtw_remainder_len(struct pkt_file *pfile)
 {
 	return (pfile->buf_len - ((SIZE_PTR)(pfile->cur_addr) - (SIZE_PTR)(pfile->buf_start)));
