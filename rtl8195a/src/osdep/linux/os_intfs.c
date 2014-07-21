@@ -542,12 +542,12 @@ static int rtw_net_set_mac_address(struct net_device *pnetdev, void *p)
 {
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
 	struct sockaddr *addr = p;
-
+	DBG_871X("%s=====>\n", __FUNCTION__);
 	if(padapter->bup == _FALSE)
 	{
 		//DBG_871X("r8711_net_set_mac_address(), MAC=%x:%x:%x:%x:%x:%x\n", addr->sa_data[0], addr->sa_data[1], addr->sa_data[2], addr->sa_data[3],
 		//addr->sa_data[4], addr->sa_data[5]);
-//		_rtw_memcpy(padapter->eeprompriv.mac_addr, addr->sa_data, ETH_ALEN);
+		_rtw_memcpy(padapter->eeprompriv.mac_addr, addr->sa_data, ETH_ALEN);
 		//_rtw_memcpy(pnetdev->dev_addr, addr->sa_data, ETH_ALEN);
 		//padapter->bset_hwaddr = _TRUE;
 	}
@@ -2129,12 +2129,20 @@ void netdev_br_init(struct net_device *netdev)
 static int _rtw_drv_register_netdev(_adapter *padapter, char *name)
 {
 	int ret = _SUCCESS;
+	unsigned char mac_addr[6];
 	struct net_device *pnetdev = padapter->pnetdev;
 
 	/* alloc netdev name */
 	rtw_init_netdev_name(pnetdev, name);
 
-	_rtw_memcpy(pnetdev->dev_addr, padapter->eeprompriv.mac_addr, ETH_ALEN);
+	mac_addr[0] = 0x00;
+	mac_addr[1] = 0xe0;
+	mac_addr[2] = 0x4c;
+	mac_addr[3] = 0x87;
+	mac_addr[4] = 0x00;
+	mac_addr[5] = 0x00;
+	_rtw_memcpy(pnetdev->dev_addr, mac_addr, ETH_ALEN);
+//	_rtw_memcpy(pnetdev->dev_addr, padapter->eeprompriv.mac_addr, ETH_ALEN);
 
 	/* Tell the network stack we exist */
 	if (register_netdev(pnetdev) != 0) {
