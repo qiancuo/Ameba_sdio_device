@@ -126,6 +126,9 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 	int ret = 0;
 	struct pkt_file pfile;
 	DBG_871X("%s(): ==> xmit wanted!\n", __FUNCTION__);
+	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
+	if(padapter == NULL)
+		DBG_871X("%s(): ==> padapter is null\n", __FUNCTION__);
 	if (pkt) {
 //		rtw_mstat_update(MSTAT_TYPE_SKB, MSTAT_ALLOC_SUCCESS, pkt->truesize);
 //		ret = _rtw_xmit_entry(pkt, pnetdev);
