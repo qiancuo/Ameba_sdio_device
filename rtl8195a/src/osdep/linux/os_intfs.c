@@ -2313,7 +2313,6 @@ int netdev_open(struct net_device *pnetdev)
 
 	_enter_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
 	ret = _netdev_open(pnetdev);
-	ret = 0;
 	_exit_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
 
 	return ret;
