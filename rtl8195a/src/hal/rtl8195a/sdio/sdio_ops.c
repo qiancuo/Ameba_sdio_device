@@ -465,7 +465,7 @@ s32 chris_sd_write(struct sdio_func *func, u32 addr, u32 cnt, void *pdata)
 //	bool claim_needed;
 	s32 err=-EPERM;
 _func_enter_;
-	
+	printk("%s()===========>\n", __FUNCTION__);	
 	pfunc = func;
 //	claim_needed = rtw_sdio_claim_host_needed(func);
 	
