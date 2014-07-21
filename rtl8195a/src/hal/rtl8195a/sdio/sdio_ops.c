@@ -1150,8 +1150,8 @@ u32 sdio_write_port(
 	struct xmit_buf *xmitbuf = (struct xmit_buf *)mem;
 	u8 *pdata = mem;
 	DBG_871X("%s()====>\n", __func__);
-	padapter = pintfhdl->padapter;
-	psdio = &adapter_to_dvobj(padapter)->intf_data;
+//	padapter = pintfhdl->padapter;
+//	psdio = &adapter_to_dvobj(padapter)->intf_data;
 	
 //		if (padapter->hw_init_completed == _FALSE) {
 //			DBG_871X("%s [addr=0x%x cnt=%d] padapter->hw_init_completed == _FALSE\n",__func__,addr,cnt);
@@ -1161,8 +1161,8 @@ u32 sdio_write_port(
 	cnt = _RND4(cnt);
 	HalSdioGetCmdAddr8195ASdio(padapter, addr, cnt >> 2, &addr);
 	
-	if (cnt > psdio->block_transfer_len)
-		cnt = _RND(cnt, psdio->block_transfer_len);
+//		if (cnt > psdio->block_transfer_len)
+//			cnt = _RND(cnt, psdio->block_transfer_len);
 	//cnt = sdio_align_size(cnt);
 
 //	err = sd_write(pintfhdl, addr, cnt, xmitbuf->pdata);
