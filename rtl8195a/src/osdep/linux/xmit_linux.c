@@ -290,7 +290,7 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 		for(i=0;i<(txdesc.txpktsize+txdesc.offset);i++)
 			printk("pxmitbuf[%d] = 0x%02x\n", i, *(pxmitbuf+i));
 		chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (txdesc.txpktsize+txdesc.offset), pxmitbuf);
-//		for(i=0;i<1000;i++);
+		for(i=0;i<10000;i++);
 	}
 //	rtw_mfree(padapter->hw_init_completed, sizeof(u8));
 //	rtw_mfree(pxmitbuf, sizeof(*pxmitbuf));
