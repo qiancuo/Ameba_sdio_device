@@ -739,7 +739,7 @@ PCHRIS_ADAPTER chris_rtw_sdio_if_init(struct sdio_func *func)
 	PCHRIS_ADAPTER padapter = NULL;
 	struct net_device *pnetdev;
 	u8 *pdata = NULL;
-	if ((padapter = (_adapter *)rtw_zvmalloc(sizeof(*padapter))) == NULL) {
+	if ((padapter = (PCHRIS_ADAPTER *)rtw_zvmalloc(sizeof(*padapter))) == NULL) {
 		goto exit;
 	}
 //		if ((padapter = (u8 *)rtw_zvmalloc(2048)) == NULL) {
@@ -755,7 +755,7 @@ PCHRIS_ADAPTER chris_rtw_sdio_if_init(struct sdio_func *func)
 		printk("rtw_init_netdev Failed\n");
 		goto free_adapter;
 	}
-	SET_NETDEV_DEV(pnetdev, &padapter->func->dev);
+//	SET_NETDEV_DEV(pnetdev, &padapter->func->dev);
 	return padapter;
 free_adapter:
 	if (status != _SUCCESS) {
