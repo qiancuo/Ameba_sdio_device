@@ -2198,7 +2198,18 @@ int rtw_drv_register_netdev(_adapter *if1)
 
 	return status;
 }
-
+//	#define RTL8168_LINK_TIMEOUT    (1 * HZ)
+//	static inline void rtl8168_request_link_timer(struct net_device *dev)
+//	{
+//	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
+//	    struct timer_list *timer = &padapter->mlmepriv.dynamic_chk_timer;
+//	
+//	    init_timer(timer);
+//	    timer->expires = jiffies + RTL8168_LINK_TIMEOUT;
+//	    timer->data = (unsigned long)(dev);
+//	    timer->function = rtl8168_link_timer;
+//	    add_timer(timer);
+//	}
 int _netdev_open(struct net_device *pnetdev)
 {
 	uint status;
@@ -2260,18 +2271,18 @@ int _netdev_open(struct net_device *pnetdev)
 //		pwrctrlpriv->bips_processing = _FALSE;
 	}
 	padapter->net_closed = _FALSE;
-
-	_set_timer(&padapter->mlmepriv.dynamic_chk_timer, 2000);
-
+//	rtl8168_request_link_timer(dev);
+//	_set_timer(&padapter->mlmepriv.dynamic_chk_timer, 2000);
+netif_carrier_on(pnetdev);
 #ifndef CONFIG_IPS_CHECK_IN_WD
 //	rtw_set_pwr_state_check_timer(pwrctrlpriv);
 #endif 
 
-//netif_carrier_on(pnetdev);//call this func when rtw_joinbss_event_callback return success
-	if(!rtw_netif_queue_stopped(pnetdev))
-		rtw_netif_start_queue(pnetdev);
-	else
-		rtw_netif_wake_queue(pnetdev);
+	//netif_carrier_on(pnetdev);//call this func when rtw_joinbss_event_callback return success
+//		if(!rtw_netif_queue_stopped(pnetdev))
+//			rtw_netif_start_queue(pnetdev);
+//		else
+//			rtw_netif_wake_queue(pnetdev);
 
 #ifdef CONFIG_BR_EXT
 	netdev_br_init(pnetdev);
