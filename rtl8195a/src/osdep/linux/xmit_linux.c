@@ -275,7 +275,7 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 		
 //		txdesc.txpktsize = pkt->len;
 //		TxDescGen(&txdesc, txdesc.txpktsize, 1);
-//DBG_871X("%s(): ==> txdesc.txpktsize is : %d\n", __FUNCTION__, pkt->len);		
+DBG_871X("%s(): ==> skb len is : %d\n", __FUNCTION__, pfile.pkt_len);		
 //		_rtw_memcpy(pxmitbuf, &txdesc, txdesc.offset);
 //		_rtw_memcpy((pxmitbuf+txdesc.offset), pkt->data, pkt->len);
 //		sdio_write_port(pintfhdl, WLAN_TX_HIQ_DEVICE_ID, txdesc.txpktsize, pxmitbuf);
