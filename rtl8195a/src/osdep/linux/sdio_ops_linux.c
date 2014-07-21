@@ -893,18 +893,18 @@ _func_enter_;
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
 	
-	if(padapter->bSurpriseRemoved){
-		//DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n",__FUNCTION__);
-		return err;
-	}
+//		if(padapter->bSurpriseRemoved){
+//			//DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n",__FUNCTION__);
+//			return err;
+//		}
 	
 	func = psdio->func;
-	claim_needed = rtw_sdio_claim_host_needed(func);
+//	claim_needed = rtw_sdio_claim_host_needed(func);
 
-	if (claim_needed)
+//	if (claim_needed)
 		sdio_claim_host(func);
 	err = _sd_write(pintfhdl, addr, cnt, pdata);
-	if (claim_needed)
+//	if (claim_needed)
 		sdio_release_host(func);
 _func_exit_;
 	return err;
