@@ -733,6 +733,40 @@ static void rtw_decide_chip_type_by_device_id(PADAPTER padapter, const struct sd
 	}
 }
 
+PCHRIS_ADAPTER chris_rtw_sdio_if_init(struct sdio_func *func)
+{
+	int status = _FAIL;
+	PCHRIS_ADAPTER padapter = NULL;
+	struct net_device *pnetdev;
+	u8 *pdata = NULL;
+	if ((padapter = (_adapter *)rtw_zvmalloc(sizeof(*padapter))) == NULL) {
+		goto exit;
+	}
+//		if ((padapter = (u8 *)rtw_zvmalloc(2048)) == NULL) {
+//			goto exit;
+//		}	
+	padapter->func = func;
+//	padapter->pdata = pdata;
+
+	//3 1. init network device data
+	pnetdev = chris_rtw_init_netdev(padapter);
+	if (!pnetdev)
+	{
+		printk("rtw_init_netdev Failed\n");
+		goto free_adapter;
+	}
+	SET_NETDEV_DEV(pnetdev, &padapter->func.dev);	
+free_adapter:
+	if (status != _SUCCESS) {
+		if (pnetdev)
+			rtw_free_netdev(pnetdev);
+		else
+			rtw_vmfree((u8*)padapter, sizeof(*padapter));
+		padapter = NULL;
+	}
+exit:
+	return padapter;
+}
 _adapter *rtw_sdio_if1_init(struct dvobj_priv *dvobj, const struct sdio_device_id  *pdid)
 {
 	int status = _FAIL;
@@ -932,8 +966,9 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 //	static int board_idx = -1;
 	int status = _FAIL;
 	struct net_device *pnetdev;
-	PADAPTER if1 = NULL, if2 = NULL;
-	struct dvobj_priv *dvobj;
+//		PADAPTER if1 = NULL, if2 = NULL;
+//		struct dvobj_priv *dvobj;
+	PCHRIS_ADAPTER if1=NULL;
 	int ret = 0;
 //	board_idx++;
 //	printk("%s():++\n",__FUNCTION__);
@@ -968,13 +1003,19 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 	gHal_Data->SdioRxFIFOCnt =0;
 	mutex_init(&Recv_Xmit_mutex);
 //	RecvOnePKt(func);
-	SendOnePkt(func);
+//	SendOnePkt(func);
 //	Xmit_Thread = kthread_run(SendOnePkt_Thread, (void *)gHal_Data, "xmit_thread");
 //	Recv_Thread = kthread_run(RecvOnePkt_Thread, (void *)gHal_Data, "recv_thread");
 //    printk(KERN_INFO "%s: This product is covered by one or more of the following patents: US6,570,884, US6,115,776, and US6,327,625.\n", MODULENAME);
 
 //    printk("%s", GPL_CLAIM);
 //	return ret;
+	if1 = chris_rtw_sdio_if_init(func);
+	sdio_set_drvdata(func, if1);
+	status = register_netdev(if1->pnetdev);
+	if(status)
+		return status;
+	netif_carrier_off(pnetdev);
 free_if1:
 	if (status != _SUCCESS && if1) {
 		rtw_sdio_if1_deinit(if1);

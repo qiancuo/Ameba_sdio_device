@@ -597,4 +597,11 @@ __inline static void RTW_ENABLE_FUNC(_adapter*padapter, int func_bit)
 	ATOMIC_SET(&adapter_to_dvobj(padapter)->disable_func, df);
 }
 
+typedef struct _chris_adapter
+{
+	struct sdio_func *func;
+	struct net_device *pnetdev;
+//	u8 *pdata;
+}CHRIS_ADAPTER, PCHRIS_ADAPTER;
+
 #endif

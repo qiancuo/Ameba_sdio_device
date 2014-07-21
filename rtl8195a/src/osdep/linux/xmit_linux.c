@@ -254,9 +254,9 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 	TXDESC_8195A txdesc;
 	struct sdio_func *pfunc;
 	DBG_871X("%s(): ==> xmit wanted!\n", __FUNCTION__);
-//	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
+	CHRIS_ADAPTER *padapter = (CHRIS_ADAPTER *)rtw_netdev_priv(pnetdev);
 //	padapter->hw_init_completed = (u8 *)rtw_zmalloc(sizeof(u8));
-	pxmitbuf = (u8 *)rtw_zmalloc(2048);
+//	pxmitbuf = (u8 *)rtw_zmalloc(2048);
 //		if((padapter->hw_init_completed == NULL))
 //		{	
 //			DBG_871X("%s(): ==> padapter->hw_init_completed is null\n", __FUNCTION__);
@@ -282,7 +282,7 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 		txdesc.txpktsize = pfile.pkt_len;
 		TxDescGen(&txdesc, txdesc.txpktsize, 1);
 		DBG_871X("%s(): ==> skb len is : %d\n", __FUNCTION__, txdesc.txpktsize);		
-		pfunc = gHal_Data->func;
+		pfunc = padapter->func;
 		_rtw_memcpy(pxmitbuf, &txdesc, txdesc.offset);
 		_rtw_memcpy((pxmitbuf+txdesc.offset), pfile.cur_buffer, txdesc.txpktsize);
 		chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (txdesc.txpktsize+txdesc.offset), pxmitbuf);

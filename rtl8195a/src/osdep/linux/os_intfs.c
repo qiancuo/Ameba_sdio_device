@@ -771,6 +771,52 @@ int rtw_init_netdev_name(struct net_device *pnetdev, const char *ifname)
 
 	return 0;
 }
+struct net_device *chris_rtw_init_netdev(CHRIS_ADAPTER *old_padapter)
+{
+	CHRIS_ADAPTER *padapter;
+	struct net_device *pnetdev = NULL;
+
+	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+init_net_dev\n"));
+
+	if(old_padapter != NULL)
+		pnetdev = rtw_alloc_etherdev_with_old_priv(sizeof(CHRIS_ADAPTER), (void *)old_padapter);
+	else
+		pnetdev = rtw_alloc_etherdev(sizeof(CHRIS_ADAPTER));
+
+	if (!pnetdev)
+		return NULL;
+
+	padapter = rtw_netdev_priv(pnetdev);
+	if(!padapter)
+	{	
+		printk("%s()=======>padapter is null\n", __FUNCTION__);
+		return NULL;
+	}
+	padapter->pnetdev = pnetdev;
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,24)
+	SET_MODULE_OWNER(pnetdev);
+#endif
+
+	//pnetdev->init = NULL;
+
+#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,29))
+	DBG_871X("register rtw_netdev_ops to netdev_ops\n");
+	pnetdev->netdev_ops = &rtw_netdev_ops;
+#else
+	pnetdev->init = rtw_ndev_init;
+	pnetdev->uninit = rtw_ndev_uninit;
+	pnetdev->open = netdev_open;
+	pnetdev->stop = netdev_close;
+	pnetdev->hard_start_xmit = rtw_xmit_entry;
+	pnetdev->set_mac_address = rtw_net_set_mac_address;
+	pnetdev->get_stats = rtw_net_get_stats;
+	pnetdev->do_ioctl = rtw_ioctl;
+#endif
+
+	return pnetdev;
+
+}
 
 struct net_device *rtw_init_netdev(_adapter *old_padapter)
 {
