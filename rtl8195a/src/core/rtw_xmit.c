@@ -180,6 +180,10 @@ s32 rtw_xmit(_adapter *padapter, _pkt **ppkt)
 	struct intf_hdl *pintfhdl;
 	_pkt *skb;
 	DBG_871X("%s(): ==> xmit wanted!\n", __FUNCTION__);
+	skb =  *ppkt;
+	pintfhdl->padapter = padapter;
+	pxmitbuf = (struct xmit_buf *)rtw_zmalloc(sizeof(*pxmitbuf));
+	_rtw_memcpy(pxmitbuf->pdata, skb->data, skb->len);
 //			_rtw_init_listhead(&pxmitbuf->list);
 //	
 //			pxmitbuf->priv_data = NULL;
