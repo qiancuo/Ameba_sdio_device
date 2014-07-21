@@ -1148,24 +1148,24 @@ u32 sdio_write_port(
 	PSDIO_DATA psdio;
 	s32 err;
 	struct xmit_buf *xmitbuf = (struct xmit_buf *)mem;
-
-//		padapter = pintfhdl->padapter;
-//		psdio = &adapter_to_dvobj(padapter)->intf_data;
-//	
-//		if (padapter->hw_init_completed == _FALSE) {
-//			DBG_871X("%s [addr=0x%x cnt=%d] padapter->hw_init_completed == _FALSE\n",__func__,addr,cnt);
-//			return _FAIL;
-//		}
-//	
-//		cnt = _RND4(cnt);
-//		HalSdioGetCmdAddr8195ASdio(padapter, addr, cnt >> 2, &addr);
-//	
-//		if (cnt > psdio->block_transfer_len)
-//			cnt = _RND(cnt, psdio->block_transfer_len);
-//	cnt = sdio_align_size(cnt);
+	u8 *pdata = mem;
+	padapter = pintfhdl->padapter;
+	psdio = &adapter_to_dvobj(padapter)->intf_data;
+	
+	if (padapter->hw_init_completed == _FALSE) {
+		DBG_871X("%s [addr=0x%x cnt=%d] padapter->hw_init_completed == _FALSE\n",__func__,addr,cnt);
+		return _FAIL;
+	}
+	
+	cnt = _RND4(cnt);
+	HalSdioGetCmdAddr8195ASdio(padapter, addr, cnt >> 2, &addr);
+	
+	if (cnt > psdio->block_transfer_len)
+		cnt = _RND(cnt, psdio->block_transfer_len);
+	//cnt = sdio_align_size(cnt);
 
 //	err = sd_write(pintfhdl, addr, cnt, xmitbuf->pdata);
-
+//	err = sd_write(pintfhdl, addr, cnt, pdata);
 //	rtw_sctx_done_err(&xmitbuf->sctx,
 //		err ? RTW_SCTX_DONE_WRITE_PORT_ERR : RTW_SCTX_DONE_SUCCESS);
 	
