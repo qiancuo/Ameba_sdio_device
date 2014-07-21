@@ -1002,7 +1002,7 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 //			return ret;
 	gHal_Data->func = func;
 	gHal_Data->SdioRxFIFOCnt =0;
-	mutex_init(&Recv_Xmit_mutex);
+//	mutex_init(&Recv_Xmit_mutex);
 //	RecvOnePKt(func);
 //	SendOnePkt(func);
 //	Xmit_Thread = kthread_run(SendOnePkt_Thread, (void *)gHal_Data, "xmit_thread");
@@ -1052,17 +1052,17 @@ static void __devexit rtw_dev_remove(struct sdio_func *func)
 
 	printk("%s():++\n", __FUNCTION__);
 
-	if(Xmit_Thread)
-	{
-		printk("stop Xmit_Thread\n");
-		kthread_stop(Xmit_Thread);
-	}
-	if(Recv_Thread)
-	{
-		printk("stop Recv_Thread\n");
-		kthread_stop(Recv_Thread);
-	}
-	mutex_destroy(&Recv_Xmit_mutex);
+//		if(Xmit_Thread)
+//		{
+//			printk("stop Xmit_Thread\n");
+//			kthread_stop(Xmit_Thread);
+//		}
+//		if(Recv_Thread)
+//		{
+//			printk("stop Recv_Thread\n");
+//			kthread_stop(Recv_Thread);
+//		}
+//	mutex_destroy(&Recv_Xmit_mutex);
 	kfree(gHal_Data);
 //	kfree(g_SDIO_cmdData);
 //		sdio_claim_host(func);
@@ -1074,7 +1074,7 @@ static void __devexit rtw_dev_remove(struct sdio_func *func)
 //	if(rc){
 //		printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
 //	}	
-	sdio_release_host(func);
+//	sdio_release_host(func);
 }
 
 static struct file_operations fops = 
