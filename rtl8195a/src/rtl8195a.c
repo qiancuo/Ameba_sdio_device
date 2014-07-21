@@ -508,15 +508,15 @@ static int SendOnePkt(struct sdio_func *func)
 		data[i+71] = 0x3e;
 	}
 //	memcpy(data+32, g_SDIO_cmdData, strlen(g_SDIO_cmdData));
-	printk("tx packet length is %d\n", strlen(data));
+//	printk("tx packet length is %d\n", strlen(data));
 
-	for(i=0;i<strlen(data);i++)
+	for(i=0;i<TxPktSize;i++)
 	{
 		printk("tx[%d] = 0x%02x\n", i, data[i]);
 	}
 
 	pfunc = func;
-//	chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, TxPktSize, data);
+	chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, TxPktSize, data);
 //	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, strlen(data), data);
 /*
 	for(i=0; i<10;i++)
