@@ -124,10 +124,14 @@ _func_exit_;
 int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 {
 	int ret = 0;
-
+	struct pkt_file pfile;
+	DBG_871X("%s(): ==> xmit wanted!\n", __FUNCTION__);
 	if (pkt) {
 //		rtw_mstat_update(MSTAT_TYPE_SKB, MSTAT_ALLOC_SUCCESS, pkt->truesize);
-		ret = _rtw_xmit_entry(pkt, pnetdev);
+//		ret = _rtw_xmit_entry(pkt, pnetdev);
+		pfile.pkt = pkt;
+		pfile.cur_addr = pfile.buf_start = pkt->data;
+		pfile.pkt_len = pfile.buf_len = pkt->len;
 	}
 
 	return ret;
