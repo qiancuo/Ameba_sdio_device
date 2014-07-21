@@ -1018,10 +1018,10 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 		goto exit;
 	}
 	sdio_set_drvdata(func, if1);
-	status = register_netdev(if1->pnetdev);
-	if(status)
-		return status;
-	netif_carrier_off(pnetdev);
+//		status = register_netdev(if1->pnetdev);
+//		if(status)
+//			return status;
+//		netif_carrier_off(pnetdev);
 free_if1:
 	if (status != _SUCCESS && if1) {
 		rtw_sdio_if1_deinit(if1);
