@@ -900,7 +900,7 @@ _func_enter_;
 		printk("printfhdl->pintf is null\n");
 		return 0;
 	}
-	if(psdiodev->intf_data==NULL)
+	if(&psdiodev->intf_data==NULL)
 	{
 		printk("psdiodev->intf_data(psdio) is null\n");
 		return 0;
