@@ -709,16 +709,16 @@ void rtw_ndev_uninit(struct net_device *dev)
 
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,29))
 static const struct net_device_ops rtw_netdev_ops = {
-	.ndo_init = rtw_ndev_init,
-	.ndo_uninit = rtw_ndev_uninit,
+//	.ndo_init = rtw_ndev_init,
+//	.ndo_uninit = rtw_ndev_uninit,
 	.ndo_open = netdev_open,
 	.ndo_stop = netdev_close,
 	.ndo_start_xmit = rtw_xmit_entry,
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
-	.ndo_select_queue	= rtw_select_queue,
+//	.ndo_select_queue	= rtw_select_queue,
 #endif
-	.ndo_set_mac_address = rtw_net_set_mac_address,
-	.ndo_get_stats = rtw_net_get_stats,
+//	.ndo_set_mac_address = rtw_net_set_mac_address,
+//	.ndo_get_stats = rtw_net_get_stats,
 	.ndo_do_ioctl = rtw_ioctl,
 };
 #endif
@@ -2267,7 +2267,7 @@ int _netdev_open(struct net_device *pnetdev)
 //	rtw_set_pwr_state_check_timer(pwrctrlpriv);
 #endif 
 
-netif_carrier_on(pnetdev);//call this func when rtw_joinbss_event_callback return success
+//netif_carrier_on(pnetdev);//call this func when rtw_joinbss_event_callback return success
 	if(!rtw_netif_queue_stopped(pnetdev))
 		rtw_netif_start_queue(pnetdev);
 	else
