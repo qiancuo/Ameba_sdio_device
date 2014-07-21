@@ -254,7 +254,7 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 	TXDESC_8195A txdesc;
 	DBG_871X("%s(): ==> xmit wanted!\n", __FUNCTION__);
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
-
+	padapter->hw_init_completed = (u8 *)rtw_zmalloc(sizeof(u8));
 	pxmitbuf = (struct xmit_buf *)rtw_zmalloc(sizeof(*pxmitbuf));
 	pxmitbuf->pdata = (u8 *)rtw_zmalloc(2048);
 	if((padapter->hw_init_completed == NULL))
