@@ -109,8 +109,9 @@ void rtw_cancel_all_timer(_adapter *padapter);
 int rtw_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
 
 int rtw_init_netdev_name(struct net_device *pnetdev, const char *ifname);
+struct net_device *chris_rtw_init_netdev(CHRIS_ADAPTER *padapter);
 struct net_device *rtw_init_netdev(_adapter *padapter);
-struct net_device *chris_rtw_init_netdev(_adapter *padapter);
+
 
 void rtw_unregister_netdevs(struct dvobj_priv *dvobj);
 
