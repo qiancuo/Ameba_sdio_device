@@ -179,7 +179,7 @@ s32 rtw_xmit(_adapter *padapter, _pkt **ppkt)
 	s32 res;
 	struct intf_hdl *pintfhdl;
 	_pkt *skb;
-	DBG_871X("%s(): ==> xmit wanted!\n");
+	DBG_871X("%s(): ==> xmit wanted!\n", __FUNCTION__);
 //			_rtw_init_listhead(&pxmitbuf->list);
 //	
 //			pxmitbuf->priv_data = NULL;
