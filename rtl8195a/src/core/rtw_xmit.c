@@ -182,9 +182,9 @@ s32 rtw_xmit(_adapter *padapter, _pkt **ppkt)
 	struct pkt_file pfile;
 	DBG_871X("%s(): ==> xmit wanted!\n", __FUNCTION__);
 
-	pfile.pkt = *ppkt;
-	pfile.cur_addr = pfile.buf_start = *ppkt->data;
-	pfile.pkt_len = pfile.buf_len = *skb->len;
+//		pfile.pkt = *ppkt;
+//		pfile.cur_addr = pfile.buf_start = *ppkt->data;
+//		pfile.pkt_len = pfile.buf_len = *skb->len;
 //		skb =  *ppkt;
 //		pintfhdl->padapter = padapter;
 //		pxmitbuf = (struct xmit_buf *)rtw_zmalloc(sizeof(*pxmitbuf));
