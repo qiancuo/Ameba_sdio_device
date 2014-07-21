@@ -415,7 +415,7 @@ _func_enter_;
 	
 	pfunc = func;
 //	size = sdio_align_size(func, cnt);
-	
+	printk("%s()==> cnt is %d\n", __FUNCTION__, cnt);	
 	if (unlikely((cnt==1) || (cnt==2)))
 	{
 		int i;
@@ -423,7 +423,7 @@ _func_enter_;
 	
 		for (i = 0; i < cnt; i++)
 		{
-			sdio_writeb(pfunc, *(pbuf+i), addr+i, &err);
+//			sdio_writeb(pfunc, *(pbuf+i), addr+i, &err);
 			if (err) {
 				printk("%s: FAIL!(%d) addr=0x%05x val=0x%02x\n", __func__, err, addr, *(pbuf+i));
 				break;
@@ -471,7 +471,7 @@ _func_enter_;
 	
 //	if (claim_needed)
 		sdio_claim_host(pfunc);
-//	err = _chris_sd_write(pfunc, addr, cnt, pdata);
+	err = _chris_sd_write(pfunc, addr, cnt, pdata);
 //	if (claim_needed)
 		sdio_release_host(pfunc);
 _func_exit_;
