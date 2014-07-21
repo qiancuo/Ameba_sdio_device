@@ -1039,16 +1039,16 @@ static void __devexit rtw_dev_remove(struct sdio_func *func)
 {
 
 	int rc = 0;
-//		struct dvobj_priv *dvobj = sdio_get_drvdata(func);
+		struct dvobj_priv *dvobj = sdio_get_drvdata(func);
 //		//	struct pwrctrl_priv *pwrctl = dvobj_to_pwrctl(dvobj);
-//		PADAPTER padapter = dvobj->if1;
+		PADAPTER padapter = dvobj->if1;
 //	
-//		dvobj->processing_dev_remove = _TRUE;
-//	
-//	
-//		rtw_unregister_netdevs(dvobj);
-//		rtw_sdio_if1_deinit(padapter);
-//		sdio_dvobj_deinit(func);
+	dvobj->processing_dev_remove = _TRUE;
+	
+	
+	rtw_unregister_netdevs(dvobj);
+	rtw_sdio_if1_deinit(padapter);
+	sdio_dvobj_deinit(func);
 
 	printk("%s():++\n", __FUNCTION__);
 
@@ -1065,11 +1065,11 @@ static void __devexit rtw_dev_remove(struct sdio_func *func)
 	mutex_destroy(&Recv_Xmit_mutex);
 	kfree(gHal_Data);
 //	kfree(g_SDIO_cmdData);
-	sdio_claim_host(func);
-	rc = sdio_disable_func(func);
-	if(rc){
-		printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
-	}
+//		sdio_claim_host(func);
+//		rc = sdio_disable_func(func);
+//		if(rc){
+//			printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
+//		}
 //	rc = sdio_release_irq(func);
 //	if(rc){
 //		printk("%s(): sdio_disable_func fail!\n", __FUNCTION__);
