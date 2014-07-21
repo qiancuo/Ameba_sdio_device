@@ -285,7 +285,7 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 		pfunc = gHal_Data->func;
 		_rtw_memcpy(pxmitbuf, &txdesc, txdesc.offset);
 		_rtw_memcpy((pxmitbuf+txdesc.offset), pfile.cur_buffer, txdesc.txpktsize);
-//		chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, txdesc.txpktsize, pxmitbuf);
+		chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (txdesc.txpktsize+txdesc.offset), pxmitbuf);
 	}
 //	rtw_mfree(padapter->hw_init_completed, sizeof(u8));
 //	rtw_mfree(pxmitbuf, sizeof(*pxmitbuf));
