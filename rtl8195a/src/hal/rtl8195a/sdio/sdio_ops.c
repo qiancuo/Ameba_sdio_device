@@ -471,7 +471,7 @@ _func_enter_;
 	
 //	if (claim_needed)
 		sdio_claim_host(pfunc);
-	err = _chris_sd_write(pfunc, addr, cnt, pdata);
+//	err = _chris_sd_write(pfunc, addr, cnt, pdata);
 //	if (claim_needed)
 		sdio_release_host(pfunc);
 _func_exit_;
