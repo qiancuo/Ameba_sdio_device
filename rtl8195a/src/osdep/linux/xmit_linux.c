@@ -267,12 +267,12 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 	if (pkt) {
 //		rtw_mstat_update(MSTAT_TYPE_SKB, MSTAT_ALLOC_SUCCESS, pkt->truesize);
 //		ret = _rtw_xmit_entry(pkt, pnetdev);
-		pfile.pkt = pkt;
-		pfile.cur_addr = pfile.buf_start = pkt->data;
-		pfile.pkt_len = pfile.buf_len = pkt->len;
-		txdesc.txpktsize = pkt->len;
-		TxDescGen(&txdesc, txdesc.txpktsize, 1);
-DBG_871X("%s(): ==> txdesc.txpktsize is : %d\n", __FUNCTION__, txdesc.txpktsize);		
+//		pfile.pkt = pkt;
+//		pfile.cur_addr = pfile.buf_start = pkt->data;
+//		pfile.pkt_len = pfile.buf_len = pkt->len;
+//		txdesc.txpktsize = pkt->len;
+//		TxDescGen(&txdesc, txdesc.txpktsize, 1);
+DBG_871X("%s(): ==> txdesc.txpktsize is : %d\n", __FUNCTION__, pkt->len);		
 //		_rtw_memcpy(pxmitbuf, &txdesc, txdesc.offset);
 //		_rtw_memcpy((pxmitbuf+txdesc.offset), pkt->data, pkt->len);
 //		sdio_write_port(pintfhdl, WLAN_TX_HIQ_DEVICE_ID, txdesc.txpktsize, pxmitbuf);
