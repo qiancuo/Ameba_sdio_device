@@ -250,7 +250,7 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 	int ret = 0;
 	struct pkt_file pfile;
 	struct intf_hdl *pintfhdl;
-	struct u8 *pxmitbuf;
+	u8 *pxmitbuf;
 	TXDESC_8195A txdesc;
 	DBG_871X("%s(): ==> xmit wanted!\n", __FUNCTION__);
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
