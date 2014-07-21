@@ -1138,7 +1138,7 @@ static u32 sdio_read_port(
  *	_SUCCESS(1)		Success
  *	_FAIL(0)		Fail
  */
-static u32 sdio_write_port(
+u32 sdio_write_port(
 	struct intf_hdl *pintfhdl,
 	u32 addr,
 	u32 cnt,
