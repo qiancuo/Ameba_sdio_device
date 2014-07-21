@@ -1164,7 +1164,7 @@ u32 sdio_write_port(
 		cnt = _RND(cnt, psdio->block_transfer_len);
 //	cnt = sdio_align_size(cnt);
 
-	err = sd_write(pintfhdl, addr, cnt, xmitbuf->pdata);
+//	err = sd_write(pintfhdl, addr, cnt, xmitbuf->pdata);
 
 //	rtw_sctx_done_err(&xmitbuf->sctx,
 //		err ? RTW_SCTX_DONE_WRITE_PORT_ERR : RTW_SCTX_DONE_SUCCESS);
