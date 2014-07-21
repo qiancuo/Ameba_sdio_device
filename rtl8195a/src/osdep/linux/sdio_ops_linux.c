@@ -830,10 +830,10 @@ _func_enter_;
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
 	
-//		if(padapter->bSurpriseRemoved){
-//			//DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n",__FUNCTION__);
-//			return err;
-//		}
+	if(padapter->bSurpriseRemoved){
+		//DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n",__FUNCTION__);
+		return err;
+	}
 	
 	func = psdio->func;
 //	size = sdio_align_size(func, cnt);
@@ -890,38 +890,24 @@ s32 sd_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 	s32 err=-EPERM;
 DBG_871X("%s()====>\n", __func__);
 _func_enter_;
-	if(pintfhdl->padapter==NULL)
-	{
-		printk("printfhdl->padapter is null\n");
-		return 0;
-	}
-	if(pintfhdl->pintf_dev==NULL)
-	{
-		printk("printfhdl->pintf is null\n");
-		return 0;
-	}
-	if(&psdiodev->intf_data==NULL)
-	{
-		printk("psdiodev->intf_data(psdio) is null\n");
-		return 0;
-	}
-//	padapter = pintfhdl->padapter;
-//	psdiodev = pintfhdl->pintf_dev;
-//	psdio = &psdiodev->intf_data;
-	
-//		if(padapter->bSurpriseRemoved){
-//			//DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n",__FUNCTION__);
-//			return err;
-//		}
-	
-//	func = psdio->func;
-//	claim_needed = rtw_sdio_claim_host_needed(func);
 
-//	if (claim_needed)
-//		sdio_claim_host(func);
-//	err = _sd_write(pintfhdl, addr, cnt, pdata);
-//	if (claim_needed)
-//		sdio_release_host(func);
+	padapter = pintfhdl->padapter;
+	psdiodev = pintfhdl->pintf_dev;
+	psdio = &psdiodev->intf_data;
+		
+		if(padapter->bSurpriseRemoved){
+			//DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n",__FUNCTION__);
+			return err;
+		}
+		
+	func = psdio->func;
+	claim_needed = rtw_sdio_claim_host_needed(func);
+
+	if (claim_needed)
+		sdio_claim_host(func);
+	err = _sd_write(pintfhdl, addr, cnt, pdata);
+	if (claim_needed)
+		sdio_release_host(func);
 _func_exit_;
 	return err;
 }

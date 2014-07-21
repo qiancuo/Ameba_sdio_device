@@ -6,7 +6,50 @@
 #include "../../../include/osdep_service_linux.h"
 #include "../../../include/osdep_service.h"
 
+//
+// Description:
+//	The following mapping is for SDIO host local register space.
+//
+// Creadted by Roger, 2011.01.31.
+//
+static void chris_HalSdioGetCmdAddr8195ASdio(
+	IN	struct sdio_func	*func,
+	IN 	u8				DeviceID,
+	IN	u32				Addr,
+	OUT	u32*			pCmdAddr
+	)
+{
+	switch (DeviceID)
+	{
+		case SDIO_LOCAL_DEVICE_ID:
+			*pCmdAddr = ((SDIO_LOCAL_DEVICE_ID << 13) | (Addr & SDIO_LOCAL_MSK));
+			break;
 
+//		case WLAN_IOREG_DEVICE_ID:
+//			*pCmdAddr = ((WLAN_IOREG_DEVICE_ID << 13) | (Addr & WLAN_IOREG_MSK));
+//			break;
+
+		case WLAN_TX_HIQ_DEVICE_ID:
+			*pCmdAddr = ((WLAN_TX_HIQ_DEVICE_ID << 13) | (Addr & WLAN_FIFO_MSK));
+			break;
+
+		case WLAN_TX_MIQ_DEVICE_ID:
+			*pCmdAddr = ((WLAN_TX_MIQ_DEVICE_ID << 13) | (Addr & WLAN_FIFO_MSK));
+			break;
+
+		case WLAN_TX_LOQ_DEVICE_ID:
+			*pCmdAddr = ((WLAN_TX_LOQ_DEVICE_ID << 13) | (Addr & WLAN_FIFO_MSK));
+			break;
+
+		case WLAN_RX0FF_DEVICE_ID:
+//			*pCmdAddr = ((WLAN_RX0FF_DEVICE_ID << 13) | (Addr & WLAN_RX0FF_MSK));
+			*pCmdAddr = ((WLAN_RX0FF_DEVICE_ID << 13) | (Addr & WLAN_RX0FF_MSK));
+			break;
+
+		default:
+			break;
+	}
+}
 //
 // Description:
 //	The following mapping is for SDIO host local register space.
@@ -346,143 +389,143 @@ static u32 _cvrt2ftaddr(const u32 addr, u8 *pdeviceId, u16 *poffset)
 //		return _SUCCESS;
 //	}
 //	
-//	/*
-//	 * Use CMD53 to write data to SDIO device.
-//	 * This function MUST be called after sdio_claim_host() or
-//	 * in SDIO ISR(host had been claimed).
-//	 *
-//	 * Parameters:
-//	 *	psdio	pointer of SDIO_DATA
-//	 *	addr	address to write
-//	 *	cnt		amount to write
-//	 *	pdata	data pointer, this should be a "DMA:able scratch buffer"!
-//	 *
-//	 * Return:
-//	 *	0		Success
-//	 *	others	Fail
-//	 */
-//	s32 _sd_write(struct sdio_func *func, u32 addr, u32 cnt, void *pdata)
-//	{
-//		
-//		struct sdio_func *pfunc;
-//		u32 size;
-//		s32 err=-EPERM;
+/*
+ * Use CMD53 to write data to SDIO device.
+ * This function MUST be called after sdio_claim_host() or
+ * in SDIO ISR(host had been claimed).
+ *
+ * Parameters:
+ *	psdio	pointer of SDIO_DATA
+ *	addr	address to write
+ *	cnt		amount to write
+ *	pdata	data pointer, this should be a "DMA:able scratch buffer"!
+ *
+ * Return:
+ *	0		Success
+ *	others	Fail
+ */
+s32 _chris_sd_write(struct sdio_func *func, u32 addr, u32 cnt, void *pdata)
+{
+	
+	struct sdio_func *pfunc;
+	u32 size;
+	s32 err=-EPERM;
+	
+_func_enter_;
+	
+	pfunc = func;
+//	size = sdio_align_size(func, cnt);
+	
+	if (unlikely((cnt==1) || (cnt==2)))
+	{
+		int i;
+		u8 *pbuf = (u8*)pdata;
+	
+		for (i = 0; i < cnt; i++)
+		{
+			sdio_writeb(pfunc, *(pbuf+i), addr+i, &err);
+			if (err) {
+				printk("%s: FAIL!(%d) addr=0x%05x val=0x%02x\n", __func__, err, addr, *(pbuf+i));
+				break;
+			}
+		}
+	
+		return err;
+	}
+	
+	size = cnt;
+//	printk("%s(): write to addr 0x%x\n", __func__, addr);
+//	printk("%s(): write size %d\n", __func__, size);
+	err = sdio_memcpy_toio(pfunc, addr, pdata, size);
+	if (err) {
+		printk("%s: FAIL(%d)! ADDR=%#x Size=%d(%d)\n", __func__, err, addr, cnt, size);
+	}
+	
+_func_exit_;
+	
+	return err;
+}
+	
+/*
+ * Use CMD53 to write data to SDIO device.
+ *
+ * Parameters:
+ *  psdio	pointer of SDIO_DATA
+ *  addr	address to write
+ *  cnt		amount to write
+ *  pdata	data pointer, this should be a "DMA:able scratch buffer"!
+ *
+ * Return:
+ *  0		Success
+ *  others	Fail
+ */
+s32 chris_sd_write(struct sdio_func *func, u32 addr, u32 cnt, void *pdata)
+{
+	struct sdio_func *pfunc;
+//	bool claim_needed;
+	s32 err=-EPERM;
+_func_enter_;
+	
+	pfunc = func;
+//	claim_needed = rtw_sdio_claim_host_needed(func);
+	
+//	if (claim_needed)
+		sdio_claim_host(pfunc);
+	err = _chris_sd_write(pfunc, addr, cnt, pdata);
+//	if (claim_needed)
+		sdio_release_host(pfunc);
+_func_exit_;
+	return err;
+}
 //	
-//	_func_enter_;
-//		
-//		pfunc = func;
-//	//	size = sdio_align_size(func, cnt);
-//	
-//		if (unlikely((cnt==1) || (cnt==2)))
-//		{
-//			int i;
-//			u8 *pbuf = (u8*)pdata;
-//	
-//			for (i = 0; i < cnt; i++)
-//			{
-//				sdio_writeb(pfunc, *(pbuf+i), addr+i, &err);
-//				if (err) {
-//					printk("%s: FAIL!(%d) addr=0x%05x val=0x%02x\n", __func__, err, addr, *(pbuf+i));
-//					break;
-//				}
-//			}
-//	
-//			return err;
-//		}
-//	
-//		size = cnt;
-//	//	printk("%s(): write to addr 0x%x\n", __func__, addr);
-//	//	printk("%s(): write size %d\n", __func__, size);
-//		err = sdio_memcpy_toio(pfunc, addr, pdata, size);
-//		if (err) {
-//			printk("%s: FAIL(%d)! ADDR=%#x Size=%d(%d)\n", __func__, err, addr, cnt, size);
-//		}
-//	
-//	_func_exit_;
-//	
-//		return err;
-//	}
-//	
-//	/*
-//	 * Use CMD53 to write data to SDIO device.
-//	 *
-//	 * Parameters:
-//	 *  psdio	pointer of SDIO_DATA
-//	 *  addr	address to write
-//	 *  cnt		amount to write
-//	 *  pdata	data pointer, this should be a "DMA:able scratch buffer"!
-//	 *
-//	 * Return:
-//	 *  0		Success
-//	 *  others	Fail
-//	 */
-//	s32 sd_write(struct sdio_func *func, u32 addr, u32 cnt, void *pdata)
-//	{
-//		struct sdio_func *pfunc;
-//	//	bool claim_needed;
-//		s32 err=-EPERM;
-//	_func_enter_;
-//	
-//		pfunc = func;
-//	//	claim_needed = rtw_sdio_claim_host_needed(func);
-//	
-//	//	if (claim_needed)
-//			sdio_claim_host(pfunc);
-//		err = _sd_write(pfunc, addr, cnt, pdata);
-//	//	if (claim_needed)
-//			sdio_release_host(pfunc);
-//	_func_exit_;
-//		return err;
-//	}
-//	
-//	/*
-//	 * Description:
-//	 *	Write to TX FIFO
-//	 *	Align write size block size,
-//	 *	and make sure data could be written in one command.
-//	 *
-//	 * Parameters:
-//	 *	pintfhdl	a pointer of intf_hdl
-//	 *	addr		port ID
-//	 *	cnt			size to write
-//	 *	wmem		data pointer to write
-//	 *
-//	 * Return:
-//	 *	_SUCCESS(1)		Success
-//	 *	_FAIL(0)		Fail
-//	 */
-//	u32 sdio_write_port(
-//		struct sdio_func *func,
-//		u32 addr,
-//		u32 cnt,
-//		u8 *mem)
-//	{
-//	
-//		s32 err;
-//		struct sdio_func *pfunc = func;
-//	//	struct xmit_buf *xmitbuf = (struct xmit_buf *)mem;
-//	//	printk("%s(): addr is %d\n", __func__, addr);
-//		cnt = _RND4(cnt);
-//	//	printk("%s(): cnt is %d\n", __func__, cnt);
-//		HalSdioGetCmdAddr8195ASdio(pfunc, addr, cnt >> 2, &addr);
-//	//	printk("%s(): Get Cmd Addr is 0x%x\n", __func__, addr);
-//		
-//		if (cnt > pfunc->cur_blksize)
-//			cnt = _RND(cnt, pfunc->cur_blksize);
-//	//	cnt = sdio_align_size(cnt);
-//	
-//		err = sd_write(pfunc, addr, cnt, mem);
-//	
-//	//	rtw_sctx_done_err(&xmitbuf->sctx,
-//	//		err ? RTW_SCTX_DONE_WRITE_PORT_ERR : RTW_SCTX_DONE_SUCCESS);
-//		
-//		if (err)
-//		{
-//			printk("%s, error=%d\n", __func__, err);
-//			return _FAIL;
-//		}
-//		return _SUCCESS;
-//	}
+/*
+ * Description:
+ *	Write to TX FIFO
+ *	Align write size block size,
+ *	and make sure data could be written in one command.
+ *
+ * Parameters:
+ *	pintfhdl	a pointer of intf_hdl
+ *	addr		port ID
+ *	cnt			size to write
+ *	wmem		data pointer to write
+ *
+ * Return:
+ *	_SUCCESS(1)		Success
+ *	_FAIL(0)		Fail
+ */
+u32 chris_sdio_write_port(
+	struct sdio_func *func,
+	u32 addr,
+	u32 cnt,
+	u8 *mem)
+{
+	
+	s32 err;
+	struct sdio_func *pfunc = func;
+//	struct xmit_buf *xmitbuf = (struct xmit_buf *)mem;
+//	printk("%s(): addr is %d\n", __func__, addr);
+	cnt = _RND4(cnt);
+//	printk("%s(): cnt is %d\n", __func__, cnt);
+	chris_HalSdioGetCmdAddr8195ASdio(pfunc, addr, cnt >> 2, &addr);
+//	printk("%s(): Get Cmd Addr is 0x%x\n", __func__, addr);
+	
+	if (cnt > pfunc->cur_blksize)
+		cnt = _RND(cnt, pfunc->cur_blksize);
+//	cnt = sdio_align_size(cnt);
+	
+	err = chris_sd_write(pfunc, addr, cnt, mem);
+	
+//	rtw_sctx_done_err(&xmitbuf->sctx,
+//		err ? RTW_SCTX_DONE_WRITE_PORT_ERR : RTW_SCTX_DONE_SUCCESS);
+	
+	if (err)
+	{
+		printk("%s, error=%d\n", __func__, err);
+		return _FAIL;
+	}
+	return _SUCCESS;
+}
 //	
 //	/*
 //	 * Todo: align address to 4 bytes.
@@ -1150,23 +1193,23 @@ u32 sdio_write_port(
 	struct xmit_buf *xmitbuf = (struct xmit_buf *)mem;
 	u8 *pdata = mem;
 	DBG_871X("%s()====>\n", __func__);
-//	padapter = pintfhdl->padapter;
-//	psdio = &adapter_to_dvobj(padapter)->intf_data;
-	
-//		if (padapter->hw_init_completed == _FALSE) {
-//			DBG_871X("%s [addr=0x%x cnt=%d] padapter->hw_init_completed == _FALSE\n",__func__,addr,cnt);
-//			return _FAIL;
-//		}
+	padapter = pintfhdl->padapter;
+	psdio = &adapter_to_dvobj(padapter)->intf_data;
+		
+		if (padapter->hw_init_completed == _FALSE) {
+			DBG_871X("%s [addr=0x%x cnt=%d] padapter->hw_init_completed == _FALSE\n",__func__,addr,cnt);
+			return _FAIL;
+		}
 	
 	cnt = _RND4(cnt);
-//	HalSdioGetCmdAddr8195ASdio(padapter, addr, cnt >> 2, &addr);
-	HalSdioGetCmdAddr8195ASdio(NULL, addr, cnt >> 2, &addr);	
-//		if (cnt > psdio->block_transfer_len)
-//			cnt = _RND(cnt, psdio->block_transfer_len);
+	HalSdioGetCmdAddr8195ASdio(padapter, addr, cnt >> 2, &addr);
+//	HalSdioGetCmdAddr8195ASdio(NULL, addr, cnt >> 2, &addr);	
+	if (cnt > psdio->block_transfer_len)
+		cnt = _RND(cnt, psdio->block_transfer_len);
 	//cnt = sdio_align_size(cnt);
 
-//	err = sd_write(pintfhdl, addr, cnt, xmitbuf->pdata);
-	err = sd_write(pintfhdl, addr, cnt, pdata);
+	err = sd_write(pintfhdl, addr, cnt, xmitbuf->pdata);
+//	err = sd_write(pintfhdl, addr, cnt, pdata);
 //	rtw_sctx_done_err(&xmitbuf->sctx,
 //		err ? RTW_SCTX_DONE_WRITE_PORT_ERR : RTW_SCTX_DONE_SUCCESS);
 	
