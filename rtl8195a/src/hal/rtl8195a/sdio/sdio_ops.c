@@ -1159,8 +1159,8 @@ u32 sdio_write_port(
 //		}
 	
 	cnt = _RND4(cnt);
-	HalSdioGetCmdAddr8195ASdio(padapter, addr, cnt >> 2, &addr);
-	
+//	HalSdioGetCmdAddr8195ASdio(padapter, addr, cnt >> 2, &addr);
+	HalSdioGetCmdAddr8195ASdio(NULL, addr, cnt >> 2, &addr);	
 //		if (cnt > psdio->block_transfer_len)
 //			cnt = _RND(cnt, psdio->block_transfer_len);
 	//cnt = sdio_align_size(cnt);
