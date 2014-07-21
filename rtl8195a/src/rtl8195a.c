@@ -545,6 +545,30 @@ static void sd_sync_int_hdl(struct sdio_func *func)
 //	sd_int_hal(gHal_Data);
 //	rtw_sdio_set_irq_thd(psdpriv, NULL);
 }
+static int chris_sdio_init(struct sdio_func *func)
+{
+	int rc;
+	printk("Chris=====>%s():\n", __FUNCTION__);
+	sdio_claim_host(func);
+	rc = sdio_enable_func(func);
+	if(rc)
+	{
+		printk("%s(): sdio_enable_func FAIL!\n", __FUNCTION__);
+		goto release;
+	}
+	rc = sdio_set_block_size(func, 512);
+	if(rc)
+	{
+		printk("%s(): sdio_set_block_size FAIL!\n", __FUNCTION__);
+		goto release;
+	}
+
+	sdio_release_host(func);
+	return rc;
+release:
+	sdio_release_host(func);
+	return rc;
+}
 static int sdio_init(struct dvobj_priv *dvobj)
 {
 	PSDIO_DATA psdio_data;
