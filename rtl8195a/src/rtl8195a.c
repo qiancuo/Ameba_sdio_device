@@ -967,39 +967,39 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 //	static int board_idx = -1;
 	int status = _FAIL;
 	struct net_device *pnetdev;
-//		PADAPTER if1 = NULL, if2 = NULL;
-//		struct dvobj_priv *dvobj;
-	PCHRIS_ADAPTER if1=NULL;
+		PADAPTER if1 = NULL, if2 = NULL;
+		struct dvobj_priv *dvobj;
+//	PCHRIS_ADAPTER if1=NULL;
 	int ret = 0;
 //	board_idx++;
 //	printk("%s():++\n",__FUNCTION__);
 
-//		RT_TRACE(_module_hci_intfs_c_, _drv_info_,
-//			("+rtw_drv_init: vendor=0x%04x device=0x%04x class=0x%02x\n",
-//			func->vendor, func->device, func->class));
-//	
-//		if ((dvobj = sdio_dvobj_init(func)) == NULL) {
-//			RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("initialize device object priv Failed!\n"));
-//			goto exit;
-//		}
-//		if ((if1 = rtw_sdio_if1_init(dvobj, id)) == NULL) {
-//			DBG_871X("rtw_init_primary_adapter Failed!\n");
-//			goto free_dvobj;
-//		}
-//	
-//		//dev_alloc_name && register_netdev
-//		if((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
-//			DBG_871X("drv_register_netdev Failed!\n");
-//			goto free_if1;
-//		}
+	RT_TRACE(_module_hci_intfs_c_, _drv_info_,
+		("+rtw_drv_init: vendor=0x%04x device=0x%04x class=0x%02x\n",
+		func->vendor, func->device, func->class));
+	
+	if ((dvobj = sdio_dvobj_init(func)) == NULL) {
+		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("initialize device object priv Failed!\n"));
+		goto exit;
+	}
+	if ((if1 = rtw_sdio_if1_init(dvobj, id)) == NULL) {
+		DBG_871X("rtw_init_primary_adapter Failed!\n");
+		goto free_dvobj;
+	}
+	
+	//dev_alloc_name && register_netdev
+	if((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
+		DBG_871X("drv_register_netdev Failed!\n");
+		goto free_if1;
+	}
 
 
 	gHal_Data = kmalloc(sizeof(PHAL_DATA_TYPE), GFP_KERNEL);
 //	g_SDIO_cmdData = kmalloc(2048, GFP_KERNEL);
 	// 1.init SDIO bus and read chip version	
-	ret = chris_sdio_init(func);
-	if(ret)
-		return ret;
+//		ret = chris_sdio_init(func);
+//		if(ret)
+//			return ret;
 	gHal_Data->func = func;
 	gHal_Data->SdioRxFIFOCnt =0;
 	mutex_init(&Recv_Xmit_mutex);
@@ -1011,12 +1011,12 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 
 //    printk("%s", GPL_CLAIM);
 //	return ret;
-	if1 = chris_rtw_sdio_if_init(func);
-	if(!if1)
-	{	
-		printk("if1 is null\n");
-		goto exit;
-	}
+//		if1 = chris_rtw_sdio_if_init(func);
+//		if(!if1)
+//		{	
+//			printk("if1 is null\n");
+//			goto exit;
+//		}
 //	sdio_set_drvdata(func, if1);
 //			status = register_netdev(if1->pnetdev);
 //		if(status)
