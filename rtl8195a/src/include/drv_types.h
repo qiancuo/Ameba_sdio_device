@@ -602,6 +602,6 @@ typedef struct _chris_adapter
 	struct sdio_func *func;
 	struct net_device *pnetdev;
 //	u8 *pdata;
-}CHRIS_ADAPTER, PCHRIS_ADAPTER;
+}CHRIS_ADAPTER, *PCHRIS_ADAPTER;
 
 #endif
