@@ -755,7 +755,8 @@ PCHRIS_ADAPTER chris_rtw_sdio_if_init(struct sdio_func *func)
 		printk("rtw_init_netdev Failed\n");
 		goto free_adapter;
 	}
-	SET_NETDEV_DEV(pnetdev, &padapter->func->dev);	
+	SET_NETDEV_DEV(pnetdev, &padapter->func->dev);
+	return padapter;
 free_adapter:
 	if (status != _SUCCESS) {
 		if (pnetdev)
@@ -1011,6 +1012,11 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 //    printk("%s", GPL_CLAIM);
 //	return ret;
 	if1 = chris_rtw_sdio_if_init(func);
+	if(!if1)
+	{	
+		printk("if1 is null\n");
+		goto exit;
+	}
 	sdio_set_drvdata(func, if1);
 	status = register_netdev(if1->pnetdev);
 	if(status)
