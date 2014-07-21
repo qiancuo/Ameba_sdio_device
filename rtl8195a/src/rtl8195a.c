@@ -505,7 +505,7 @@ static int SendOnePkt(struct sdio_func *func)
 	data[70] = 0x3e;
 	for (i=0;i<TxPktSize-71;i++)
 	{
-		data[i+75] = 0x3e;
+		data[i+71] = 0x3e;
 	}
 //	memcpy(data+32, g_SDIO_cmdData, strlen(g_SDIO_cmdData));
 	printk("tx packet length is %d\n", strlen(data));
@@ -516,7 +516,7 @@ static int SendOnePkt(struct sdio_func *func)
 	}
 
 	pfunc = func;
-	chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, TxPktSize, data);
+//	chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, TxPktSize, data);
 //	sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, strlen(data), data);
 /*
 	for(i=0; i<10;i++)
