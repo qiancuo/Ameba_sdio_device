@@ -262,7 +262,7 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 		DBG_871X("%s(): ==> padapter->hw_init_completed is null\n", __FUNCTION__);
 		return ret;
 	}
-//	padapter->hw_init_completed = _TRUE;
+	padapter->hw_init_completed = _TRUE;
 	pintfhdl->padapter = padapter;
 	pintfhdl->pintf_dev = padapter->dvobj;
 	if (pkt) {
@@ -277,6 +277,8 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 		_rtw_memcpy((pxmitbuf->pdata+txdesc.offset), pkt->data, pkt->len);
 //		sdio_write_port(pintfhdl, WLAN_TX_HIQ_DEVICE_ID, txdesc.txpktsize, pxmitbuf);
 	}
-
+	rtw_mfree(padapter->hw_init_completed, sizeof(u8));
+	rtw_mfree(pxmitbuf, sizeof(*pxmitbuf));
+	rtw_mfree(pxmitbuf->pdata, 2048);
 	return ret;
 }
