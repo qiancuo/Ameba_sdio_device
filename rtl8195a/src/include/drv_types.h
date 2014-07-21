@@ -266,7 +266,7 @@ struct _ADAPTER{
 	u16 	chip_type;
 	u16	HardwareType;
 	u16	interface_type;//USB,SDIO,SPI,PCI
-
+	struct sdio_func *func;
 	struct dvobj_priv *dvobj;
 		struct	mlme_priv mlmepriv;
 		struct	mlme_ext_priv mlmeextpriv;
