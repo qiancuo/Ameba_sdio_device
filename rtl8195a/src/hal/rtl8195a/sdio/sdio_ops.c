@@ -1149,6 +1149,7 @@ u32 sdio_write_port(
 	s32 err;
 	struct xmit_buf *xmitbuf = (struct xmit_buf *)mem;
 	u8 *pdata = mem;
+	DBG_871X("%s()====>\n", __func__);
 	padapter = pintfhdl->padapter;
 	psdio = &adapter_to_dvobj(padapter)->intf_data;
 	

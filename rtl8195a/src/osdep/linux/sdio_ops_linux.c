@@ -824,16 +824,16 @@ s32 _sd_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 	struct sdio_func *func;
 	u32 size;
 	s32 err=-EPERM;
-
+DBG_871X("%s()====>\n", __func__);
 _func_enter_;
 	padapter = pintfhdl->padapter;
 	psdiodev = pintfhdl->pintf_dev;
 	psdio = &psdiodev->intf_data;
 	
-	if(padapter->bSurpriseRemoved){
-		//DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n",__FUNCTION__);
-		return err;
-	}
+//		if(padapter->bSurpriseRemoved){
+//			//DBG_871X(" %s (padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n",__FUNCTION__);
+//			return err;
+//		}
 	
 	func = psdio->func;
 //	size = sdio_align_size(func, cnt);
@@ -888,6 +888,7 @@ s32 sd_write(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, void *pdata)
 	struct sdio_func *func;
 	bool claim_needed;
 	s32 err=-EPERM;
+DBG_871X("%s()====>\n", __func__);
 _func_enter_;
 	padapter = pintfhdl->padapter;
 	psdiodev = pintfhdl->pintf_dev;
