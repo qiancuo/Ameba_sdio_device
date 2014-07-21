@@ -1019,7 +1019,8 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 	}
 //	sdio_set_drvdata(func, if1);
 		status = register_netdev(if1->pnetdev);
-//		if(status)
+	if(status)
+		printk("register_netdev FAIL.\n");
 //			return status;
 //		netif_carrier_off(pnetdev);
 free_if1:
