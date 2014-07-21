@@ -23,6 +23,8 @@
 #include "../../include/rtw_debug.h"
 #include "../../include/xmit_osdep.h"
 #include "../../include/8195_desc.h"
+#include "../../include/8195_sdio_reg.h"
+#include "../../include/sdio_ops.h"
 
 uint rtw_remainder_len(struct pkt_file *pfile)
 {
