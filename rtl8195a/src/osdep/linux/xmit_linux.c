@@ -248,6 +248,7 @@ extern PHAL_DATA_TYPE gHal_Data;
 int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 {
 	int ret = 0;
+	int i;
 	struct pkt_file pfile;
 	struct intf_hdl *pintfhdl;
 	u8 *pxmitbuf;
@@ -286,7 +287,8 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 		printk("pfunc->cur_blksize=>%d\n", pfunc->cur_blksize);
 		_rtw_memcpy(pxmitbuf, &txdesc, txdesc.offset);
 		_rtw_memcpy((pxmitbuf+txdesc.offset), pfile.cur_buffer, txdesc.txpktsize);
-//		chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (txdesc.txpktsize+txdesc.offset), pxmitbuf);
+		chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (txdesc.txpktsize+txdesc.offset), pxmitbuf);
+//		for(i=0;i<1000;i++);
 	}
 //	rtw_mfree(padapter->hw_init_completed, sizeof(u8));
 //	rtw_mfree(pxmitbuf, sizeof(*pxmitbuf));
