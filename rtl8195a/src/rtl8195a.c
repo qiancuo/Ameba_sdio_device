@@ -454,7 +454,7 @@ static int SendOnePkt(struct sdio_func *func)
 		data[32] = 0x1a; //pktsize0
 		data[33] = 0x01; //pktsize1
 		data[34] = 0x04; //offset
-		data[35] = 0x80; //frame type
+		data[35] = 0x00; //frame type: data
 //		data[36] = 0x00; 
 //		data[37] = 0x00; 
 //		data[38] = 0x00; //resv
