@@ -515,7 +515,7 @@ u32 chris_sdio_write_port(
 		cnt = _RND(cnt, pfunc->cur_blksize);
 //	cnt = sdio_align_size(cnt);
 	
-	err = chris_sd_write(pfunc, addr, cnt, mem);
+//	err = chris_sd_write(pfunc, addr, cnt, mem);
 	
 //	rtw_sctx_done_err(&xmitbuf->sctx,
 //		err ? RTW_SCTX_DONE_WRITE_PORT_ERR : RTW_SCTX_DONE_SUCCESS);
