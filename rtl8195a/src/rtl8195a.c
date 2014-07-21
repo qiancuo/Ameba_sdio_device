@@ -755,7 +755,7 @@ PCHRIS_ADAPTER chris_rtw_sdio_if_init(struct sdio_func *func)
 		printk("rtw_init_netdev Failed\n");
 		goto free_adapter;
 	}
-	SET_NETDEV_DEV(pnetdev, &padapter->func.dev);	
+	SET_NETDEV_DEV(pnetdev, padapter->func->dev);	
 free_adapter:
 	if (status != _SUCCESS) {
 		if (pnetdev)
