@@ -468,7 +468,7 @@ _func_enter_;
 	printk("%s()===========>\n", __FUNCTION__);	
 	pfunc = func;
 //	claim_needed = rtw_sdio_claim_host_needed(func);
-	
+printk("pfunc->cur_blksize=>%d\n", pfunc->cur_blksize);		
 //	if (claim_needed)
 //		sdio_claim_host(pfunc);
 //	err = _chris_sd_write(pfunc, addr, cnt, pdata);
