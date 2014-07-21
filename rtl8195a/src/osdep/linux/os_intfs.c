@@ -2133,7 +2133,7 @@ static int _rtw_drv_register_netdev(_adapter *padapter, char *name)
 	struct net_device *pnetdev = padapter->pnetdev;
 
 	/* alloc netdev name */
-	rtw_init_netdev_name(pnetdev, name);
+//	rtw_init_netdev_name(pnetdev, name);
 
 	mac_addr[0] = 0x00;
 	mac_addr[1] = 0xe0;
@@ -2150,7 +2150,7 @@ static int _rtw_drv_register_netdev(_adapter *padapter, char *name)
 		ret = _FAIL;
 		goto error_register_netdev;
 	}
-
+	netif_carrier_off(pnetdev);
 	DBG_871X("%s, MAC Address (if%d) = " MAC_FMT "\n", __FUNCTION__, (padapter->iface_id+1), MAC_ARG(pnetdev->dev_addr));
 
 	return ret;
