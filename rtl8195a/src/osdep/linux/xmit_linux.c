@@ -274,7 +274,7 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 //			DBG_871X("%s(): ==> gHal_Data->func is null\n", __FUNCTION__);
 //			return ret;
 //		}
-//	_rtw_init_listhead(&chris_buf.list);
+	_rtw_init_listhead(&chris_buf.list);
 	if (pkt) {
 //		rtw_mstat_update(MSTAT_TYPE_SKB, MSTAT_ALLOC_SUCCESS, pkt->truesize);
 //		ret = _rtw_xmit_entry(pkt, pnetdev);
