@@ -406,7 +406,7 @@ static int SendPkt_Thread(void *pData)
 
 		ptxdesc = (PTXDESC_8195A)pchris_buf->buf;
 		for(i=0;i<(ptxdesc->txpktsize+ptxdesc->offset);i++)
-			printk("chris_buf.buf[%d] = 0x%02x\n", i, *(chris_buf.buf+i));
+			printk("chris_buf.buf[%d] = 0x%02x\n", i, *(pchris_buf->buf+i));
 //		chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (ptxdesc->txpktsize+ptxdesc->offset), pchris_buf->buf);
 		}
 	}
