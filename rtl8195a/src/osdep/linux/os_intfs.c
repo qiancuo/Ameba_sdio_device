@@ -1089,7 +1089,7 @@ struct dvobj_priv *devobj_init(void)
 	_rtw_mutex_init(&pdvobj->setch_mutex);
 	_rtw_mutex_init(&pdvobj->setbw_mutex);
 
-	_rtw_spinlock_init(&pdvobj->lock);
+//	_rtw_spinlock_init(&pdvobj->lock);
 
 	pdvobj->macid[1] = _TRUE; //macid=1 for bc/mc stainfo
 
