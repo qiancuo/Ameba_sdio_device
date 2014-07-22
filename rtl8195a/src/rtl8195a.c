@@ -607,8 +607,8 @@ static int chris_sdio_init(struct sdio_func *func)
 		goto release;
 	}
 
-	sdio_release_host(func);
-	return rc;
+//		sdio_release_host(func);
+//		return rc;
 release:
 	sdio_release_host(func);
 	return rc;
@@ -1033,7 +1033,7 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 	
 //	init_chris_Buf_Pool();
 
-	_rtw_init_listhead(&chris_buf_list);
+//	_rtw_init_listhead(&chris_buf_list);
 	gHal_Data = kmalloc(sizeof(PHAL_DATA_TYPE), GFP_KERNEL);
 //	g_SDIO_cmdData = kmalloc(2048, GFP_KERNEL);
 	// 1.init SDIO bus and read chip version	
@@ -1045,8 +1045,8 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 	gHal_Data->SdioRxFIFOCnt =0;
 //	mutex_init(&Recv_Xmit_mutex);
 //	RecvOnePKt(func);
-//	SendOnePkt(func);
-	Xmit_Thread = kthread_run(SendPkt_Thread, (void *)gHal_Data, "xmit_thread");
+	SendOnePkt(func);
+//	Xmit_Thread = kthread_run(SendPkt_Thread, (void *)gHal_Data, "xmit_thread");
 //	Recv_Thread = kthread_run(RecvOnePkt_Thread, (void *)gHal_Data, "recv_thread");
 //    printk(KERN_INFO "%s: This product is covered by one or more of the following patents: US6,570,884, US6,115,776, and US6,327,625.\n", MODULENAME);
 
@@ -1085,16 +1085,16 @@ static void __devexit rtw_dev_remove(struct sdio_func *func)
 {
 
 	int rc = 0;
-		struct dvobj_priv *dvobj = sdio_get_drvdata(func);
+//		struct dvobj_priv *dvobj = sdio_get_drvdata(func);
 //		//	struct pwrctrl_priv *pwrctl = dvobj_to_pwrctl(dvobj);
-		PADAPTER padapter = dvobj->if1;
+//		PADAPTER padapter = dvobj->if1;
 //	
-	dvobj->processing_dev_remove = _TRUE;
+//	dvobj->processing_dev_remove = _TRUE;
 	
-	
-	rtw_unregister_netdevs(dvobj);
-	rtw_sdio_if1_deinit(padapter);
-	sdio_dvobj_deinit(func);
+//		
+//		rtw_unregister_netdevs(dvobj);
+//		rtw_sdio_if1_deinit(padapter);
+//		sdio_dvobj_deinit(func);
 
 	printk("%s():++\n", __FUNCTION__);
 
