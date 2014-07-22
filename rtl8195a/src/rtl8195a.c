@@ -389,6 +389,7 @@ static int SendPkt_Thread(void *pData)
 	PTXDESC_8195A ptxdesc;
 	pHal_Data = (PHAL_DATA_TYPE) pData;
 	pfunc = pHal_Data->func;
+	printk("%s()=========>\n", __FUNCTION__);
 	mutex_lock(&pHal_Data->buf_mutex);
 	while(!kthread_should_stop()){
 		SLEEP_MILLI_SEC(1000);
