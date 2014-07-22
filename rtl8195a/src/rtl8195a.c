@@ -607,8 +607,8 @@ static int chris_sdio_init(struct sdio_func *func)
 		goto release;
 	}
 
-//		sdio_release_host(func);
-//		return rc;
+	sdio_release_host(func);
+	return rc;
 release:
 	sdio_release_host(func);
 	return rc;
@@ -1011,8 +1011,8 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 //	static int board_idx = -1;
 	int status = _FAIL;
 	struct net_device *pnetdev;
-		PADAPTER if1 = NULL, if2 = NULL;
-		struct dvobj_priv *dvobj;
+//			PADAPTER if1 = NULL, if2 = NULL;
+//			struct dvobj_priv *dvobj;
 //	PCHRIS_ADAPTER if1=NULL;
 	int ret = 0;
 //	board_idx++;
