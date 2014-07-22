@@ -400,11 +400,11 @@ static int SendPkt_Thread(void *pData)
 		}
 		else
 		{
-		plist = get_next(&chris_buf_list);
-		pchris_buf = LIST_CONTAINOR(plist, CHRIS_XMIT_BUF, list);
-		rtw_list_delete(&pchris_buf->list);	
+//			plist = get_next(&chris_buf_list);
+//			pchris_buf = LIST_CONTAINOR(plist, CHRIS_XMIT_BUF, list);
+//			rtw_list_delete(&pchris_buf->list);	
 		mutex_unlock(&pHal_Data->buf_mutex);
-		ptxdesc = (PTXDESC_8195A)pchris_buf->buf;
+//		ptxdesc = (PTXDESC_8195A)pchris_buf->buf;
 		printk("List isn't null\n");
 //			for(i=0;i<(ptxdesc->txpktsize+ptxdesc->offset);i++)
 //				printk("chris_buf.buf[%d] = 0x%02x\n", i, *(pchris_buf->buf+i));
