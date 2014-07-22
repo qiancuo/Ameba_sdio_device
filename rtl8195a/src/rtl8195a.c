@@ -389,17 +389,20 @@ static int SendPkt_Thread(void *pData)
 	pHal_Data = (PHAL_DATA_TYPE) pData;
 	pfunc = pHal_Data->func;
 //	mutex_lock(&pHal_Data->buf_mutex);
-	if (rtw_is_list_empty(&chris_buf_list)) {
-		printk("Err!! List is empty!!\n");
-//		mutex_unlock(&pHal_Data->buf_mutex);
-		return NULL;
+	while(!kthread_should_stop()){
+		SLEEP_MILLI_SEC(1000);
+		if (rtw_is_list_empty(&chris_buf_list)) {
+			printk("Err!! List is empty!!\n");
+	//		mutex_unlock(&pHal_Data->buf_mutex);
+			return 0;
+		}
+		plist = get_next(&chris_buf_list);
+		pchris_buf = LIST_CONTAINOR(plist, CHRIS_XMIT_BUF, list);
+		rtw_list_delete(&pchris_buf->list);	
+	//	mutex_unlock(&pHal_Data->buf_mutex);
+		ptxdesc = (PTXDESC_8195A)pchris_buf->buf;
+		chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (ptxdesc->txpktsize+ptxdesc->offset), pchris_buf->buf);
 	}
-	plist = get_next(&chris_buf_list);
-	pchris_buf = LIST_CONTAINOR(plist, CHRIS_XMIT_BUF, list);
-	rtw_list_delete(&pchris_buf->list);	
-//	mutex_unlock(&pHal_Data->buf_mutex);
-	ptxdesc = (PTXDESC_8195A)pchris_buf->buf;
-	chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (ptxdesc->txpktsize+ptxdesc->offset), pchris_buf->buf);
 	return 0;
 }
 static int Print_Message(u8 *message)
@@ -1053,10 +1056,10 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 //			return status;
 //		netif_carrier_off(pnetdev);
 	//dev_alloc_name && register_netdev
-//		if((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
-//			DBG_871X("drv_register_netdev Failed!\n");
-//			goto free_if1;
-//		}
+	if((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
+		DBG_871X("drv_register_netdev Failed!\n");
+		goto free_if1;
+	}
 free_if1:
 	if (status != _SUCCESS && if1) {
 		rtw_sdio_if1_deinit(if1);
