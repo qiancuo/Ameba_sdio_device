@@ -389,12 +389,12 @@ static int SendPkt_Thread(void *pData)
 	PTXDESC_8195A ptxdesc;
 	pHal_Data = (PHAL_DATA_TYPE) pData;
 	pfunc = pHal_Data->func;
-//	mutex_lock(&pHal_Data->buf_mutex);
+	mutex_lock(&pHal_Data->buf_mutex);
 	while(!kthread_should_stop()){
 		SLEEP_MILLI_SEC(1000);
 		if (rtw_is_list_empty(&chris_buf_list)) {
 			printk("Err!! List is empty!!\n");
-//			mutex_unlock(&pHal_Data->buf_mutex);
+			mutex_unlock(&pHal_Data->buf_mutex);
 //			break;
 		}
 		else
@@ -402,11 +402,11 @@ static int SendPkt_Thread(void *pData)
 		plist = get_next(&chris_buf_list);
 		pchris_buf = LIST_CONTAINOR(plist, CHRIS_XMIT_BUF, list);
 		rtw_list_delete(&pchris_buf->list);	
-//		mutex_unlock(&pHal_Data->buf_mutex);
-
+		mutex_unlock(&pHal_Data->buf_mutex);
 		ptxdesc = (PTXDESC_8195A)pchris_buf->buf;
-		for(i=0;i<(ptxdesc->txpktsize+ptxdesc->offset);i++)
-			printk("chris_buf.buf[%d] = 0x%02x\n", i, *(pchris_buf->buf+i));
+		printk("List isn't null\n");
+//			for(i=0;i<(ptxdesc->txpktsize+ptxdesc->offset);i++)
+//				printk("chris_buf.buf[%d] = 0x%02x\n", i, *(pchris_buf->buf+i));
 //		chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (ptxdesc->txpktsize+ptxdesc->offset), pchris_buf->buf);
 		}
 	}
@@ -1038,7 +1038,7 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 //		ret = chris_sdio_init(func);
 //		if(ret)
 //			return ret;
-//	_rtw_mutex_init(&gHal_Data->buf_mutex);	
+	mutex_init(&gHal_Data->buf_mutex);	
 	gHal_Data->func = func;
 	gHal_Data->SdioRxFIFOCnt =0;
 //	mutex_init(&Recv_Xmit_mutex);
@@ -1107,7 +1107,7 @@ static void __devexit rtw_dev_remove(struct sdio_func *func)
 //			kthread_stop(Recv_Thread);
 //		}
 //	mutex_destroy(&Recv_Xmit_mutex);
-//	mutex_destroy(&gHal_Data->buf_mutex);
+	mutex_destroy(&gHal_Data->buf_mutex);
 	if(gHal_Data)
 		kfree(gHal_Data);
 	
