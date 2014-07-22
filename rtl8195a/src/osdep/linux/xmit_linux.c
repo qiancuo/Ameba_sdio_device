@@ -244,6 +244,7 @@ static void TxDescGen(PTXDESC_8195A ptxdesc, u16 pktsize, u16 seqNum)
 	ptxdesc->mcsg15_max_len =0;
 	
 }
+extern _list chris_buf_list;
 extern PHAL_DATA_TYPE gHal_Data;
 static int j=0;
 int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
