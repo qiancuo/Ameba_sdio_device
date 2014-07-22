@@ -288,13 +288,14 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 		printk("pfunc->cur_blksize=>%d\n", pfunc->cur_blksize);
 		_rtw_memcpy(pxmitbuf, &txdesc, txdesc.offset);
 		_rtw_memcpy((pxmitbuf+txdesc.offset), pfile.cur_buffer, txdesc.txpktsize);
-		for(i=0;i<(txdesc.txpktsize+txdesc.offset);i++)
-			printk("pxmitbuf[%d] = 0x%02x\n", i, *(pxmitbuf+i));
 		if(j==0)
 		{
 			chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (txdesc.txpktsize+txdesc.offset), pxmitbuf);
 			j++;
 		}
+		for(i=0;i<(txdesc.txpktsize+txdesc.offset);i++)
+			printk("pxmitbuf[%d] = 0x%02x\n", i, *(pxmitbuf+i));
+
 //		for(i=0;i<10000;i++);
 	}
 //	rtw_mfree(padapter->hw_init_completed, sizeof(u8));
