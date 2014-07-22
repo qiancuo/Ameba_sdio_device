@@ -507,7 +507,7 @@ u32 chris_sdio_write_port(
 //	struct xmit_buf *xmitbuf = (struct xmit_buf *)mem;
 	printk("%s(): addr is %d\n", __func__, addr);
 	for(i=0;i<(cnt);i++)
-		printk("pxmitbuf[%d] = 0x%02x\n", i, *(mem+i));	
+		printk("mem[%d] = 0x%02x\n", i, *(mem+i));	
 	err = chris_sd_write(pfunc, addr, cnt, mem);
 	cnt = _RND4(cnt);
 	printk("%s(): cnt is %d\n", __func__, cnt);
