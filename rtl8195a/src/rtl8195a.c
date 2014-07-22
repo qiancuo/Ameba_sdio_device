@@ -390,7 +390,7 @@ static int SendPkt_Thread(void *pData)
 	pHal_Data = (PHAL_DATA_TYPE) pData;
 	pfunc = pHal_Data->func;
 	printk("%s()=========>\n", __FUNCTION__);
-	mutex_lock(&pHal_Data->buf_mutex);
+	mutex_lock(&gHal_Data->buf_mutex);
 	while(!kthread_should_stop()){
 		SLEEP_MILLI_SEC(1000);
 		if (rtw_is_list_empty(&chris_buf_list)) {
