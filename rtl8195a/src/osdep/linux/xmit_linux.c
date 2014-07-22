@@ -245,10 +245,11 @@ static void TxDescGen(PTXDESC_8195A ptxdesc, u16 pktsize, u16 seqNum)
 	
 }
 extern PHAL_DATA_TYPE gHal_Data;
+static int j=0;
 int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 {
 	int ret = 0;
-	int i, j=0;
+	int i;
 	struct pkt_file pfile;
 	struct intf_hdl *pintfhdl;
 	u8 *pxmitbuf;
