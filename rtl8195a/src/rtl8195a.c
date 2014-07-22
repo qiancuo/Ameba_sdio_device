@@ -1137,17 +1137,17 @@ static int __init rtl8195a_init_module(void)
 
 	DBG_871X_LEVEL(_drv_always_, "module init start\n");
 	dump_drv_version(RTW_DBGDUMP);
-#ifdef BTCOEXVERSION
-	DBG_871X_LEVEL(_drv_always_, DRV_NAME" BT-Coex version = %s\n", BTCOEXVERSION);
-#endif // BTCOEXVERSION
+//	#ifdef BTCOEXVERSION
+//		DBG_871X_LEVEL(_drv_always_, DRV_NAME" BT-Coex version = %s\n", BTCOEXVERSION);
+//	#endif // BTCOEXVERSION
 
-	ret = platform_wifi_power_on();
-	if (ret)
-	{
-		DBG_871X("%s: power on failed!!(%d)\n", __FUNCTION__, ret);
-		ret = -1;
-		goto exit;
-	}	
+//		ret = platform_wifi_power_on();
+//		if (ret)
+//		{
+//			DBG_871X("%s: power on failed!!(%d)\n", __FUNCTION__, ret);
+//			ret = -1;
+//			goto exit;
+//		}	
 
 	ret = register_chrdev(major,"inic_8195a",&fops);
 	if (ret < 0)
@@ -1157,8 +1157,8 @@ static int __init rtl8195a_init_module(void)
 	}
 	
 	sdio_drvpriv.drv_registered = _TRUE;
-	rtw_suspend_lock_init();
-	rtw_drv_proc_init();
+//	rtw_suspend_lock_init();
+//	rtw_drv_proc_init();
 //	rtw_ndev_notifier_register();
 	ret = sdio_register_driver(&sdio_drvpriv.r8195a_drv);
 	if(ret!=0)
@@ -1182,9 +1182,9 @@ static void __exit rtl8195a_cleanup_module(void)
 	sdio_drvpriv.drv_registered = _FALSE;
 	unregister_chrdev(major, "inic_8195a");
 	sdio_unregister_driver(&sdio_drvpriv.r8195a_drv);
-	platform_wifi_power_off();
-	rtw_suspend_lock_uninit();
-	rtw_drv_proc_deinit();
+//		platform_wifi_power_off();
+//		rtw_suspend_lock_uninit();
+//		rtw_drv_proc_deinit();
 //	rtw_ndev_notifier_unregister();
 	DBG_871X_LEVEL(_drv_always_, "module exit success\n");
 }

@@ -1095,7 +1095,7 @@ struct dvobj_priv *devobj_init(void)
 
 	pdvobj->processing_dev_remove = _FALSE;
 
-	ATOMIC_SET(&pdvobj->disable_func, 0);
+//	ATOMIC_SET(&pdvobj->disable_func, 0);
 
 	return pdvobj;
 
