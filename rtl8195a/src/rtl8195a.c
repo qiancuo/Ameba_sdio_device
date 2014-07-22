@@ -394,7 +394,7 @@ static int SendPkt_Thread(void *pData)
 		if (rtw_is_list_empty(&chris_buf_list)) {
 			printk("Err!! List is empty!!\n");
 //			mutex_unlock(&pHal_Data->buf_mutex);
-			return 0;
+			break;
 		}
 		plist = get_next(&chris_buf_list);
 		pchris_buf = LIST_CONTAINOR(plist, CHRIS_XMIT_BUF, list);
@@ -1101,7 +1101,9 @@ static void __devexit rtw_dev_remove(struct sdio_func *func)
 //		}
 //	mutex_destroy(&Recv_Xmit_mutex);
 //	mutex_destroy(&gHal_Data->buf_mutex);
-	kfree(gHal_Data);
+	if(gHal_Data)
+		kfree(gHal_Data);
+	
 //	kfree(g_SDIO_cmdData);
 //		sdio_claim_host(func);
 //		rc = sdio_disable_func(func);
