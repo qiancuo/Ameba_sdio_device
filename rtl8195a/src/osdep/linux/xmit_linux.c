@@ -298,9 +298,9 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 //				chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (txdesc.txpktsize+txdesc.offset), pxmitbuf);
 //				j++;
 //			}
-		mutex_lock(&gHal_Data->buf_mutex);
+//		mutex_lock(&gHal_Data->buf_mutex);
 //		rtw_list_insert_tail(&chris_buf.list, &chris_buf_list);
-		mutex_unlock(&gHal_Data->buf_mutex);
+//		mutex_unlock(&gHal_Data->buf_mutex);
 //			for(i=0;i<(txdesc.txpktsize+txdesc.offset);i++)
 //				printk("chris_buf.buf[%d] = 0x%02x\n", i, *(chris_buf.buf+i));
 //			printk("pxmitbuf[%d] = 0x%02x\n", i, *(pxmitbuf+i));
