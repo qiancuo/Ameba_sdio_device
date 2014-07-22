@@ -396,6 +396,7 @@ static int SendPkt_Thread(void *pData)
 		if (rtw_is_list_empty(&chris_buf_list)) {
 			printk("Err!! List is empty!!\n");
 			mutex_unlock(&gHal_Data->buf_mutex);
+			SendOnePkt(pfunc);
 //			break;
 		}
 		else
