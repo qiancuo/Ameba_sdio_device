@@ -471,7 +471,7 @@ _func_enter_;
 printk("pfunc->cur_blksize=>%d\n", pfunc->cur_blksize);		
 //	if (claim_needed)
 //		sdio_claim_host(pfunc);
-	err = _chris_sd_write(pfunc, addr, cnt, pdata);
+//	err = _chris_sd_write(pfunc, addr, cnt, pdata);
 //	if (claim_needed)
 //		sdio_release_host(pfunc);
 _func_exit_;
@@ -503,9 +503,12 @@ u32 chris_sdio_write_port(
 	
 	s32 err;
 	struct sdio_func *pfunc = func;
-
+	int i;
 //	struct xmit_buf *xmitbuf = (struct xmit_buf *)mem;
 	printk("%s(): addr is %d\n", __func__, addr);
+	for(i=0;i<(cnt);i++)
+		printk("pxmitbuf[%d] = 0x%02x\n", i, *(mem+i));	
+	err = chris_sd_write(pfunc, addr, cnt, mem);
 	cnt = _RND4(cnt);
 	printk("%s(): cnt is %d\n", __func__, cnt);
 	chris_HalSdioGetCmdAddr8195ASdio(pfunc, addr, cnt >> 2, &addr);
