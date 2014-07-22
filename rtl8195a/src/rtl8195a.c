@@ -62,7 +62,12 @@ unsigned int datatype: 1; // only one bit used, 0: data frame 1: management fram
 //unsigned char cmdtype[2]; //to call which API
 //unsigned int resv: 16;
 }AT_CMD_DESC, *PAT_CMD_DESC;
-
+typedef struct _CHRIS_XMIT_BUF{
+	_list list;
+	u8 buf[2048];
+}CHRIS_XMIT_BUF, *PCHRIS_XMIT_BUF;
+CHRIS_XMIT_BUF chris_xmit_buf_pool[20];
+_list chris_buf_list;
 #define Message_Recv		"Here is Recv action!"
 #define Message_Xmit			"Here is Xmit action!"
 #ifndef SLEEP_MILLI_SEC
@@ -84,7 +89,15 @@ static unsigned char g_SDIO_cmdData[2048] = {0};//2048
 static int Print_Message(u8 *message);
 static int RecvOnePkt(struct sdio_func * func);
 static int SendOnePkt(struct sdio_func * func);
-
+//	static void init_chris_Buf_Pool(void){	
+//		int i;	
+//		memset(chris_xmit_buf_pool, '\0', sizeof(chris_xmit_buf_pool));	
+//		_rtw_init_listhead(&chris_buf_list);		
+//		for (i=0; i<20; i++) {				
+//			_rtw_init_listhead(&chris_xmit_buf_pool[i].list);		
+//			rtw_list_insert_tail(&chris_xmit_buf_pool[i].list, &chris_buf_list);	
+//			}	
+//	}
 static TX_DESC TxDescGen(u16 pktsize, u16 seqNum)
 {
 	TX_DESC txdesc;
@@ -369,7 +382,29 @@ static int SendOnePkt_Thread(void * pData)
 	}
 	return 0;
 }
-
+static int SendPkt_Thread(void *pData)
+{
+	struct sdio_func *pfunc;
+	_list *plist;
+	PCHRIS_XMIT_BUF pchris_buf;
+	PHAL_DATA_TYPE pHal_Data;
+	PTXDESC_8195A ptxdesc;
+	pHal_Data = (PHAL_DATA_TYPE) pData;
+	pfunc = pHal_Data->func;
+	mutex_lock(&pHal_Data->buf_mutex);
+	if (rtw_is_list_empty(&chris_buf_list)) {
+		printk("Err!! List is empty!!\n");
+		mutex_unlock(&pHal_Data->buf_mutex);
+		return NULL;
+	}
+	plist = get_next(&chris_buf_list);
+	pchris_buf = LIST_CONTAINOR(plist, CHRIS_XMIT_BUF, _list);
+	rtw_list_delete(&pchris_buf->list);	
+	mutex_unlock(&pHal_Data->buf_mutex);
+	ptxdesc = (PTXDESC_8195A)pchris_buf->buf;
+	chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (ptxdesc->txpktsize+ptxdesc->offset), pchris_buf->buf);
+	return 0;
+}
 static int Print_Message(u8 *message)
 {
 	printk("%s(): %s\n\n", __FUNCTION__, message);
@@ -987,21 +1022,22 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 		goto free_dvobj;
 	}
 	
+//	init_chris_Buf_Pool();
 
-
-
+	_rtw_init_listhead(&chris_buf_list);
 	gHal_Data = kmalloc(sizeof(PHAL_DATA_TYPE), GFP_KERNEL);
 //	g_SDIO_cmdData = kmalloc(2048, GFP_KERNEL);
 	// 1.init SDIO bus and read chip version	
 //		ret = chris_sdio_init(func);
 //		if(ret)
 //			return ret;
+	_rtw_mutex_init(&gHal_Data->buf_mutex);	
 	gHal_Data->func = func;
 	gHal_Data->SdioRxFIFOCnt =0;
 //	mutex_init(&Recv_Xmit_mutex);
 //	RecvOnePKt(func);
 //	SendOnePkt(func);
-//	Xmit_Thread = kthread_run(SendOnePkt_Thread, (void *)gHal_Data, "xmit_thread");
+	Xmit_Thread = kthread_run(SendPkt_Thread, (void *)gHal_Data, "xmit_thread");
 //	Recv_Thread = kthread_run(RecvOnePkt_Thread, (void *)gHal_Data, "recv_thread");
 //    printk(KERN_INFO "%s: This product is covered by one or more of the following patents: US6,570,884, US6,115,776, and US6,327,625.\n", MODULENAME);
 
@@ -1053,11 +1089,11 @@ static void __devexit rtw_dev_remove(struct sdio_func *func)
 
 	printk("%s():++\n", __FUNCTION__);
 
-//		if(Xmit_Thread)
-//		{
-//			printk("stop Xmit_Thread\n");
-//			kthread_stop(Xmit_Thread);
-//		}
+	if(Xmit_Thread)
+	{
+		printk("stop Xmit_Thread\n");
+		kthread_stop(Xmit_Thread);
+	}
 //		if(Recv_Thread)
 //		{
 //			printk("stop Recv_Thread\n");

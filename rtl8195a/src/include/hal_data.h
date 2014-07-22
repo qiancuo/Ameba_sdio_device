@@ -277,7 +277,7 @@ typedef struct hal_com_data
 	struct sdio_func *func;
 	u32			sdio_himr;
 	u32			sdio_hisr;
-
+	_mutex buf_mutex;
 	//
 	// SDIO Tx FIFO related.
 	//
@@ -293,7 +293,8 @@ typedef struct hal_com_data
 	//
 	u8			SdioRxFIFOCnt;
 	u16			SdioRxFIFOSize;
-
+//	_list list;
+//	u8 *pdata;
 //	u32			sdio_tx_max_len[SDIO_MAX_TX_QUEUE];// H, N, L, used for sdio tx aggregation max length per queue
 
 //	
