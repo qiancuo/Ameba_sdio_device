@@ -388,18 +388,18 @@ static int SendPkt_Thread(void *pData)
 	PTXDESC_8195A ptxdesc;
 	pHal_Data = (PHAL_DATA_TYPE) pData;
 	pfunc = pHal_Data->func;
-//	mutex_lock(&pHal_Data->buf_mutex);
+	mutex_lock(&pHal_Data->buf_mutex);
 	while(!kthread_should_stop()){
 		SLEEP_MILLI_SEC(1000);
 		if (rtw_is_list_empty(&chris_buf_list)) {
 			printk("Err!! List is empty!!\n");
-	//		mutex_unlock(&pHal_Data->buf_mutex);
+			mutex_unlock(&pHal_Data->buf_mutex);
 			return 0;
 		}
 		plist = get_next(&chris_buf_list);
 		pchris_buf = LIST_CONTAINOR(plist, CHRIS_XMIT_BUF, list);
 		rtw_list_delete(&pchris_buf->list);	
-	//	mutex_unlock(&pHal_Data->buf_mutex);
+		mutex_unlock(&pHal_Data->buf_mutex);
 		ptxdesc = (PTXDESC_8195A)pchris_buf->buf;
 		chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (ptxdesc->txpktsize+ptxdesc->offset), pchris_buf->buf);
 	}
