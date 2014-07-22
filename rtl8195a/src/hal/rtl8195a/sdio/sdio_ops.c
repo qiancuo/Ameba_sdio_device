@@ -436,7 +436,7 @@ _func_enter_;
 	size = cnt;
 	printk("%s(): write to addr 0x%x\n", __func__, addr);
 	printk("%s(): write size %d\n", __func__, size);
-//	err = sdio_memcpy_toio(pfunc, addr, pdata, size);
+	err = sdio_memcpy_toio(pfunc, addr, pdata, size);
 	if (err) {
 		printk("%s: FAIL(%d)! ADDR=%#x Size=%d(%d)\n", __func__, err, addr, cnt, size);
 	}
@@ -471,7 +471,7 @@ _func_enter_;
 printk("pfunc->cur_blksize=>%d\n", pfunc->cur_blksize);		
 //	if (claim_needed)
 		sdio_claim_host(pfunc);
-//	err = _chris_sd_write(pfunc, addr, cnt, pdata);
+	err = _chris_sd_write(pfunc, addr, cnt, pdata);
 //	if (claim_needed)
 		sdio_release_host(pfunc);
 _func_exit_;
@@ -518,7 +518,7 @@ u32 chris_sdio_write_port(
 		cnt = _RND(cnt, pfunc->cur_blksize);
 //	cnt = sdio_align_size(cnt);
 	
-//	err = chris_sd_write(pfunc, addr, cnt, mem);
+	err = chris_sd_write(pfunc, addr, cnt, mem);
 	
 //	rtw_sctx_done_err(&xmitbuf->sctx,
 //		err ? RTW_SCTX_DONE_WRITE_PORT_ERR : RTW_SCTX_DONE_SUCCESS);
