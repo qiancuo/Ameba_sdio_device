@@ -299,7 +299,7 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 //				j++;
 //			}
 //		mutex_lock(&gHal_Data->buf_mutex);
-//		rtw_list_insert_tail(&chris_buf.list, &chris_buf_list);
+		rtw_list_insert_tail(&chris_buf.list, &chris_buf_list);
 //		mutex_unlock(&gHal_Data->buf_mutex);
 		for(i=0;i<(txdesc.txpktsize+txdesc.offset);i++)
 			printk("chris_buf.buf[%d] = 0x%02x\n", i, *(chris_buf.buf+i));

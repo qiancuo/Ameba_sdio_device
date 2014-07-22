@@ -382,6 +382,7 @@ static int SendOnePkt_Thread(void * pData)
 static int SendPkt_Thread(void *pData)
 {
 	struct sdio_func *pfunc;
+	int i;
 	_list *plist;
 	PCHRIS_XMIT_BUF pchris_buf;
 	PHAL_DATA_TYPE pHal_Data;
@@ -402,8 +403,11 @@ static int SendPkt_Thread(void *pData)
 		pchris_buf = LIST_CONTAINOR(plist, CHRIS_XMIT_BUF, list);
 		rtw_list_delete(&pchris_buf->list);	
 //		mutex_unlock(&pHal_Data->buf_mutex);
+
 		ptxdesc = (PTXDESC_8195A)pchris_buf->buf;
-		chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (ptxdesc->txpktsize+ptxdesc->offset), pchris_buf->buf);
+		for(i=0;i<(ptxdesc->txpktsize+ptxdesc->offset);i++)
+			printk("chris_buf.buf[%d] = 0x%02x\n", i, *(chris_buf.buf+i));
+//		chris_sdio_write_port(pfunc, WLAN_TX_HIQ_DEVICE_ID, (ptxdesc->txpktsize+ptxdesc->offset), pchris_buf->buf);
 		}
 	}
 	return 0;
