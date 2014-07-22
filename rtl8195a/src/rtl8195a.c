@@ -395,15 +395,15 @@ static int SendPkt_Thread(void *pData)
 		SLEEP_MILLI_SEC(1000);
 		if (rtw_is_list_empty(&chris_buf_list)) {
 			printk("Err!! List is empty!!\n");
-			mutex_unlock(&pHal_Data->buf_mutex);
+			mutex_unlock(&gHal_Data->buf_mutex);
 //			break;
 		}
 		else
 		{
-//			plist = get_next(&chris_buf_list);
-//			pchris_buf = LIST_CONTAINOR(plist, CHRIS_XMIT_BUF, list);
-//			rtw_list_delete(&pchris_buf->list);	
-		mutex_unlock(&pHal_Data->buf_mutex);
+		plist = get_next(&chris_buf_list);
+		pchris_buf = LIST_CONTAINOR(plist, CHRIS_XMIT_BUF, list);
+		rtw_list_delete(&pchris_buf->list);	
+		mutex_unlock(&gHal_Data->buf_mutex);
 //		ptxdesc = (PTXDESC_8195A)pchris_buf->buf;
 		printk("List isn't null\n");
 //			for(i=0;i<(ptxdesc->txpktsize+ptxdesc->offset);i++)
