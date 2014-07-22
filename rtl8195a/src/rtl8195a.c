@@ -1065,10 +1065,10 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 //			return status;
 //		netif_carrier_off(pnetdev);
 	//dev_alloc_name && register_netdev
-	if((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
-		DBG_871X("drv_register_netdev Failed!\n");
-		goto free_if1;
-	}
+//		if((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
+//			DBG_871X("drv_register_netdev Failed!\n");
+//			goto free_if1;
+//		}
 free_if1:
 	if (status != _SUCCESS && if1) {
 		rtw_sdio_if1_deinit(if1);
