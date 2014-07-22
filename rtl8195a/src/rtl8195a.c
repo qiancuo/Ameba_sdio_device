@@ -596,8 +596,8 @@ _func_enter_;
 	psdio_data->block_transfer_len = 512;
 	psdio_data->tx_block_mode = 1;
 	psdio_data->rx_block_mode = 1;
-//	sdio_release_host(func);
-
+	sdio_release_host(func);
+	return _SUCCESS;
 release:
     sdio_release_host(func);
 exit:

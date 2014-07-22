@@ -436,7 +436,7 @@ _func_enter_;
 	size = cnt;
 	printk("%s(): write to addr 0x%x\n", __func__, addr);
 	printk("%s(): write size %d\n", __func__, size);
-	err = sdio_memcpy_toio(pfunc, addr, pdata, size);
+//	err = sdio_memcpy_toio(pfunc, addr, pdata, size);
 	if (err) {
 		printk("%s: FAIL(%d)! ADDR=%#x Size=%d(%d)\n", __func__, err, addr, cnt, size);
 	}
