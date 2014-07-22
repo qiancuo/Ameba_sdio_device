@@ -1022,14 +1022,14 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 		("+rtw_drv_init: vendor=0x%04x device=0x%04x class=0x%02x\n",
 		func->vendor, func->device, func->class));
 	
-	if ((dvobj = sdio_dvobj_init(func)) == NULL) {
-		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("initialize device object priv Failed!\n"));
-		goto exit;
-	}
-	if ((if1 = rtw_sdio_if1_init(dvobj, id)) == NULL) {
-		DBG_871X("rtw_init_primary_adapter Failed!\n");
-		goto free_dvobj;
-	}
+//		if ((dvobj = sdio_dvobj_init(func)) == NULL) {
+//			RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("initialize device object priv Failed!\n"));
+//			goto exit;
+//		}
+//		if ((if1 = rtw_sdio_if1_init(dvobj, id)) == NULL) {
+//			DBG_871X("rtw_init_primary_adapter Failed!\n");
+//			goto free_dvobj;
+//		}
 	
 //	init_chris_Buf_Pool();
 
@@ -1037,9 +1037,9 @@ static int __devinit rtw_drv_init(struct sdio_func *func, const struct sdio_devi
 	gHal_Data = kmalloc(sizeof(PHAL_DATA_TYPE), GFP_KERNEL);
 //	g_SDIO_cmdData = kmalloc(2048, GFP_KERNEL);
 	// 1.init SDIO bus and read chip version	
-//		ret = chris_sdio_init(func);
-//		if(ret)
-//			return ret;
+	ret = chris_sdio_init(func);
+	if(ret)
+		return ret;
 	mutex_init(&gHal_Data->buf_mutex);	
 	gHal_Data->func = func;
 	gHal_Data->SdioRxFIFOCnt =0;
