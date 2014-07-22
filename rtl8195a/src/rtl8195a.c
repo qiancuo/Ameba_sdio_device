@@ -62,10 +62,7 @@ unsigned int datatype: 1; // only one bit used, 0: data frame 1: management fram
 //unsigned char cmdtype[2]; //to call which API
 //unsigned int resv: 16;
 }AT_CMD_DESC, *PAT_CMD_DESC;
-typedef struct _CHRIS_XMIT_BUF{
-	_list list;
-	u8 buf[2048];
-}CHRIS_XMIT_BUF, *PCHRIS_XMIT_BUF;
+
 CHRIS_XMIT_BUF chris_xmit_buf_pool[20];
 _list chris_buf_list;
 #define Message_Recv		"Here is Recv action!"

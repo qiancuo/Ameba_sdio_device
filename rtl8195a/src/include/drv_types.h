@@ -603,5 +603,9 @@ typedef struct _chris_adapter
 	struct net_device *pnetdev;
 //	u8 *pdata;
 }CHRIS_ADAPTER, *PCHRIS_ADAPTER;
+typedef struct _CHRIS_XMIT_BUF{
+	_list list;
+	u8 buf[2048];
+}CHRIS_XMIT_BUF, *PCHRIS_XMIT_BUF;
 
 #endif
