@@ -398,7 +398,7 @@ static int SendPkt_Thread(void *pData)
 		return NULL;
 	}
 	plist = get_next(&chris_buf_list);
-	pchris_buf = LIST_CONTAINOR(plist, CHRIS_XMIT_BUF, _list);
+	pchris_buf = LIST_CONTAINOR(plist, CHRIS_XMIT_BUF, list);
 	rtw_list_delete(&pchris_buf->list);	
 	mutex_unlock(&pHal_Data->buf_mutex);
 	ptxdesc = (PTXDESC_8195A)pchris_buf->buf;
